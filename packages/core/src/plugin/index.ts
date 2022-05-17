@@ -10,10 +10,19 @@ export interface Plugin {
   references: ReferencesPlugin;
   teamManagement: TeamManagementPlugin;
   credential: CredentialPlugin;
+};
+
+export interface PluginComponent {
+  packageName: string;
+  folders?: {
+    pages?: string;
+    components?: string;
+  }
 }
 
 const defaultPlugin: Plugin = {
   authentication: {
+    packageName: 'local',
     loginPath: '/login',
     logoutPath: '',
     getUser: async () => ({
@@ -34,6 +43,7 @@ const defaultPlugin: Plugin = {
     deleteUser: async () => {},
   },
   branding: {
+    packageName: 'local',
     getBrand: async () => ({
       logoSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NASA_Worm_logo.svg/2560px-NASA_Worm_logo.svg.png',
       faviconHref: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/2449px-NASA_logo.svg.png',
@@ -44,11 +54,13 @@ const defaultPlugin: Plugin = {
     }),
   },
   references: {
+    packageName: 'local',
     getReferences: async () => ([
       { url: 'https://google.com', label: 'Google', icon: 'bolt' },
     ])
   },
   teamManagement: {
+    packageName: 'local',
     addUserToTeam: async () => {},
     removeUserFromTeam: async () => {},
     createTeam: async () => ({
@@ -80,6 +92,7 @@ const defaultPlugin: Plugin = {
     getTeamInviteLink: async () => '',
   },
   credential: {
+    packageName: 'local',
     getUserCredentials: async () => [{
       properties: [{ label: 'Token', value: 'abc123', secret: true }],
       environment: 'production',

@@ -5,6 +5,9 @@ import { packageDirectory } from 'pkg-dir';
 import fs from 'fs-extra';
 import path from 'path';
 import resolveCwd from 'resolve-cwd';
+import {resolve} from 'import-meta-resolve';
+
+import { getPlugin } from '@astral-dx/core/dist/plugin/index.js';
 
 const getPackageDirectory = async (pkg) => {
   return await packageDirectory({ cwd: resolveCwd(pkg) });
@@ -44,7 +47,7 @@ program.command('dev')
     const portalPackageDirectory = await getPackageDirectory('@astral-dx/portal');
     const targetDirectory = path.join(process.cwd(), '.portal');
     const commandParts = ['dev',  targetDirectory];
-    // const portalConfig = await getPortalConfig();
+    const plugin = await getPlugin();
 
     const entries = [
       'pages',
@@ -54,8 +57,34 @@ program.command('dev')
       'next.config.mjs',
       'tsconfig.json',
       'components',
-      'theme'
+      'theme',
     ];
+
+    for (const p of Object.values(plugin)) {
+      const { packageName, folders } = p;
+
+      if (packageName === 'local') {
+        continue;
+      }
+
+      const packageDir = path.dirname(await resolve(packageName, import.meta.url)).replace('file:', '');
+
+      if (folders?.pages) {
+        fs.copySync(
+          path.join(packageDir, folders.pages),
+          path.join(targetDirectory, 'pages'),
+          { overwrite: true },
+        );
+      }
+      
+      if (folders?.components) {
+        fs.copySync(
+          path.join(packageDir, folders.components),
+          path.join(targetDirectory, 'components'),
+          { overwrite: true },
+        );
+      }
+    }
 
     entries.forEach(
       (f) => fs.copySync(

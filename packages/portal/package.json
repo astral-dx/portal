@@ -40,7 +40,8 @@
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
-    "@types/fs-extra": "^9.0.13"
+    "@types/fs-extra": "^9.0.13",
+    "import-meta-resolve": "^1.1.1"
   },
   "peerDependencies": {
     "@astral-dx/core": "0.0.1"

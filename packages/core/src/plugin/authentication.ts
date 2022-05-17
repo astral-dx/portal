@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http";
+import { PluginComponent } from "./index";
 
 export interface User {
   id: string;
@@ -7,12 +8,11 @@ export interface User {
   permissions: string[];
 }
 
-export interface AuthenticationPlugin {
+export interface AuthenticationPlugin extends PluginComponent {
   loginPath: string;
   logoutPath: string;
   getUser: (req: IncomingMessage) => Promise<User | undefined>;
   updateUser: (id: string, user: User) => Promise<User>;
   deleteUser: (id: string) => Promise<void>;
-  internal?: any;
 }
 

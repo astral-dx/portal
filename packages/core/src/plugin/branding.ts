@@ -1,3 +1,5 @@
+import { PluginComponent } from "./index";
+
 export interface Brand {
   logoSrc: string;
   faviconHref: string;
@@ -7,6 +9,6 @@ export interface Brand {
   subtitle?: string;
 }
 
-export interface BrandingPlugin {
+export interface BrandingPlugin extends PluginComponent {
   getBrand: () => Promise<Brand>;
 }

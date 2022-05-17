@@ -1,5 +1,6 @@
 import { IncomingMessage } from "http";
 import { Team } from "./teamManagement";
+import { PluginComponent } from "./index";
 
 export type Environment = 'production' | 'sandbox';
 
@@ -8,7 +9,7 @@ export interface Credential {
   environment?: Environment;
 }
 
-export interface CredentialPlugin {
+export interface CredentialPlugin extends PluginComponent {
   getUserCredentials: (req: IncomingMessage) => Promise<Credential[]>;
   createCredential: (team: Team, environment?: Environment) => Promise<Credential>;
   rotateCredential?: (credential: Credential) => Promise<Credential>;
