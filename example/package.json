@@ -1,0 +1,15 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astral dev"
+  },
+  "dependencies": {
+    "@astral-dx/portal": "0.0.1",
+    "@astral-dx/core": "0.0.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

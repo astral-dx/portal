@@ -1,0 +1,48 @@
+{
+  "name": "@astral-dx/portal",
+  "version": "0.0.1",
+  "bin": {
+    "astral": "./bin/astral.js"
+  },
+  "type": "module",
+  "main": "./README.md",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "local:publish": "npm publish --registry http://localhost:4873/",
+    "local:adduser": "npm adduser --registry http://localhost:4873/",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.7.1",
+    "@emotion/react": "^11.9.0",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.2",
+    "@mui/material": "^5.6.2",
+    "@types/node": "17.0.23",
+    "@types/react": "17.0.43",
+    "@types/react-dom": "17.0.14",
+    "commander": "^9.1.0",
+    "cross-spawn": "^7.0.3",
+    "eslint": "8.12.0",
+    "eslint-config-next": "12.1.4",
+    "fs-extra": "^10.0.1",
+    "next": "12.1.4",
+    "pkg-dir": "^6.0.1",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "resolve-cwd": "^3.0.0",
+    "typescript": "4.6.3"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/fs-extra": "^9.0.13"
+  },
+  "peerDependencies": {
+    "@astral-dx/core": "0.0.1"
+  }
+}
