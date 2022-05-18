@@ -4,7 +4,7 @@ import { Container, Typography } from '@mui/material';
 import { useUser } from '@astral-dx/core/dist/authentication/useUser';
 import { withPageAuthRequired } from '@astral-dx/core/dist/authentication/withPageAuthRequired';
 import { useBrand } from '@astral-dx/core/dist/branding/useBrand';
-import { Button } from '../components/Button/Button';
+import { Button } from '@astral-dx/core';
 import { useReferences } from '@astral-dx/core/dist/references/useReferences';
 import { useTeams } from '@astral-dx/core/dist/teamManagement/useTeams';
 import { useCredentials } from '@astral-dx/core/dist/credential/useCredentials';

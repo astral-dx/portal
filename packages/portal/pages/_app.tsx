@@ -5,17 +5,17 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 
-import { getTheme } from '@astral-dx/core/dist/branding/theme';
-import { getPlugin, User } from '@astral-dx/core/dist/plugin';
+import { getTheme } from '@astral-dx/core';
+import { getPlugin, User } from '@astral-dx/core';
 import { UserProvider } from '@astral-dx/core/dist/authentication/useUser';
-import { Brand } from '@astral-dx/core/dist/plugin/branding';
+import { Brand } from '@astral-dx/core';
 import { BrandProvider } from '@astral-dx/core/dist/branding/useBrand';
-import { Reference } from '@astral-dx/core/dist/plugin/references';
+import { Reference } from '@astral-dx/core';
 import { ReferencesProvider } from '@astral-dx/core/dist/references/useReferences';
 import { TeamsProvider } from '@astral-dx/core/dist/teamManagement/useTeams';
-import { Team } from '@astral-dx/core/dist/plugin/teamManagement';
+import { Team } from '@astral-dx/core';
 import { CredentialsProvider } from '@astral-dx/core/dist/credential/useCredentials';
-import { Credential } from '@astral-dx/core/dist/plugin/credential';
+import { Credential } from '@astral-dx/core';
 
 import { createEmotionCache } from '../theme/createEmotionCache';
 

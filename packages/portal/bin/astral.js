@@ -56,7 +56,6 @@ program.command('dev')
       'next-env.d.ts',
       'next.config.mjs',
       'tsconfig.json',
-      'components',
       'theme',
     ];
 
