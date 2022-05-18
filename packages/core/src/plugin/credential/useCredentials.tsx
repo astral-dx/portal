@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Credential } from "../plugin/credential";
+import { Credential } from "./";
 
 interface CredentialsContext {
   credentials: Credential[];

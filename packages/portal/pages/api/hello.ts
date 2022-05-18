@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { withApiAuthRequired } from '@astral-dx/core/src/authentication/withApiAuthRequired'
+import { withApiAuthRequired } from '@astral-dx/core'
 
 type Data = {
   name: string

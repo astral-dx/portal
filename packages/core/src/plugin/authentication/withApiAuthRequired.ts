@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getPlugin } from '../plugin';
+import { getPlugin } from '../index';
 
 interface withApiAuthRequiredOptions {
   permissions: string[];

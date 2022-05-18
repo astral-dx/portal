@@ -1,4 +1,4 @@
-import { PluginComponent } from "./index";
+import { PluginComponent } from "../index";
 
 export interface Brand {
   logoSrc: string;
@@ -12,3 +12,6 @@ export interface Brand {
 export interface BrandingPlugin extends PluginComponent {
   getBrand: () => Promise<Brand>;
 }
+
+export * from './theme';
+export * from './useBrand';

@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Container, Typography } from '@mui/material';
-import { useUser } from '@astral-dx/core/dist/authentication/useUser';
-import { withPageAuthRequired } from '@astral-dx/core/dist/authentication/withPageAuthRequired';
-import { useBrand } from '@astral-dx/core/dist/branding/useBrand';
+import { useUser } from '@astral-dx/core';
+import { withPageAuthRequired } from '@astral-dx/core';
+import { useBrand } from '@astral-dx/core';
 import { Button } from '@astral-dx/core';
-import { useReferences } from '@astral-dx/core/dist/references/useReferences';
-import { useTeams } from '@astral-dx/core/dist/teamManagement/useTeams';
-import { useCredentials } from '@astral-dx/core/dist/credential/useCredentials';
+import { useReferences } from '@astral-dx/core';
+import { useTeams } from '@astral-dx/core';
+import { useCredentials } from '@astral-dx/core';
 
 const Dashboard: NextPage = () => {
   const { user } = useUser();

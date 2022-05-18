@@ -4,12 +4,6 @@ import { CredentialPlugin } from "./credential";
 import { ReferencesPlugin } from "./references";
 import { TeamManagementPlugin } from "./teamManagement";
 
-export type { AuthenticationPlugin, User } from "./authentication";
-export type { BrandingPlugin, Brand } from "./branding";
-export type { CredentialPlugin, Environment, Credential } from "./credential";
-export type { ReferencesPlugin, Reference } from "./references";
-export type { TeamManagementPlugin, Team, TeamType } from "./teamManagement";
-
 export interface Plugin {
   authentication: AuthenticationPlugin;
   branding: BrandingPlugin;
@@ -136,3 +130,18 @@ export const getPlugin = async (): Promise<Plugin> => {
     return defaultPlugin;
   }
 };
+
+export type { AuthenticationPlugin, User } from "./authentication";
+export * from './authentication';
+
+export type { BrandingPlugin, Brand } from "./branding";
+export * from './branding';
+
+export type { CredentialPlugin, Environment, Credential } from "./credential";
+export * from './credential';
+
+export type { ReferencesPlugin, Reference } from "./references";
+export * from './references';
+
+export type { TeamManagementPlugin, Team, TeamType } from "./teamManagement";
+export * from './teamManagement';

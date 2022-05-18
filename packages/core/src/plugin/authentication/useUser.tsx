@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { User } from "../plugin";
+import { User } from "./index";
 
 interface UserContext {
   user?: User;

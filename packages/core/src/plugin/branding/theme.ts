@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
-import { Brand } from '../plugin/branding';
+import { Brand } from './';
 
 export const getTheme = (brand: Brand) => createTheme({
   palette: {

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Brand } from "../plugin/branding";
+import { Brand } from "./";
 
 interface BrandContext {
   brand: Brand;

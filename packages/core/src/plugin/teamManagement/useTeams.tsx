@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Team } from "../plugin/teamManagement";
+import { Team } from "./index";
 
 interface TeamsContext {
   teams: Team[];

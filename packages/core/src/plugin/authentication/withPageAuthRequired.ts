@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { getPlugin } from '../plugin';
+import { getPlugin } from '../index';
 
 interface AuthGuardProps {
   getServerSideProps?: GetServerSideProps;

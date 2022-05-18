@@ -1,6 +1,6 @@
 import { IncomingMessage } from "http";
-import { Team } from "./teamManagement";
-import { PluginComponent } from "./index";
+import { Team } from "../teamManagement";
+import { PluginComponent } from "../index";
 
 export type Environment = 'production' | 'sandbox';
 
@@ -15,3 +15,5 @@ export interface CredentialPlugin extends PluginComponent {
   rotateCredential?: (credential: Credential) => Promise<Credential>;
   deleteCredential: (credential: Credential) => Promise<void>;
 }
+
+export * from './useCredentials';

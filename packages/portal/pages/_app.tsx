@@ -7,14 +7,14 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 
 import { getTheme } from '@astral-dx/core';
 import { getPlugin, User } from '@astral-dx/core';
-import { UserProvider } from '@astral-dx/core/dist/authentication/useUser';
+import { UserProvider } from '@astral-dx/core';
 import { Brand } from '@astral-dx/core';
-import { BrandProvider } from '@astral-dx/core/dist/branding/useBrand';
+import { BrandProvider } from '@astral-dx/core';
 import { Reference } from '@astral-dx/core';
-import { ReferencesProvider } from '@astral-dx/core/dist/references/useReferences';
-import { TeamsProvider } from '@astral-dx/core/dist/teamManagement/useTeams';
+import { ReferencesProvider } from '@astral-dx/core';
+import { TeamsProvider } from '@astral-dx/core';
 import { Team } from '@astral-dx/core';
-import { CredentialsProvider } from '@astral-dx/core/dist/credential/useCredentials';
+import { CredentialsProvider } from '@astral-dx/core';
 import { Credential } from '@astral-dx/core';
 
 import { createEmotionCache } from '../theme/createEmotionCache';

@@ -1,4 +1,4 @@
-import { PluginComponent } from "./index";
+import { PluginComponent } from "../index";
 
 export interface Reference {
   url: string;
@@ -9,3 +9,5 @@ export interface Reference {
 export interface ReferencesPlugin extends PluginComponent {
   getReferences: () => Promise<Reference[]>;
 }
+
+export * from './useReferences';

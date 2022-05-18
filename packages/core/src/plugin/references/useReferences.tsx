@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Reference } from "../plugin/references";
+import { Reference } from "./";
 
 interface ReferencesContext {
   references: Reference[];

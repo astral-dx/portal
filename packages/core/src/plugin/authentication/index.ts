@@ -1,5 +1,5 @@
 import { IncomingMessage } from "http";
-import { PluginComponent } from "./index";
+import { PluginComponent } from "../index";
 
 export interface User {
   id: string;
@@ -16,3 +16,6 @@ export interface AuthenticationPlugin extends PluginComponent {
   deleteUser: (id: string) => Promise<void>;
 }
 
+export * from './useUser';
+export * from './withApiAuthRequired';
+export * from './withPageAuthRequired';
