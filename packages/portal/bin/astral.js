@@ -7,8 +7,6 @@ import path from 'path';
 import resolveCwd from 'resolve-cwd';
 import {resolve} from 'import-meta-resolve';
 
-import { getPlugin } from '@astral-dx/core';
-
 const getPackageDirectory = async (pkg) => {
   return await packageDirectory({ cwd: resolveCwd(pkg) });
 };
@@ -32,7 +30,7 @@ const getPackageExecutablPath = async (pkg, executable = pkg) => {
 
 const getPortalConfig = async () => {
   try {
-    const config = await import ('../../../../portal.config.js');
+    const config = await import(path.join(process.cwd(), 'portal.config.js'));
     return config.default;
   } catch (e) {
     console.warn(e)
@@ -47,7 +45,7 @@ program.command('dev')
     const portalPackageDirectory = await getPackageDirectory('@astral-dx/portal');
     const targetDirectory = path.join(process.cwd(), '.portal');
     const commandParts = ['dev',  targetDirectory];
-    const plugin = await getPlugin();
+    const { plugin } = await getPortalConfig();
 
     const entries = [
       'pages',

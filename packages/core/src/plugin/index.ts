@@ -4,6 +4,10 @@ import { CredentialPlugin } from "./credential";
 import { ReferencesPlugin } from "./references";
 import { TeamManagementPlugin } from "./teamManagement";
 
+declare var __portalConfig: {
+  plugin: Plugin;
+};
+
 export interface Plugin {
   authentication: AuthenticationPlugin;
   branding: BrandingPlugin;
@@ -56,7 +60,9 @@ const defaultPlugin: Plugin = {
   references: {
     packageName: 'local',
     getReferences: async () => ([
-      { url: 'https://google.com', label: 'Google', icon: 'bolt' },
+      { url: 'https://google.com', label: 'Google', description: 'Search the world\'s information, including webpages, images, videos and more.', icon: 'bolt' },
+      { url: 'https://google.com', label: 'Google', description: 'Search the world\'s information, including webpages, images, videos and more.', icon: 'bolt' },
+      { url: 'https://google.com', label: 'Google', description: 'Search the world\'s information, including webpages, images, videos and more.', icon: 'bolt' },
     ])
   },
   teamManagement: {
@@ -111,12 +117,7 @@ const defaultPlugin: Plugin = {
 
 export const getPlugin = async (): Promise<Plugin> => {
   try {
-    // moving this to a variable so that static checks
-    // don't know it doesn't exist during portal development
-    const configPath = '../../portal.config.js';
-  
-    // @ts-ignore 
-    const config = await import(configPath);
+    const config = __portalConfig;
 
     if (config && config.plugin) {
       return {
@@ -127,6 +128,7 @@ export const getPlugin = async (): Promise<Plugin> => {
   
     return defaultPlugin;
   } catch (e) {
+    console.error(e);
     return defaultPlugin;
   }
 };

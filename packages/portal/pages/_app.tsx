@@ -4,21 +4,16 @@ import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-
-import { getTheme } from '@astral-dx/core';
+import { getTheme, Layout } from '@astral-dx/core';
 import { getPlugin, User } from '@astral-dx/core';
 import { UserProvider } from '@astral-dx/core';
 import { Brand } from '@astral-dx/core';
 import { BrandProvider } from '@astral-dx/core';
 import { Reference } from '@astral-dx/core';
 import { ReferencesProvider } from '@astral-dx/core';
-import { TeamsProvider } from '@astral-dx/core';
-import { Team } from '@astral-dx/core';
-import { CredentialsProvider } from '@astral-dx/core';
-import { Credential } from '@astral-dx/core';
+import { TeamsProvider, Team, CredentialsProvider, Credential } from '@astral-dx/core';
 
 import { createEmotionCache } from '../theme/createEmotionCache';
-
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -51,6 +46,8 @@ export default function MyApp(props: MyAppProps & AppProps) {
             'opsz' 48
           }
         ` }} />
+        <title>{ brand.title }</title>
+        <meta name="description" content={ brand.subtitle } />
       </Head>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
@@ -60,7 +57,9 @@ export default function MyApp(props: MyAppProps & AppProps) {
             <BrandProvider brand={brand}>
               <CredentialsProvider credentials={credentials}>
                 <ReferencesProvider references={references}>
-                  <Component {...pageProps} />
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
                 </ReferencesProvider>
               </CredentialsProvider>
             </BrandProvider>
