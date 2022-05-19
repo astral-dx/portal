@@ -78,6 +78,19 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     throw new Error('Unable to initialize app, no request in context');
   }
 
+  if (typeof window !== "undefined") {
+    const {user, brand, references, teams, credentials} = await (await fetch('/api/bootstrap')).json(); 
+
+    return {
+      ...appProps,
+      user,
+      brand,
+      references,
+      teams,
+      credentials,
+    }
+  }
+
   const plugin = await getPlugin();
   const [ user, brand, references, teams, credentials ] = await Promise.all([
     plugin.authentication.getUser(req),

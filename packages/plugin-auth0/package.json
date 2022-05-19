@@ -1,24 +1,21 @@
 {
-  "name": "@astral-dx/core",
+  "name": "@astral-dx/plugin-auth0",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
-  "type": "commonjs",
   "scripts": {
-    "dev": "tsc --watch",
     "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mui/icons-material": "^5.6.2",
-    "@mui/material": "^5.6.2",
-    "next": "12.1.4"
+    "@auth0/nextjs-auth0": "^1.8.0"
   },
   "devDependencies": {
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
+    "@astral-dx/core": "0.0.1",
     "@astral-dx/portal": "0.0.1"
   }
 }

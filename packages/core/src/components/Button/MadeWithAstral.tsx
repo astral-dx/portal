@@ -1,5 +1,4 @@
 import { styled, Button as MuiButton, alpha } from "@mui/material";
-import React from "react";
 
 const StyledButton = styled(MuiButton)(({ theme }) => `
   padding: ${theme.spacing(0.75, 1.5)};

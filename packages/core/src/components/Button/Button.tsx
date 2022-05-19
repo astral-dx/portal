@@ -1,6 +1,5 @@
 import { styled, Button as MuiButton, alpha, ButtonProps, Palette } from "@mui/material";
 import Link from "next/link";
-import React from "react";
 
 const getColor = (color: ButtonProps['color'], palette: Palette): string => {
   if (color === undefined || color === 'inherit') {
@@ -22,7 +21,7 @@ export const StyledButton = styled(MuiButton)(({ theme, size, color }) => `
   }
 `);
 
-export const Button: React.FC<ButtonProps> = (props) => {
+export const Button = (props: ButtonProps) => {
   if (props.href) {
     return (
       <Link shallow href={props.href}>
