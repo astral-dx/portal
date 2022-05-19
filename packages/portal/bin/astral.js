@@ -7,7 +7,7 @@ import path from 'path';
 import resolveCwd from 'resolve-cwd';
 import {resolve} from 'import-meta-resolve';
 
-import { getPlugin } from '@astral-dx/core/dist/plugin/index.js';
+import { getPlugin } from '@astral-dx/core';
 
 const getPackageDirectory = async (pkg) => {
   return await packageDirectory({ cwd: resolveCwd(pkg) });
