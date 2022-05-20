@@ -6,6 +6,7 @@ export interface User {
   name?: string;
   email: string;
   permissions: string[];
+  avatar?: string;
 }
 
 export interface AuthenticationPlugin extends PluginComponent {

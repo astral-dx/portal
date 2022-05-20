@@ -3,11 +3,19 @@ import {
   User,
 } from '@astral-dx/core';
 import { getSession } from '@auth0/nextjs-auth0';
-import fetch from 'node-fetch';
+import { decode, JwtPayload } from 'jsonwebtoken';
 
 interface Auth0AuthenticationConfig {
   
 };
+
+type IdToken = JwtPayload & { 
+  'http://astral'?: {
+    user_metadata?: {
+      permissions?: string[]
+    }
+  }
+}
 
 export const initAuth0Authentication = ({
 
@@ -29,20 +37,16 @@ export const initAuth0Authentication = ({
         return undefined;
       }
 
-      // const data = await fetch('https://dev-as63sd4j.us.auth0.com/userinfo', {
-      //   headers: {
-      //     authentication: `Bearer ${session.accessToken}`
-      //   }
-      // });
-
-      // console.log({ data });
+      // TODO: change to verify?
+      const idToken = await decode(session.idToken ?? '') as IdToken;
 
       // Grab permissions
       return {
         id: session.user.email,
         email: session.user.email,
-        permissions: ['user'],
-        name: session.user.name
+        permissions: idToken['http://astral']?.user_metadata?.permissions ?? [],
+        name: session.user.name,
+        avatar: session.user.picture ?? ''
       } as User;
     },
     updateUser: async (id: string, user: User) => {
