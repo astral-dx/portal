@@ -3,6 +3,7 @@ import {
   User,
 } from '@astral-dx/core';
 import { getSession } from '@auth0/nextjs-auth0';
+import fetch from 'node-fetch';
 
 interface Auth0AuthenticationConfig {
   
@@ -14,7 +15,7 @@ export const initAuth0Authentication = ({
   return {
     packageName: '@astral-dx/plugin-auth0',
     loginPath: '/api/auth/login',
-    logoutPath: '',
+    logoutPath: '/api/auth/logout',
     folders: {
       pages: './authentication/pages'
     },
@@ -28,11 +29,19 @@ export const initAuth0Authentication = ({
         return undefined;
       }
 
+      // const data = await fetch('https://dev-as63sd4j.us.auth0.com/userinfo', {
+      //   headers: {
+      //     authentication: `Bearer ${session.accessToken}`
+      //   }
+      // });
+
+      // console.log({ data });
+
       // Grab permissions
       return {
         id: session.user.email,
         email: session.user.email,
-        permissions: [],
+        permissions: ['user'],
         name: session.user.name
       } as User;
     },

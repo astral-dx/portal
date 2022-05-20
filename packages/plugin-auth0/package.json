@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.8.0"
+    "@auth0/nextjs-auth0": "^1.8.0",
+    "node-fetch": "^3.2.4"
   },
   "devDependencies": {
     "typescript": "^4.6.4"

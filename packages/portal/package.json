@@ -2,7 +2,7 @@
   "name": "@astral-dx/portal",
   "version": "0.0.1",
   "bin": {
-    "astral": "./bin/astral.js"
+    "astral": "./bin/astral.mjs"
   },
   "main": "./README.md",
   "scripts": {
