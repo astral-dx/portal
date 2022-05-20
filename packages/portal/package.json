@@ -4,7 +4,6 @@
   "bin": {
     "astral": "./bin/astral.js"
   },
-  "type": "module",
   "main": "./README.md",
   "scripts": {
     "dev": "next dev",

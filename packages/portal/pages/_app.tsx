@@ -4,14 +4,21 @@ import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { getTheme, Layout } from '@astral-dx/core';
-import { getPlugin, User } from '@astral-dx/core';
-import { UserProvider } from '@astral-dx/core';
-import { Brand } from '@astral-dx/core';
-import { BrandProvider } from '@astral-dx/core';
-import { Reference } from '@astral-dx/core';
-import { ReferencesProvider } from '@astral-dx/core';
-import { TeamsProvider, Team, CredentialsProvider, Credential } from '@astral-dx/core';
+import {
+  getTheme,
+  Layout,
+  getPlugin,
+  User,
+  UserProvider,
+  Brand,
+  BrandProvider,
+  Reference,
+  ReferencesProvider,
+  TeamsProvider,
+  Team,
+  CredentialsProvider,
+  Credential
+} from '@astral-dx/core';
 
 import { createEmotionCache } from '../theme/createEmotionCache';
 
@@ -79,7 +86,7 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   }
 
   if (typeof window !== "undefined") {
-    const {user, brand, references, teams, credentials} = await (await fetch('/api/bootstrap')).json(); 
+    const { user, brand, references, teams, credentials } = await (await fetch('/api/bootstrap')).json(); 
 
     return {
       ...appProps,

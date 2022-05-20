@@ -2,7 +2,7 @@ import { styled, Typography } from "@mui/material";
 import { useReferences } from "../../plugin";
 
 const Container = styled('header')(({ theme }) => `
-  padding: ${theme.spacing(3)};
+  padding: ${theme.spacing(2, 3, 2, 0)};
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   display: flex;
@@ -16,7 +16,6 @@ const Title = styled(Typography)(({ theme }) => `
   letter-spacing: 0.1rem;
   font-size: 0.8rem;
   color: ${theme.palette.text.secondary};
-  /* margin-bottom: ${theme.spacing(2)}; */
   padding-left: ${theme.spacing(2)};
 `);
 

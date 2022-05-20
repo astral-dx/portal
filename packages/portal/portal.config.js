@@ -1,8 +1,26 @@
-const { initAuth0Authentication } = require('@astral-dx/plugin-auth0');
-
 module.exports = {
   plugin: {
-    authentication: initAuth0Authentication({}),
+    authentication: {
+      packageName: 'local',
+      loginPath: '/login',
+      logoutPath: '',
+      getUser: async () => ({
+        id: 'alsdkfj',
+        role: 'admin',
+        name: 'Neil Armstrong',
+        email: 'neil.armstrong@nasa.com',
+        permissions: ['test'],
+      }),
+      // getUser: async () => undefined,
+      updateUser: async () => ({
+        id: 'alsdkfj',
+        role: 'admin',
+        name: 'Neil Armstrong',
+        email: 'neil.armstrong@nasa.com',
+        permissions: ['test'],
+      }),
+      deleteUser: async () => {},
+    },
     branding: {
       packageName: 'local',
       getBrand: async () => ({
@@ -71,4 +89,4 @@ module.exports = {
       deleteCredential: async () => {},
     },
   },
-}
+};
