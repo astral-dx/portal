@@ -3,11 +3,11 @@ import { User } from "../authentication";
 import { Team } from "./index";
 
 interface TeamContext {
-  team: Team[];
+  team?: Team;
   members: User[];
 };
 
-const TeamContext = createContext<TeamContext>({ team: [], members: [] });
+const TeamContext = createContext<TeamContext>({ members: [] });
 
 export const TeamProvider: React.FC<TeamContext> = ({ children, team, members }) => {
   return (

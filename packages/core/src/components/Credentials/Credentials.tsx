@@ -1,6 +1,6 @@
 import { styled, Typography } from "@mui/material";
 import { useState } from "react";
-import { useCredentials, useReferences, Credential, Environment } from "../../plugin";
+import { useCredentials, Credential, Environment } from "../../plugin";
 
 const Container = styled('header')(({ theme }) => `
   padding: ${theme.spacing(2)};
@@ -20,60 +20,6 @@ const Title = styled(Typography)(({ theme }) => `
   padding-left: ${theme.spacing(2)};
 `);
 
-const Reference = styled('a')(({ theme }) => `
-  padding: ${theme.spacing(2)};
-  width: 100%;
-  color: ${theme.palette.text.primary};
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  transition: all 200ms ease;
-  border-radius: 10px;
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-
-  &:hover .icon-wrapper {
-    background-color: ${theme.palette.primary.main};
-  }
-
-  &:hover .material-symbols-rounded {
-    color: ${theme.palette.primary.contrastText};
-  }
-`);
-
-const IconWrapper = styled('span')(({ theme }) => `
-  margin-right: ${theme.spacing(2)};
-  background-color: rgba(0, 0, 0, 0.05);
-  height: 60px;
-  width: 60px;
-  border-radius: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 200ms ease;
-`);
-
-const Icon = styled('span')(({ theme }) => `
-  font-size: 2rem !important;
-  transition: all 200ms ease;
-`);
-
-const TextContainer = styled('div')(({ theme }) => `
-  max-width: 300px;
-`);
-
-const Label = styled(Typography)(({ theme }) => `
-  font-weight: 800;
-`);
-
-const Description = styled(Typography)(({ theme }) => `
-  color: ${theme.palette.text.secondary};
-  font-size: 0.9rem;
-  line-height: 1.1rem;
-`);
-
 const getEnvironments = (creds: Credential[]): Environment[] => {
   return creds.map(c => c.environment).filter(e => e) as Environment[];
 }
@@ -86,13 +32,13 @@ export const Credentials: React.FC = () => {
   const { credentials } = useCredentials();
   const [ environments, setEnvironments ] = useState(getEnvironments(credentials));
   const [ selectedEnvironment, setSelectedEnvironment ] = useState(getDefaultEnvironment(environments));
-  const [ selectedCredentials, setSelectedCredentials ] = useState(credentials.filter(c => c.environment === selectedEnvironment));
+  const [ selectedCredential, setSelectedCredential ] = useState(credentials.filter(c => c.environment === selectedEnvironment)[0]);
 
   return (
     <Container>
       <Title>Credentials</Title>
       <pre>{ selectedEnvironment }</pre>
-      <pre>{ JSON.stringify(selectedCredentials, null, 2) }</pre>
+      <pre>{ JSON.stringify(selectedCredential, null, 2) }</pre>
     </Container>
   )
 }

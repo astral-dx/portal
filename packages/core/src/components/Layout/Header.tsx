@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
       { user && (
         <ProfileContainer>
           <UserName>{ user?.name ?? '' }</UserName>
-          <TeamName>{ team[0]?.name ?? '' }</TeamName>
+          <TeamName>{ team?.name ?? '' }</TeamName>
         </ProfileContainer>
       ) }
     </Container>

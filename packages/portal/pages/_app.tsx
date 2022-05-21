@@ -30,7 +30,7 @@ interface MyAppProps {
   user?: User;
   brand: Brand;
   references: Reference[];
-  team: Team[];
+  team: Team;
   teamMembers: User[];
   credentials: Credential[];
 }
