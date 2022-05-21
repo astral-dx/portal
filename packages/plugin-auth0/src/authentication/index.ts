@@ -4,6 +4,7 @@ import {
 } from '@astral-dx/core';
 import { getSession } from '@auth0/nextjs-auth0';
 import { decode, JwtPayload } from 'jsonwebtoken';
+import { managementClient } from '../utils/managementClient';
 
 interface Auth0AuthenticationConfig {
   
@@ -28,7 +29,9 @@ export const initAuth0Authentication = ({
       pages: './authentication/pages'
     },
     deleteUser: async (id) => {
-      throw new Error('not implemented');
+      await managementClient.deleteUser({
+        id
+      });
     },
     getUser: async (req) => {
       const session = await getSession(req, {} as any);
@@ -47,10 +50,26 @@ export const initAuth0Authentication = ({
         permissions: idToken['http://astral']?.user_metadata?.permissions ?? [],
         name: session.user.name,
         avatar: session.user.picture ?? ''
-      } as User;
+      };
     },
     updateUser: async (id: string, user: User) => {
-      throw new Error('not implemented');
+      const updatedUser = await managementClient.updateUser({
+        id
+      }, {
+        email: user.email,
+        name: user.name,
+        user_metadata: {
+          permissions: user.permissions
+        }
+      });
+
+      return {
+        id,
+        email: updatedUser.email ?? '',
+        permissions: updatedUser.user_metadata?.permissions ?? [],
+        name: updatedUser.name,
+        avatar: updatedUser.picture ?? ''
+      }
     }
   }
 }
