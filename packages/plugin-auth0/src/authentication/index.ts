@@ -4,7 +4,7 @@ import {
 } from '@astral-dx/core';
 import { getSession } from '@auth0/nextjs-auth0';
 import { decode, JwtPayload } from 'jsonwebtoken';
-import { managementClient } from '../utils/managementClient';
+import { createManagementClient } from '../utils/managementClient';
 
 interface Auth0AuthenticationConfig {
   
@@ -29,6 +29,7 @@ export const initAuth0Authentication = ({
       pages: './authentication/pages'
     },
     deleteUser: async (id) => {
+      const managementClient = createManagementClient();
       await managementClient.deleteUser({
         id
       });
@@ -53,6 +54,7 @@ export const initAuth0Authentication = ({
       };
     },
     updateUser: async (id: string, user: User) => {
+      const managementClient = createManagementClient();
       const updatedUser = await managementClient.updateUser({
         id
       }, {
