@@ -1,13 +1,17 @@
 import type { NextPage } from 'next';
-import { withPageAuthRequired, References } from '@astral-dx/core';
+import { withPageAuthRequired, References, Credentials, PortalTeam } from '@astral-dx/core';
 import { styled } from '@mui/material';
 
 const Container = styled('div')(({ theme }) => `
   display: flex;
+  gap: ${theme.spacing(3)};
 `);
 
 const Main = styled('main')(({ theme }) => `
   flex-basis: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing(3)};
 `);
 
 const SideBar = styled('nav')(({ theme }) => `
@@ -17,7 +21,10 @@ const SideBar = styled('nav')(({ theme }) => `
 const Dashboard: NextPage = () => {
   return (
     <Container>
-      <Main></Main>
+      <Main>
+        <Credentials />
+        <PortalTeam />
+      </Main>
       <SideBar>
         <References />
       </SideBar>

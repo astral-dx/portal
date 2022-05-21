@@ -1,5 +1,5 @@
 import { styled, Typography } from "@mui/material";
-import { useReferences } from "../../plugin";
+import { useTeam } from "../../plugin";
 
 const Container = styled('header')(({ theme }) => `
   padding: ${theme.spacing(2)};
@@ -73,23 +73,14 @@ const Description = styled(Typography)(({ theme }) => `
   line-height: 1.1rem;
 `);
 
-export const References: React.FC = () => {
-  const { references } = useReferences();
+export const PortalTeam: React.FC = () => {
+  const { team, members } = useTeam();
 
   return (
     <Container>
-      <Title>References</Title>
-      { references.map((ref) => (
-        <Reference key={ ref.url } href={ ref.url }>
-          <IconWrapper className="icon-wrapper">
-            <Icon className="material-symbols-rounded">{ ref.icon }</Icon>
-          </IconWrapper>
-          <TextContainer>
-            <Label>{ ref.label }</Label>
-            { ref.description && <Description>{ ref.description }</Description> }
-          </TextContainer>
-        </Reference>
-      ) )}
+      <Title>Team</Title>
+      <pre>{ JSON.stringify(team, null, 2) }</pre>
+      <pre>{ JSON.stringify(members, null, 2) }</pre>
     </Container>
   )
 }

@@ -1,5 +1,5 @@
 import { styled, Typography } from "@mui/material";
-import { useBrand, useTeams, useUser } from "../../plugin";
+import { useBrand, useTeam, useUser } from "../../plugin";
 
 const Container = styled('header')(({ theme }) => `
   padding: ${theme.spacing(6, 0)};
@@ -29,7 +29,7 @@ const TeamName = styled(Typography)(({ theme }) => `
 export const Header: React.FC = () => {
   const { brand } = useBrand();
   const { user } = useUser();
-  const { teams } = useTeams();
+  const { team } = useTeam();
 
   return (
     <Container>
@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
       { user && (
         <ProfileContainer>
           <UserName>{ user?.name ?? '' }</UserName>
-          <TeamName>{ teams[0]?.name ?? '' }</TeamName>
+          <TeamName>{ team[0]?.name ?? '' }</TeamName>
         </ProfileContainer>
       ) }
     </Container>

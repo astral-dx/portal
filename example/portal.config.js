@@ -17,9 +17,8 @@ module.exports = {
     references: {
       packageName: 'local',
       getReferences: async () => ([
-        { url: 'https://google.com', label: 'Google', description: 'Search the world\'s information, including webpages, images, videos and more.', icon: 'bolt' },
-        { url: 'https://google.com', label: 'Google', description: 'Search the world\'s information, including webpages, images, videos and more.', icon: 'bolt' },
-        { url: 'https://google.com', label: 'Google', description: 'Search the world\'s information, including webpages, images, videos and more.', icon: 'bolt' },
+        { url: 'https://api.nasa.gov/', label: 'Documentation', description: 'This catalog focuses on broadly useful and user friendly APIs.', icon: 'book' },
+        { url: 'https://github.com/nasa', label: 'GitHub', description: 'Open source repositories from NASA including ReadOpen data initative.', icon: 'code' },
       ])
     },
     teamManagement: {

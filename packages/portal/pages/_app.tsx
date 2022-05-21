@@ -14,7 +14,7 @@ import {
   BrandProvider,
   Reference,
   ReferencesProvider,
-  TeamsProvider,
+  TeamProvider,
   Team,
   CredentialsProvider,
   Credential
@@ -30,12 +30,13 @@ interface MyAppProps {
   user?: User;
   brand: Brand;
   references: Reference[];
-  teams: Team[];
+  team: Team[];
+  teamMembers: User[];
   credentials: Credential[];
 }
 
 export default function MyApp(props: MyAppProps & AppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps, user, brand, references, teams, credentials } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps, user, brand, references, team, teamMembers, credentials } = props;
   const theme = getTheme(brand);
 
   return (
@@ -56,21 +57,21 @@ export default function MyApp(props: MyAppProps & AppProps) {
         <title>{ brand.title }</title>
         <meta name="description" content={ brand.subtitle } />
       </Head>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={ theme }>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <UserProvider user={user}>
-          <TeamsProvider teams={teams}>
-            <BrandProvider brand={brand}>
-              <CredentialsProvider credentials={credentials}>
-                <ReferencesProvider references={references}>
+        <UserProvider user={ user }>
+          <TeamProvider team={ team } members={ teamMembers }>
+            <BrandProvider brand={ brand }>
+              <CredentialsProvider credentials={ credentials }>
+                <ReferencesProvider references={ references }>
                   <Layout>
-                    <Component {...pageProps} />
+                    <Component { ...pageProps } />
                   </Layout>
                 </ReferencesProvider>
               </CredentialsProvider>
             </BrandProvider>
-          </TeamsProvider>
+          </TeamProvider>
         </UserProvider>
       </ThemeProvider>
     </CacheProvider>
@@ -86,24 +87,26 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   }
 
   if (typeof window !== "undefined") {
-    const { user, brand, references, teams, credentials } = await (await fetch('/api/bootstrap')).json(); 
+    const { user, brand, references, team, teamMembers, credentials } = await (await fetch('/api/bootstrap')).json(); 
 
     return {
       ...appProps,
       user,
       brand,
       references,
-      teams,
+      team,
+      teamMembers,
       credentials,
     }
   }
 
   const plugin = await getPlugin();
-  const [ user, brand, references, teams, credentials ] = await Promise.all([
+  const [ user, brand, references, team, teamMembers, credentials ] = await Promise.all([
     plugin.authentication.getUser(req),
     plugin.branding.getBrand(),
     plugin.references.getReferences(),
-    plugin.teamManagement.getUserTeams(req),
+    plugin.teamManagement.getUserTeam(req),
+    plugin.teamManagement.getUserTeamMembers(req),
     plugin.credential.getUserCredentials(req),
   ]);
 
@@ -112,7 +115,8 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     user,
     brand,
     references,
-    teams,
+    team,
+    teamMembers,
     credentials,
   }
 }

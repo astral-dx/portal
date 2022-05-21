@@ -1,5 +1,6 @@
 import { styled, Typography } from "@mui/material";
-import { useReferences } from "../../plugin";
+import { useState } from "react";
+import { useCredentials, useReferences, Credential, Environment } from "../../plugin";
 
 const Container = styled('header')(({ theme }) => `
   padding: ${theme.spacing(2)};
@@ -73,23 +74,25 @@ const Description = styled(Typography)(({ theme }) => `
   line-height: 1.1rem;
 `);
 
-export const References: React.FC = () => {
-  const { references } = useReferences();
+const getEnvironments = (creds: Credential[]): Environment[] => {
+  return creds.map(c => c.environment).filter(e => e) as Environment[];
+}
+
+const getDefaultEnvironment = (environments: Environment[]): Environment => {
+  return environments.includes('sandbox') ? 'sandbox' : 'production';
+}
+
+export const Credentials: React.FC = () => {
+  const { credentials } = useCredentials();
+  const [ environments, setEnvironments ] = useState(getEnvironments(credentials));
+  const [ selectedEnvironment, setSelectedEnvironment ] = useState(getDefaultEnvironment(environments));
+  const [ selectedCredentials, setSelectedCredentials ] = useState(credentials.filter(c => c.environment === selectedEnvironment));
 
   return (
     <Container>
-      <Title>References</Title>
-      { references.map((ref) => (
-        <Reference key={ ref.url } href={ ref.url }>
-          <IconWrapper className="icon-wrapper">
-            <Icon className="material-symbols-rounded">{ ref.icon }</Icon>
-          </IconWrapper>
-          <TextContainer>
-            <Label>{ ref.label }</Label>
-            { ref.description && <Description>{ ref.description }</Description> }
-          </TextContainer>
-        </Reference>
-      ) )}
+      <Title>Credentials</Title>
+      <pre>{ selectedEnvironment }</pre>
+      <pre>{ JSON.stringify(selectedCredentials, null, 2) }</pre>
     </Container>
   )
 }

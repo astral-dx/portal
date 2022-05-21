@@ -6,7 +6,8 @@ export type Environment = 'production' | 'sandbox';
 
 export interface Credential {
   properties: Array<{ label: string; value: string; secret: boolean; }>;
-  environment?: Environment;
+  environment: Environment;
+  name?: string;
 }
 
 export interface CredentialPlugin extends PluginComponent {

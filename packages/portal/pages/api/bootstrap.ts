@@ -14,7 +14,8 @@ type Data = {
   user?: User,
   brand: Brand,
   references: Reference[],
-  teams: Team[],
+  team: Team[],
+  teamMembers: User[],
   credentials: Credential[]
 };
 
@@ -28,7 +29,8 @@ export default withApiAuthRequired(async (
     user: await plugin.authentication.getUser(req),
     brand: await plugin.branding.getBrand(),
     references: await plugin.references.getReferences(),
-    teams: await plugin.teamManagement.getUserTeams(req),
+    team: await plugin.teamManagement.getUserTeam(req),
+    teamMembers: await plugin.teamManagement.getUserTeamMembers(req),
     credentials: await plugin.credential.getUserCredentials(req)
   };
 
