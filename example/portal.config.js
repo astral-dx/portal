@@ -1,3 +1,4 @@
+const { initReferences } = require("@astral-dx/plugin-references");
 const { initAuth0Authentication } = require('@astral-dx/plugin-auth0');
 
 module.exports = {
@@ -37,13 +38,7 @@ module.exports = {
         subtitle: 'Welcome to the NASA API portal',
       }),
     },
-    references: {
-      packageName: 'local',
-      getReferences: async () => ([
-        { url: 'https://api.nasa.gov/', label: 'Documentation', description: 'This catalog focuses on broadly useful and user friendly APIs.', icon: 'book' },
-        { url: 'https://github.com/nasa', label: 'GitHub', description: 'Open source repositories from NASA including ReadOpen data initative.', icon: 'code' },
-      ])
-    },
+    references: initReferences({}),
     teamManagement: {
       packageName: 'local',
       addUserToTeam: async () => {},
