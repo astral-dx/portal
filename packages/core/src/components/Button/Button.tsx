@@ -1,6 +1,5 @@
 import { styled, Button as MuiButton, alpha, ButtonProps, Palette, PaletteColor } from "@mui/material";
 import Link from "next/link";
-import fontContrastColor from 'font-color-contrast';
 
 const getColor = (color: ButtonProps['color'], palette: Palette): PaletteColor => {
   if (color === undefined || color === 'inherit') {

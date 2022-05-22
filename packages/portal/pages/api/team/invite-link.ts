@@ -4,7 +4,7 @@ import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
-  res: NextApiResponse<Credential>,
+  res: NextApiResponse<{ link: string }>,
 ) => {
   if (req.method !== 'POST') {
     res.status(404).end();
@@ -13,11 +13,11 @@ export default withApiAuthRequired(async (
 
   const plugin = await getPlugin();
 
-  if (!plugin.credential.rotateCredential) {
+  if (!plugin.teamManagement.getTeamInviteLink) {
     res.status(501).end();
     return;
   }
 
-  const credential = await plugin.credential.rotateCredential(req.body.credential);
-  res.status(200).json(credential);
+  const link = await plugin.teamManagement.getTeamInviteLink(req);
+  res.status(200).json({ link });
 }, { permissions: [] });

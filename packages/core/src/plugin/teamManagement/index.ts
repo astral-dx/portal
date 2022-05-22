@@ -16,10 +16,10 @@ export interface TeamManagementPlugin extends PluginComponent {
   updateTeam: (id: string, team: Team) => Promise<Team>;
   deleteTeam: (id: string) => Promise<void>;
   addUserToTeam: (teamId: string, email: string) => Promise<void>;
-  removeUserFromTeam: (teamId: string, email: string) => Promise<void>;
+  removeUserFromTeam: (req: IncomingMessage) => Promise<void>;
   getUserTeam: (req: IncomingMessage) => Promise<Team>;
   getUserTeamMembers: (req: IncomingMessage) => Promise<User[]>;
-  getTeamInviteLink: (team: Team, email: string, permissions: string[]) => Promise<string>;
+  getTeamInviteLink: (req: IncomingMessage) => Promise<string>;
 }
 
 export * from './useTeam';

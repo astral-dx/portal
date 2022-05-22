@@ -11,6 +11,8 @@ export const CardHeader = styled('div')(({ theme }) => `
   padding: ${theme.spacing(3)};
   display: flex;
   border-bottom: 1px solid ${theme.palette.divider};
+  justify-content: space-between;
+  align-items: center;
 `);
 
 export const CardTitle = styled(Typography)(({ theme }) => `

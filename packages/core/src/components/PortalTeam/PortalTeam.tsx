@@ -1,91 +1,109 @@
-import { styled, Typography } from "@mui/material";
-import { useTeam } from "../../plugin";
-import { Card, CardBody, CardHeader, CardTitle } from "../Card/Card";
+import { Box, Chip, IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { AddLink, MoreHoriz } from '@mui/icons-material';
 
-const Container = styled('header')(({ theme }) => `
-  padding: ${theme.spacing(2)};
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing(1)};
-`);
+import { User, useTeam } from "../../plugin";
+import { Card, CardHeader } from "../Card/Card";
+import { MemberActionsMenu } from "./MemberActionsMenu";
+import { useState } from "react";
+import { useCopyToClipboard } from "react-use";
 
-const Title = styled(Typography)(({ theme }) => `
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  font-size: 0.8rem;
-  color: ${theme.palette.text.secondary};
-  padding-left: ${theme.spacing(2)};
-`);
-
-const Reference = styled('a')(({ theme }) => `
-  padding: ${theme.spacing(2)};
-  width: 100%;
-  color: ${theme.palette.text.primary};
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  transition: all 200ms ease;
-  border-radius: 10px;
-  
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-
-  &:hover .icon-wrapper {
-    background-color: ${theme.palette.primary.main};
-  }
-
-  &:hover .material-symbols-rounded {
-    color: ${theme.palette.primary.contrastText};
-  }
-`);
-
-const IconWrapper = styled('span')(({ theme }) => `
-  margin-right: ${theme.spacing(2)};
-  background-color: rgba(0, 0, 0, 0.05);
-  height: 60px;
-  width: 60px;
-  border-radius: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 200ms ease;
-`);
-
-const Icon = styled('span')(({ theme }) => `
-  font-size: 2rem !important;
-  transition: all 200ms ease;
-`);
-
-const TextContainer = styled('div')(({ theme }) => `
-  max-width: 300px;
-`);
-
-const Label = styled(Typography)(({ theme }) => `
+const TeamName = styled(Typography)(({ theme }) => `
   font-weight: 800;
 `);
 
-const Description = styled(Typography)(({ theme }) => `
+const TeamID = styled(Typography)(({ theme }) => `
   color: ${theme.palette.text.secondary};
-  font-size: 0.9rem;
-  line-height: 1.1rem;
+`);
+
+const MembersContainer = styled('div')(({ theme }) => `
+  padding: ${theme.spacing(0, 2)};
 `);
 
 export const PortalTeam: React.FC = () => {
-  const { team, members } = useTeam();
+  const { team, members, removeTeamMember } = useTeam();
+  const [ _, copyToClipboard ] = useCopyToClipboard();
+  const [ isLoading, setIsLoading ] = useState(false);
+
+  const generateInviteLink = async () => {
+    setIsLoading(true);
+
+    const response = await fetch('/api/team/invite-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const { link } = await response.json();
+    copyToClipboard(link);
+    
+    setIsLoading(false);
+  }
+
+  const onRemoveTeamMember = async (member: User) => {
+    const shouldRemove = window.confirm(`Are you sure you want to remove ${member.email} as a member of your team?`);
+
+    if (!shouldRemove) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    const response = await fetch('/api/team/member?' + new URLSearchParams({ email: member.email }), {
+      method: 'DELETE',
+    });
+
+    if (response.status === 204) {
+      removeTeamMember(member);
+    }
+    
+    setIsLoading(false);
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Team</CardTitle>
+        <div>
+          <TeamName>
+            { team?.name }
+          </TeamName>
+          <TeamID variant="caption">{ team?.id }</TeamID>
+        </div>
+        <Box display={'flex'} gap={ 1 } paddingLeft={ 1 }>
+          { team && (
+            <Tooltip title="Generate Invite Link">
+              <IconButton onClick={ generateInviteLink }>
+                <AddLink />
+              </IconButton>
+            </Tooltip>
+          ) }
+        </Box>
       </CardHeader>
-      <CardBody>
-        <pre>{ JSON.stringify(team, null, 2) }</pre>
-        <pre>{ JSON.stringify(members, null, 2) }</pre>
-      </CardBody>
+      <MembersContainer>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ '& td, th': { fontWeight: 600, borderColor: 'rgba(0, 0, 0, 0.05)' } } }>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell align="right">Permissions</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {members.map((member) => (
+              <TableRow
+                key={ member.email }
+                sx={{ '& td, th': { borderColor: 'rgba(0, 0, 0, 0.05)' }, '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell>{ member.name }</TableCell>
+                <TableCell>{ member.email }</TableCell>
+                <TableCell align="right">{ member.permissions.map(p => <Chip label={ p } />) }</TableCell>
+                <TableCell align="right">
+                  <MemberActionsMenu onRemoveTeamMember={ () => onRemoveTeamMember(member) } />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </MembersContainer>
     </Card>
   )
 }
