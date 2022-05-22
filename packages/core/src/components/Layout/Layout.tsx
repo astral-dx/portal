@@ -1,9 +1,14 @@
 import { Container } from "@mui/material";
+
+import { Footer } from "./Footer";
 import { Header } from "./Header";
 
 export const Layout: React.FC = ({ children }) => (
-  <Container maxWidth="lg">
+  <>
     <Header />
-    { children }
-  </Container>
+    <Container maxWidth="lg">
+      { children }
+    </Container>
+    <Footer />
+  </>
 )

@@ -2,10 +2,17 @@ import { IncomingMessage } from "http";
 import { Team } from "../teamManagement";
 import { PluginComponent } from "../index";
 
-export type Environment = 'production' | 'sandbox';
+export type Environment = 'Production' | 'Sandbox';
+
+export interface CredentialProperty {
+  label: string;
+  value: string;
+  secret?: boolean;
+  helperText?: string;
+}
 
 export interface Credential {
-  properties: Array<{ label: string; value: string; secret: boolean; }>;
+  properties: CredentialProperty[];
   environment: Environment;
   name?: string;
 }

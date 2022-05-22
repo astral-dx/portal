@@ -1,23 +1,25 @@
-import { styled, Button as MuiButton, alpha, ButtonProps, Palette } from "@mui/material";
+import { styled, Button as MuiButton, alpha, ButtonProps, Palette, PaletteColor } from "@mui/material";
 import Link from "next/link";
+import fontContrastColor from 'font-color-contrast';
 
-const getColor = (color: ButtonProps['color'], palette: Palette): string => {
+const getColor = (color: ButtonProps['color'], palette: Palette): PaletteColor => {
   if (color === undefined || color === 'inherit') {
-    return palette.info.main;
+    return palette.info;
   }
 
-  return palette[color].main;
+  return palette[color];
 }
 
 export const StyledButton = styled(MuiButton)(({ theme, size, color }) => `
   padding: ${theme.spacing(size === 'small' ? 0.5 : 1, size === 'small' ? 1.5 : 3)};
   font-weight: 800;
-  letter-spacing: .1rem;
-  background: ${alpha(getColor(color, theme.palette), 0.15)};
+  text-transform: none;
+  background: ${alpha(getColor(color, theme.palette).main, 0.1)};
   border-radius: 10px;
+  color: ${getColor(color, theme.palette).main};
 
   &:hover {
-    background: ${alpha(getColor(color, theme.palette), 0.225)};
+    background: ${alpha(getColor(color, theme.palette).main, 0.2)};
   }
 `);
 

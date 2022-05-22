@@ -1,21 +1,24 @@
 import type { NextPage } from 'next';
-import { withPageAuthRequired, References, Credentials, PortalTeam } from '@astral-dx/core';
+import { withPageAuthRequired, References, Credentials, PortalTeam, Profile } from '@astral-dx/core';
 import { styled } from '@mui/material';
 
 const Container = styled('div')(({ theme }) => `
   display: flex;
-  gap: ${theme.spacing(3)};
+  gap: ${theme.spacing(6)};
 `);
 
 const Main = styled('main')(({ theme }) => `
-  flex-basis: 60%;
+  flex-basis: 67%;
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing(3)};
+  gap: ${theme.spacing(6)};
 `);
 
 const SideBar = styled('nav')(({ theme }) => `
-  flex-basis: 40%;
+  flex-basis: 33%;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing(6)};
 `);
 
 const Dashboard: NextPage = () => {

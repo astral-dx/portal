@@ -48,10 +48,14 @@ export default function MyApp(props: MyAppProps & AppProps) {
         <style dangerouslySetInnerHTML={{ __html: `
           .material-symbols-rounded {
             font-variation-settings:
-            'FILL' 0,
+            'FILL' 1,
             'wght' 400,
             'GRAD' 0,
             'opsz' 48
+          }
+
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
           }
         ` }} />
         <title>{ brand.title }</title>

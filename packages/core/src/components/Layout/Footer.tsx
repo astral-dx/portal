@@ -1,25 +1,24 @@
 import { styled, Container } from "@mui/material";
 
 import { useBrand } from "../../plugin";
-import { Profile } from "../Profile/Profile";
 
 const Border = styled('div')(({ theme }) => `
-  border-bottom: 1px solid ${theme.palette.divider};
-  margin-bottom: ${theme.spacing(6)};
+  border-top: 1px solid ${theme.palette.divider};
+  margin-top: ${theme.spacing(6)};
 `);
 
 const Content = styled('div')(({ theme }) => `
-  padding: ${theme.spacing(5, 0)};
+  padding: ${theme.spacing(10, 0)};
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `);
 
 const Logo = styled('img')(({ theme }) => `
-  height: 30px;
+  height: 15px;
 `);
 
-export const Header: React.FC = () => {
+export const Footer: React.FC = () => {
   const { brand } = useBrand();
 
   return (
@@ -27,7 +26,6 @@ export const Header: React.FC = () => {
       <Container maxWidth="lg">
         <Content>
           <Logo src={ brand.logoSrc } />
-          <Profile />
         </Content>
       </Container>
     </Border>

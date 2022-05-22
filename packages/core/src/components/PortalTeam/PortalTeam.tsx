@@ -1,5 +1,6 @@
 import { styled, Typography } from "@mui/material";
 import { useTeam } from "../../plugin";
+import { Card, CardBody, CardHeader, CardTitle } from "../Card/Card";
 
 const Container = styled('header')(({ theme }) => `
   padding: ${theme.spacing(2)};
@@ -77,10 +78,14 @@ export const PortalTeam: React.FC = () => {
   const { team, members } = useTeam();
 
   return (
-    <Container>
-      <Title>Team</Title>
-      <pre>{ JSON.stringify(team, null, 2) }</pre>
-      <pre>{ JSON.stringify(members, null, 2) }</pre>
-    </Container>
+    <Card>
+      <CardHeader>
+        <CardTitle>Team</CardTitle>
+      </CardHeader>
+      <CardBody>
+        <pre>{ JSON.stringify(team, null, 2) }</pre>
+        <pre>{ JSON.stringify(members, null, 2) }</pre>
+      </CardBody>
+    </Card>
   )
 }
