@@ -93,10 +93,6 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   if (typeof window !== "undefined") {
     const { user, brand, references, team, teamMembers, credentials } = await (await fetch('/api/bootstrap')).json(); 
 
-    console.log({
-      ...appProps,
-    });
-
     return {
       ...appProps,
       user,
@@ -117,10 +113,6 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     plugin.teamManagement.getUserTeamMembers(req),
     plugin.credential.getUserCredentials(req),
   ]);
-
-  console.log({
-    ...appProps,
-  });
 
   return {
     ...appProps,
