@@ -27,6 +27,7 @@ export const CredentialPropertyField: React.FC<{ property: CredentialProperty }>
             { property.secret && [
               (
                 <IconButton
+                  key={`${property.label}-icon-button`}
                   aria-label="toggle password visibility"
                   onClick={() => setHideSecret(!hideSecret)}
                   edge="end"
@@ -34,7 +35,7 @@ export const CredentialPropertyField: React.FC<{ property: CredentialProperty }>
                   { hideSecret ? <VisibilityOff /> : <Visibility /> }
                 </IconButton>
               ),
-              ( <IconButtonSpacer /> )
+              ( <IconButtonSpacer key={`${property.label}-icon-butto-spacer`} /> )
             ] }
             <IconButton onClick={ () => copyToClipboard(property.value) }>
               <ContentCopy />

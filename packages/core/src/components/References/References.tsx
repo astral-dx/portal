@@ -57,7 +57,7 @@ export const References: React.FC = () => {
     <div>
       <Title>References</Title>
       { references.map((ref) => (
-        <Reference key={ ref.url } href={ ref.url }>
+        <Reference key={ ref.url + ref.icon + ref.label } href={ ref.url }>
           <IconWrapper className="icon-wrapper">
             <Icon className="material-symbols-rounded">{ ref.icon }</Icon>
           </IconWrapper>

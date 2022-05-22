@@ -51,7 +51,7 @@ export const CredentialPicker: React.FC<{
         onClose={ onClose }
       >
         { credentialOptions.map(((credential) => (
-          <CredentialMenuItem onClick={ () => onCredentialClicked(credential) }>
+          <CredentialMenuItem key={ getLabel(selectedCredential) } onClick={ () => onCredentialClicked(credential) }>
             { getLabel(credential) }
           </CredentialMenuItem>
         ))) }

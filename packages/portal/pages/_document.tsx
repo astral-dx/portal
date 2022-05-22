@@ -57,13 +57,11 @@ MyDocument.getInitialProps = async (ctx) => {
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
-  ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: (App: any) =>
-        function EnhanceApp(props) {
-          return <App emotionCache={cache} {...props} />;
-        },
-    });
+  ctx.renderPage = () => originalRenderPage({
+    enhanceApp: (App: any) => function EnhanceApp(props) {
+      return <App emotionCache={cache} {...props} />;
+    },
+  });
 
   const initialProps = await Document.getInitialProps(ctx);
   // This is important. It prevents emotion to render invalid HTML.

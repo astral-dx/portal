@@ -95,7 +95,7 @@ export const PortalTeam: React.FC = () => {
               >
                 <TableCell>{ member.name }</TableCell>
                 <TableCell>{ member.email }</TableCell>
-                <TableCell align="right">{ member.permissions.map(p => <Chip label={ p } />) }</TableCell>
+                <TableCell align="right">{ member.permissions.map(p => <Chip key={ p } label={ p } />) }</TableCell>
                 <TableCell align="right">
                   <MemberActionsMenu onRemoveTeamMember={ () => onRemoveTeamMember(member) } />
                 </TableCell>

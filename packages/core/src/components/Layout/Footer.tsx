@@ -15,7 +15,7 @@ const Content = styled('div')(({ theme }) => `
 `);
 
 const Logo = styled('img')(({ theme }) => `
-  height: 15px;
+  height: 20px;
 `);
 
 export const Footer: React.FC = () => {

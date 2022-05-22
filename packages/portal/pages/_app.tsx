@@ -61,9 +61,9 @@ export default function MyApp(props: MyAppProps & AppProps) {
         <title>{ brand.title }</title>
         <meta name="description" content={ brand.subtitle } />
       </Head>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
       <ThemeProvider theme={ theme }>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
         <UserProvider user={ user }>
           <TeamProvider team={ team } members={ teamMembers }>
             <BrandProvider brand={ brand }>
@@ -93,6 +93,10 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   if (typeof window !== "undefined") {
     const { user, brand, references, team, teamMembers, credentials } = await (await fetch('/api/bootstrap')).json(); 
 
+    console.log({
+      ...appProps,
+    });
+
     return {
       ...appProps,
       user,
@@ -113,6 +117,10 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     plugin.teamManagement.getUserTeamMembers(req),
     plugin.credential.getUserCredentials(req),
   ]);
+
+  console.log({
+    ...appProps,
+  });
 
   return {
     ...appProps,

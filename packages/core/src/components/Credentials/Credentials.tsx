@@ -1,16 +1,12 @@
-import { styled, Typography } from "@mui/material";
+import { styled } from "@mui/material";
 import { useState } from "react";
-import { useCredentials, Credential, Environment } from "../../plugin";
+import { useCredentials, Environment } from "../../plugin";
 import { Button } from "../Button/Button";
 import { Card, CardActions, CardBody, CardHeader, CardTitle } from "../Card/Card";
 import { CredentialPropertyField } from "./CredentialPropertyField";
 import { CredentialPicker } from "./CredentialPicker";
 
-const CredentialPickerContainer = styled(Typography)(({ theme }) => `
-  /* padding: ${theme.spacing(2, 0, 1)}; */
-`);
-
-const CredentialPropertiesContainer = styled(Typography)(({ theme }) => `
+const CredentialPropertiesContainer = styled('div')(({ theme }) => `
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing(3)};

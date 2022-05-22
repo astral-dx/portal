@@ -30,7 +30,7 @@
     "eslint": "8.12.0",
     "eslint-config-next": "12.1.4",
     "fs-extra": "^10.0.1",
-    "next": "12.1.4",
+    "next": "12.1.6",
     "pkg-dir": "^6.0.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
