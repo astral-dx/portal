@@ -21,7 +21,7 @@ export interface PluginComponent {
   folders?: {
     pages?: string;
     components?: string;
-  }
+  },
 }
 
 export const getPlugin = async (): Promise<Plugin> => {
@@ -34,7 +34,7 @@ export const getPlugin = async (): Promise<Plugin> => {
   throw new Error('Portal configuration file not found.')
 };
 
-export type { AuthenticationPlugin, User } from "./authentication";
+export type { AuthenticationPlugin, User, Permission } from "./authentication";
 export * from './authentication';
 
 export type { BrandingPlugin, Brand } from "./branding";
@@ -46,5 +46,5 @@ export * from './credential';
 export type { ReferencesPlugin, Reference } from "./references";
 export * from './references';
 
-export type { TeamManagementPlugin, Team, TeamType } from "./teamManagement";
+export type { TeamManagementPlugin, Team } from "./teamManagement";
 export * from './teamManagement';

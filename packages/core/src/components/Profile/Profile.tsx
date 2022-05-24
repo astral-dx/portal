@@ -1,6 +1,8 @@
 import { styled, Typography } from "@mui/material";
+import { mdiCrownCircle } from '@mdi/js';
+import Icon from "@mdi/react";
 
-import { useTeam, useUser } from "../../plugin";
+import { useConsumerTeam, useUser } from "../../plugin";
 
 const Container = styled('div')(({ theme }) => `
   align-items: center;
@@ -8,10 +10,25 @@ const Container = styled('div')(({ theme }) => `
   gap: ${theme.spacing(2)};
 `);
 
+const AvatarContainer = styled('div')(({ theme }) => `
+  position: relative;
+  display: flex;
+  align-items: center;
+`);
+
 const Avatar = styled('img')(({ theme }) => `
   height: 40px;
   width: 40px;
   border-radius: 50%;
+`);
+
+const AdminIcon = styled(Icon)(({ theme }) => `
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  background: white;
+  border-radius: 50%;
+  color: ${theme.palette.primary.main};
 `);
 
 const ProfileIDWrapper = styled('div')(({ theme }) => `
@@ -38,8 +55,8 @@ const ProfileName = styled(Typography)(({ theme }) => `
 `);
 
 export const Profile = () => {
-  const { user } = useUser();
-  const { team } = useTeam();
+  const { user, isPortalAdmin } = useUser();
+  const { team } = useConsumerTeam();
 
   return (
     <Container>
@@ -56,11 +73,16 @@ export const Profile = () => {
         <ProfileIDWrapper>
           <ProfileName>{ user.name || user.email }</ProfileName>
           { team && <ProfileTeam>{ team.name }</ProfileTeam> }
+          { isPortalAdmin && <ProfileTeam>Admin</ProfileTeam> }
         </ProfileIDWrapper>
       ) }
       { user?.avatar && (
-        <Avatar src={user.avatar} />
+        <AvatarContainer>
+          <Avatar src={user.avatar} />
+          { isPortalAdmin && <AdminIcon path={ mdiCrownCircle } size={1} /> }
+        </AvatarContainer>
       ) }
+      
     </Container>
   )
 }

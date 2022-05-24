@@ -9,7 +9,7 @@ module.exports = {
         role: 'admin',
         name: 'Neil Armstrong',
         email: 'neil.armstrong@nasa.com',
-        permissions: ['test'],
+        permissions: [ 'portal-admin' ],
         avatar: 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_24/1913661/ss-140719-apollo-11-01_0.jpg',
       }),
       // getUser: async () => undefined,
@@ -18,7 +18,7 @@ module.exports = {
         role: 'admin',
         name: 'Neil Armstrong',
         email: 'neil.armstrong@nasa.com',
-        permissions: ['test'],
+        permissions: [ 'portal-admin' ],
         avatar: 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_24/1913661/ss-140719-apollo-11-01_0.jpg',
       }),
       deleteUser: async () => {},
@@ -49,35 +49,48 @@ module.exports = {
       createTeam: async () => ({
         id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
         name: 'Apollo 11',
-        permissions: [],
-        type: 'portal-consumer',
+        members: [{
+          email: 'neil.armstrong@nasa.com',
+        }, {
+          email: 'buzz.aldrin@nasa.com',
+        }]
       }),
       updateTeam: async () => ({
         id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
         name: 'Apollo 11',
-        permissions: [],
-        type: 'portal-consumer',
+        members: [{
+          email: 'neil.armstrong@nasa.com',
+        }, {
+          email: 'buzz.aldrin@nasa.com',
+        }]
       }),
       deleteTeam: async () => {},
       getUserTeam: async () => ({
         id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
         name: 'Apollo 11',
-        permissions: [],
-        type: 'portal-consumer',
+        members: [{
+          email: 'neil.armstrong@nasa.com',
+        }, {
+          email: 'buzz.aldrin@nasa.com',
+        }]
       }),
-      getUserTeamMembers: async () => [{
-        id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
-        role: 'admin',
-        name: 'Neil Armstrong',
-        email: 'neil.armstrong@nasa.com',
-        permissions: ['commander'],
+      getTeams: async () => ([{
+        id: '0e4b56bd-1073-4314-b894-3e6a6b8ec017',
+        name: 'Apollo 12',
+        members: [{
+          email: 'neil.armstrong@nasa.com',
+        }, {
+          email: 'buzz.aldrin@nasa.com',
+        }]
       }, {
-        id: '',
-        role: 'admin',
-        name: 'Buzz Aldrin',
-        email: 'buzz.aldrin@nasa.com',
-        permissions: [],
-      }],
+        id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
+        name: 'Apollo 11',
+        members: [{
+          email: 'neil.armstrong@nasa.com',
+        }, {
+          email: 'buzz.aldrin@nasa.com',
+        }]
+      }]),
       getTeamInviteLink: async () => 'https://google.com',
     },
     credential: {

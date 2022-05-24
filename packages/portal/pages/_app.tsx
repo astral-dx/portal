@@ -12,12 +12,6 @@ import {
   UserProvider,
   Brand,
   BrandProvider,
-  Reference,
-  ReferencesProvider,
-  TeamProvider,
-  Team,
-  CredentialsProvider,
-  Credential
 } from '@astral-dx/core';
 
 import { createEmotionCache } from '../theme/createEmotionCache';
@@ -29,14 +23,10 @@ interface MyAppProps {
   emotionCache?: EmotionCache;
   user?: User;
   brand: Brand;
-  references: Reference[];
-  team: Team;
-  teamMembers: User[];
-  credentials: Credential[];
 }
 
 export default function MyApp(props: MyAppProps & AppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps, user, brand, references, team, teamMembers, credentials } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps, user, brand } = props;
   const theme = getTheme(brand);
 
   return (
@@ -65,17 +55,11 @@ export default function MyApp(props: MyAppProps & AppProps) {
       <CssBaseline />
       <ThemeProvider theme={ theme }>
         <UserProvider user={ user }>
-          <TeamProvider team={ team } members={ teamMembers }>
-            <BrandProvider brand={ brand }>
-              <CredentialsProvider credentials={ credentials }>
-                <ReferencesProvider references={ references }>
-                  <Layout>
-                    <Component { ...pageProps } />
-                  </Layout>
-                </ReferencesProvider>
-              </CredentialsProvider>
-            </BrandProvider>
-          </TeamProvider>
+          <BrandProvider brand={ brand }>
+            <Layout>
+              <Component { ...pageProps } />
+            </Layout>
+          </BrandProvider>
         </UserProvider>
       </ThemeProvider>
     </CacheProvider>
@@ -91,36 +75,24 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   }
 
   if (typeof window !== "undefined") {
-    const { user, brand, references, team, teamMembers, credentials } = await (await fetch('/api/bootstrap')).json(); 
+    const { user, brand } = await (await fetch('/api/bootstrap')).json(); 
 
     return {
       ...appProps,
       user,
       brand,
-      references,
-      team,
-      teamMembers,
-      credentials,
     }
   }
 
   const plugin = await getPlugin();
-  const [ user, brand, references, team, teamMembers, credentials ] = await Promise.all([
+  const [ user, brand ] = await Promise.all([
     plugin.authentication.getUser(req),
     plugin.branding.getBrand(),
-    plugin.references.getReferences(),
-    plugin.teamManagement.getUserTeam(req),
-    plugin.teamManagement.getUserTeamMembers(req),
-    plugin.credential.getUserCredentials(req),
   ]);
 
   return {
     ...appProps,
     user,
     brand,
-    references,
-    team,
-    teamMembers,
-    credentials,
   }
 }

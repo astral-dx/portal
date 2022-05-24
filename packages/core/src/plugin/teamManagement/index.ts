@@ -1,14 +1,14 @@
 import { IncomingMessage } from "http";
-import { User } from "../authentication";
 import { PluginComponent } from "../index";
 
-export type TeamType = 'portal-consumer' | 'portal-owner';
+export interface TeamMember {
+  email: string;
+}
 
 export interface Team {
   id: string;
   name: string;
-  permissions: string[];
-  type: TeamType;
+  members: TeamMember[];
 }
 
 export interface TeamManagementPlugin extends PluginComponent {
@@ -17,9 +17,10 @@ export interface TeamManagementPlugin extends PluginComponent {
   deleteTeam: (id: string) => Promise<void>;
   addUserToTeam: (teamId: string, email: string) => Promise<void>;
   removeUserFromTeam: (req: IncomingMessage) => Promise<void>;
-  getUserTeam: (req: IncomingMessage) => Promise<Team>;
-  getUserTeamMembers: (req: IncomingMessage) => Promise<User[]>;
+  getTeams: (req: IncomingMessage) => Promise<Team[]>;
+  getUserTeam: (req: IncomingMessage) => Promise<Team | undefined>;
   getTeamInviteLink: (req: IncomingMessage) => Promise<string>;
 }
 
-export * from './useTeam';
+export * from './useAdminTeams';
+export * from './useConsumerTeam';

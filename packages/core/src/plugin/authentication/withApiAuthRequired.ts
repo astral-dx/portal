@@ -1,8 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getPlugin } from '../index';
+import { getPlugin, Permission } from '../index';
 
 interface withApiAuthRequiredOptions {
-  permissions: string[];
+  permissions: Permission[];
 }
 
 export const withApiAuthRequired = (handler: NextApiHandler, { permissions = [] }: withApiAuthRequiredOptions) => (

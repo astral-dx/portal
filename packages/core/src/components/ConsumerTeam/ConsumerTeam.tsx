@@ -1,15 +1,11 @@
-import { Box, Chip, IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import { AddLink, MoreHoriz } from '@mui/icons-material';
+import { Box, IconButton, styled, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { AddLink } from '@mui/icons-material';
 
-import { User, useTeam } from "../../plugin";
-import { Card, CardHeader } from "../Card/Card";
+import { TeamMember, useConsumerTeam } from "../../plugin";
+import { Card, CardHeader, CardTitle } from "../Card/Card";
 import { MemberActionsMenu } from "./MemberActionsMenu";
 import { useState } from "react";
 import { useCopyToClipboard } from "react-use";
-
-const TeamName = styled(Typography)(({ theme }) => `
-  font-weight: 800;
-`);
 
 const TeamID = styled(Typography)(({ theme }) => `
   color: ${theme.palette.text.secondary};
@@ -19,8 +15,8 @@ const MembersContainer = styled('div')(({ theme }) => `
   padding: ${theme.spacing(0, 2)};
 `);
 
-export const PortalTeam: React.FC = () => {
-  const { team, members, removeTeamMember } = useTeam();
+export const ConsumerTeam: React.FC = () => {
+  const { team, removeTeamMember } = useConsumerTeam();
   const [ _, copyToClipboard ] = useCopyToClipboard();
   const [ isLoading, setIsLoading ] = useState(false);
 
@@ -38,7 +34,7 @@ export const PortalTeam: React.FC = () => {
     setIsLoading(false);
   }
 
-  const onRemoveTeamMember = async (member: User) => {
+  const onRemoveTeamMember = async (member: TeamMember) => {
     const shouldRemove = window.confirm(`Are you sure you want to remove ${member.email} as a member of your team?`);
 
     if (!shouldRemove) {
@@ -62,9 +58,7 @@ export const PortalTeam: React.FC = () => {
     <Card>
       <CardHeader>
         <div>
-          <TeamName>
-            { team?.name }
-          </TeamName>
+          <CardTitle>{ team?.name }</CardTitle>
           <TeamID variant="caption">{ team?.id }</TeamID>
         </div>
         <Box display={'flex'} gap={ 1 } paddingLeft={ 1 }>
@@ -81,21 +75,19 @@ export const PortalTeam: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow sx={{ '& td, th': { fontWeight: 600, borderColor: 'rgba(0, 0, 0, 0.05)' } } }>
-              <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
-              <TableCell align="right">Permissions</TableCell>
+              {/* <TableCell align="right">Permissions</TableCell> */}
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {members.map((member) => (
+            {(team?.members ?? []).map((member) => (
               <TableRow
                 key={ member.email }
                 sx={{ '& td, th': { borderColor: 'rgba(0, 0, 0, 0.05)' }, '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{ member.name }</TableCell>
                 <TableCell>{ member.email }</TableCell>
-                <TableCell align="right">{ member.permissions.map(p => <Chip key={ p } label={ p } />) }</TableCell>
+                {/* <TableCell align="right">{ member.permissions.map(p => <Chip key={ p } label={ p } />) }</TableCell> */}
                 <TableCell align="right">
                   <MemberActionsMenu onRemoveTeamMember={ () => onRemoveTeamMember(member) } />
                 </TableCell>
