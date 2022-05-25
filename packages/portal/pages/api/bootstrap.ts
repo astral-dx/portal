@@ -16,7 +16,7 @@ export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) => {
-  const plugin = await getPlugin();
+  const plugin = getPlugin();
 
   const data = {
     user: await plugin.authentication.getUser(req),

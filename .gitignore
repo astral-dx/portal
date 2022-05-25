@@ -2,3 +2,4 @@ node_modules
 dist
 .portal
 .env*
+.DS_Store

@@ -7,7 +7,7 @@ interface withApiAuthRequiredOptions {
 
 export const withApiAuthRequired = (handler: NextApiHandler, { permissions = [] }: withApiAuthRequiredOptions) => (
   async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const plugin = await getPlugin();
+    const plugin = getPlugin();
     const user = await plugin.authentication.getUser(req);
 
     if (!user) {

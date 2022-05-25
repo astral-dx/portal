@@ -7,7 +7,7 @@ export default withApiAuthRequired(async (
   res: NextApiResponse<{ link: string }>,
 ) => {
   if (req.method === 'DELETE') {
-    const plugin = await getPlugin();
+    const plugin = getPlugin();
 
     if (!plugin.teamManagement.removeUserFromTeam) {
       res.status(501).end();

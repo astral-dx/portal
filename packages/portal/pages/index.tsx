@@ -54,7 +54,7 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<DashboardProps>> => {
     const { req } = context;
     
-    const plugin = await getPlugin();
+    const plugin = getPlugin();
     const [ team, credentials, references ] = await Promise.all([
       plugin.teamManagement.getUserTeam(req),
       plugin.credential.getUserCredentials(req),

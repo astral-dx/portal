@@ -2,7 +2,7 @@
   "name": "@astral-dx/core",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "type": "commonjs",
   "scripts": {
     "dev": "tsc --watch",

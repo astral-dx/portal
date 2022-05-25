@@ -1,4 +1,6 @@
+export * from './AdminConfiguration/AdminConfiguration';
 export * from './AdminTeams/AdminTeams';
+export * from './BetaBanner/BetaBanner';
 export * from './Button/Button';
 export * from './Layout/Layout';
 export * from './References/References';

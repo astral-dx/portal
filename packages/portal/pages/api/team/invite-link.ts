@@ -11,7 +11,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const plugin = await getPlugin();
+  const plugin = getPlugin();
 
   if (!plugin.teamManagement.getTeamInviteLink) {
     res.status(501).end();

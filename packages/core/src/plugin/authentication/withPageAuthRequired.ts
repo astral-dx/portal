@@ -12,7 +12,7 @@ export const withPageAuthRequired = ({ getServerSideProps, redirectTo, permissio
 ): Promise<GetServerSidePropsResult<any> | void> => {
   const { res } = ctx;
 
-  const plugin = await getPlugin();
+  const plugin = getPlugin();
   const user = await plugin.authentication.getUser(ctx.req);
 
   if (!user) {

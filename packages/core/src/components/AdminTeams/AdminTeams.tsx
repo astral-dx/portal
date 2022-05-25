@@ -1,12 +1,34 @@
 import { IconButton, styled, Tooltip, Typography } from '@mui/material';
-import { AccountCircle, AddLink, ChevronRight } from '@mui/icons-material';
+import { AccountCircle, AddLink, ChevronRight, Add } from '@mui/icons-material';
 
 import { useAdminTeams } from '../../plugin';
 import { Card, CardHeader, CardTitle } from '../Card/Card';
 import { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
+import { Button } from '../Button/Button';
 
-const Container = styled(CardHeader)(({ theme }) => `
+const Container = styled('div')(({ theme }) => `
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing(3)};
+`);
+
+const Header = styled('div')(({ theme }) => `
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${theme.spacing(0, 0, 0, 2)};
+`);
+
+const Title = styled(Typography)(({ theme }) => `
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1.28px;
+  font-weight: 800;
+  color: ${theme.palette.text.secondary};
+`);
+
+const TeamContainer = styled(CardHeader)(({ theme }) => `
   border: none;
 `);
 
@@ -47,10 +69,14 @@ export const AdminTeams: React.FC = () => {
   }
 
   return (
-    <>
+    <Container>
+      <Header>
+        <Title>Teams</Title>
+        <Button endIcon={ <Add /> } color="secondary">New Team</Button>
+      </Header>
       { teams.map((team) => (
-        <Card>
-          <Container>
+        <Card key={ team.id }>
+          <TeamContainer>
             <div>
               <CardTitle>{ team.name }</CardTitle>
               <TeamID variant='caption'>{ team.id }</TeamID>
@@ -73,9 +99,9 @@ export const AdminTeams: React.FC = () => {
                 </IconButton>
               </Tooltip>
             </StatContainer>
-          </Container>
+          </TeamContainer>
         </Card>
       )) }
-    </>
+    </Container>
   );
 }

@@ -76,7 +76,7 @@ module.exports = {
       }),
       getTeams: async () => ([{
         id: '0e4b56bd-1073-4314-b894-3e6a6b8ec017',
-        name: 'Apollo 12',
+        name: 'Gemini 5',
         members: [{
           email: 'neil.armstrong@nasa.com',
         }, {
@@ -85,6 +85,14 @@ module.exports = {
       }, {
         id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
         name: 'Apollo 11',
+        members: [{
+          email: 'neil.armstrong@nasa.com',
+        }, {
+          email: 'buzz.aldrin@nasa.com',
+        }]
+      }, {
+        id: 'e3cd6cd8-b849-4549-9547-4b060fd9ee59',
+        name: 'New Shepard',
         members: [{
           email: 'neil.armstrong@nasa.com',
         }, {

@@ -84,7 +84,7 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     }
   }
 
-  const plugin = await getPlugin();
+  const plugin = getPlugin();
   const [ user, brand ] = await Promise.all([
     plugin.authentication.getUser(req),
     plugin.branding.getBrand(),

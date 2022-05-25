@@ -8,12 +8,34 @@ declare var __portalConfig: {
   plugin: Plugin;
 };
 
+declare var __packageJson: {
+  name: string;
+  dependencies: Record<string, string>;
+}
+
 export interface Plugin {
   authentication: AuthenticationPlugin;
   branding: BrandingPlugin;
   references: ReferencesPlugin;
   teamManagement: TeamManagementPlugin;
   credential: CredentialPlugin;
+};
+
+export interface Package {
+  name: string;
+  version?: string;
+  component?: string;
+};
+
+export interface ConfigInformation {
+  coreVersion: string;
+  plugin: {
+    authentication: Pick<PluginComponent, 'packageName'>;
+    branding: Pick<PluginComponent, 'packageName'>;
+    references: Pick<PluginComponent, 'packageName'>;
+    teamManagement: Pick<PluginComponent, 'packageName'>;
+    credential: Pick<PluginComponent, 'packageName'>;
+  }
 };
 
 export interface PluginComponent {
@@ -24,14 +46,31 @@ export interface PluginComponent {
   },
 }
 
-export const getPlugin = async (): Promise<Plugin> => {
-  const config = __portalConfig;
+export const getPlugin = (): Plugin => __portalConfig.plugin;
 
-  if (config && config.plugin) {
-    return config.plugin
-  }
+export const getPackages = (): Package[] => {
+  const config = getPlugin();
+  const isPortalDevelopment = __packageJson.name === '@astral-dx/portal';
+  const packages: Package[] = [];
 
-  throw new Error('Portal configuration file not found.')
+  packages.push({
+    name: '@astral-dx/portal',
+    version: isPortalDevelopment ? 'dev' : __packageJson.dependencies['@astral-dx/portal']
+  });
+
+  packages.push({
+    name: '@astral-dx/core',
+    version: isPortalDevelopment ? 'dev' : __packageJson.dependencies['@astral-dx/core']
+  });
+
+  return packages.concat(
+    ['authentication', 'branding', 'references', 'teamManagement', 'credential']
+      .map((component) => ({
+        name: config[component as keyof Plugin].packageName,
+        version: __packageJson.dependencies[config[component as keyof Plugin].packageName] ?? null,
+        component,
+      }))
+  );
 };
 
 export type { AuthenticationPlugin, User, Permission } from "./authentication";
