@@ -14,7 +14,7 @@ const CredentialsContext = createContext<CredentialsContext>({
   environments: [],
 });
 
-const getEnvironments = (creds: Credential[]): Environment[] => {
+export const getEnvironments = (creds: Credential[]): Environment[] => {
   return Array.from(new Set(creds.map(c => c.environment).filter(e => e))).reverse() as Environment[];
 }
 

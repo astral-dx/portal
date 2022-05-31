@@ -1,10 +1,12 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useState } from "react";
-import { useCredentials, Environment } from "../../plugin";
+import { useCredentials, Environment, Credential } from "../../plugin";
 import { Button } from "../Button/Button";
 import { Card, CardActions, CardBody, CardHeader, CardTitle } from "../Card/Card";
 import { CredentialPropertyField } from "./CredentialPropertyField";
 import { CredentialPicker } from "./CredentialPicker";
+import { RotateRight } from "@mui/icons-material";
+import { Header } from "../Header/Header";
 
 const CredentialPropertiesContainer = styled('div')(({ theme }) => `
   display: flex;
@@ -17,54 +19,44 @@ const getDefaultEnvironment = (environments: Environment[]): Environment => {
   return environments.includes('Sandbox') ? 'Sandbox' : 'Production';
 }
 
-export const Credentials: React.FC = () => {
-  const { credentials, updateCredential, environments } = useCredentials();
-  const [ selectedEnvironment, setSelectedEnvironment ] = useState(getDefaultEnvironment(environments));
+interface CredentialsProps {
+  credentials: Credential[];
+  environments: Environment[];
+  onRotateCredential: (credential: Credential) => void;
+}
+
+export const Credentials: React.FC<CredentialsProps> = ({ credentials, environments, onRotateCredential }) => {
+  const [ selectedEnvironment ] = useState(getDefaultEnvironment(environments));
   const [ selectedCredential, setSelectedCredential ] = useState(credentials.filter(c => c.environment === selectedEnvironment)[0]);
-  const [ isLoading, setIsLoading ] = useState(false);
-
-  const rotateCredential = async () => {
-    const shouldRotate = window.confirm('Are you sure you want to generate a new credential? This action may invalidate your current credential.');
-
-    if (!shouldRotate) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    const response = await fetch('/api/credential/rotate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ credential: selectedCredential }),
-    });
-
-    const credential = await response.json();
-
-    updateCredential(selectedCredential, credential);
-    setSelectedCredential(credential);
-    setIsLoading(false);
-  }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Credentials</CardTitle>
-      </CardHeader>
-      <CardBody>
-        <CredentialPicker
-          credentials={ credentials }
-          selectedCredential={ selectedCredential }
-          onChange={ (credential) => setSelectedCredential(credential) }
-        />
-        <CredentialPropertiesContainer>
-          { selectedCredential.properties.map((property) => (
-            <CredentialPropertyField key={ property.label } property={ property } />
-          )) }
-        </CredentialPropertiesContainer>
-      </CardBody>
-      <CardActions>
-        <Button onClick={ rotateCredential } color="error">Rotate Credential</Button>
-      </CardActions>
-    </Card>
+    <Box display={ 'flex' } flexDirection={ 'column' } gap={ 3 }>
+      <Header
+        title={ 'Credentials' }
+      />
+      <Card>
+        <CardBody>
+          <CredentialPicker
+            credentials={ credentials }
+            selectedCredential={ selectedCredential }
+            onChange={ (credential) => setSelectedCredential(credential) }
+          />
+          <CredentialPropertiesContainer>
+            { selectedCredential.properties.map((property) => (
+              <CredentialPropertyField key={ property.label } property={ property } />
+            )) }
+          </CredentialPropertiesContainer>
+          <Box marginTop={ 2 }>
+            <Button
+              endIcon={ <RotateRight /> }
+              onClick={ () => onRotateCredential(selectedCredential) }
+              color="error"
+            >
+              Rotate Credential
+            </Button>
+          </Box>
+        </CardBody>
+      </Card>
+    </Box>
   )
 }

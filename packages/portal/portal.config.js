@@ -12,7 +12,14 @@ module.exports = {
         permissions: [ 'portal-admin' ],
         avatar: 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_24/1913661/ss-140719-apollo-11-01_0.jpg',
       }),
-      // getUser: async () => undefined,
+      getAdminUsers: async () => [{
+        id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
+        role: 'admin',
+        name: 'Neil Armstrong',
+        email: 'neil.armstrong@nasa.com',
+        permissions: [ 'portal-admin' ],
+        avatar: 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_24/1913661/ss-140719-apollo-11-01_0.jpg',
+      }],
       updateUser: async () => ({
         id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
         role: 'admin',
@@ -28,7 +35,7 @@ module.exports = {
       getBrand: async () => ({
         logoSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NASA_Worm_logo.svg/2560px-NASA_Worm_logo.svg.png',
         faviconHref: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/2449px-NASA_logo.svg.png',
-        primaryColor: '#fc3d21',
+        primaryColor: '#0b3d91',
         secondaryColor: '#0b3d91',
         title: 'NASA Developer Portal',
         subtitle: 'Welcome to the NASA API portal',
@@ -46,14 +53,10 @@ module.exports = {
       packageName: 'local',
       addUserToTeam: async () => {},
       removeUserFromTeam: async () => {},
-      createTeam: async () => ({
-        id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
-        name: 'Apollo 11',
-        members: [{
-          email: 'neil.armstrong@nasa.com',
-        }, {
-          email: 'buzz.aldrin@nasa.com',
-        }]
+      createTeam: async (name) => ({
+        id: '38c70391-f12c-4484-96e7-3e0aecca52f3',
+        name,
+        members: [],
       }),
       updateTeam: async () => ({
         id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
@@ -93,17 +96,13 @@ module.exports = {
       }, {
         id: 'e3cd6cd8-b849-4549-9547-4b060fd9ee59',
         name: 'New Shepard',
-        members: [{
-          email: 'neil.armstrong@nasa.com',
-        }, {
-          email: 'buzz.aldrin@nasa.com',
-        }]
+        members: []
       }]),
-      getTeamInviteLink: async () => 'https://google.com',
+      getTeamInviteLink: async (teamId, requestedBy) => 'https://google.com',
     },
     credential: {
       packageName: 'local',
-      getUserCredentials: async () => [{
+      getTeamCredentials: async () => [{
         properties: [
           {
             label: 'Client ID',
@@ -172,7 +171,7 @@ module.exports = {
         name: oldCredential.name,
         environment: oldCredential.environment,
       }),
-      deleteCredential: async () => {},
+      deleteCredentials: async () => { return },
     },
   },
 };

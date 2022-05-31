@@ -4,7 +4,7 @@ import { useBrand } from "../../plugin";
 
 const Border = styled('div')(({ theme }) => `
   border-top: 1px solid ${theme.palette.divider};
-  margin-top: ${theme.spacing(10)};
+  margin-top: ${theme.spacing(15)};
 `);
 
 const Content = styled('div')(({ theme }) => `
@@ -24,8 +24,9 @@ const Logo = styled('img')(({ theme }) => `
   margin-bottom: ${theme.spacing(2)};
 `);
 
-const Copyright = styled(Typography)(({ theme }) => `
+const Text = styled(Typography)(({ theme }) => `
   display: block;
+  color: ${theme.palette.text.secondary};
 `);
 
 export const Footer: React.FC = () => {
@@ -37,8 +38,8 @@ export const Footer: React.FC = () => {
         <Content>
           <Left>
             <Logo src={ brand.logoSrc } />
-            <Copyright variant="caption">Portions of this content are &copy;{ (new Date()).getFullYear() }, { brand.title }</Copyright>
-            <Copyright variant="caption">Portions of this content are &copy;{ (new Date()).getFullYear() }, Astral DX</Copyright>
+            <Text variant="caption">Portions of this content are &copy;{ (new Date()).getFullYear() }, { brand.title }</Text>
+            <Text variant="caption">Portions of this content are &copy;{ (new Date()).getFullYear() }, Astral DX</Text>
           </Left>
         </Content>
       </Container>

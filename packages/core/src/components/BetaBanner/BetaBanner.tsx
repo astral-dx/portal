@@ -6,31 +6,38 @@ const Container = styled(Card)(({ theme }) => `
 `);
 
 const Content = styled(CardBody)(({ theme }) => `
-  flex-direction: row;
-  align-items: center;
-  gap: ${theme.spacing(2)};
-`);
-
-const Support = styled(Typography)(({ theme }) => `
-  color: ${theme.palette.text.secondary};
+  /* flex-direction: row; */
+  text-align: center;
 `);
 
 const AstralLogo = styled('img')(({ theme }) => `
-  height: 30px;
+  height: 70px;
+  margin: ${theme.spacing(2, 0, 3)};
+`);
+
+const TextContainer = styled('div')(({ theme }) => `
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing(2)};
+  padding-bottom: ${theme.spacing(1)};
+`);
+
+const Text = styled(Typography)(({ theme }) => `
+  color: ${theme.palette.text.secondary};
 `);
 
 export const BetaBanner: React.FC = () => (
   <Container>
     <Content>
       <AstralLogo src="/astral.svg" />
-      <div>
-        <Typography variant="body2" fontWeight={ 600 }>
-          Thank you for participating in the Astral DX API Portal beta! 🎉
+      <TextContainer>
+        <Typography fontWeight={ 800 } lineHeight={ '1.3rem' }>
+          Thanks from the Astral DX Team!
         </Typography>
-        <Support variant="caption">
-          Please report any issues via email to support@astral.sh
-        </Support>
-      </div>
+        <Text variant="caption">
+          We appreciate your trust in supporting your developers. Please report any issues to support@astral.sh
+        </Text>
+      </TextContainer>
     </Content>
   </Container>
 )

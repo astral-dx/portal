@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
 
@@ -18,6 +17,21 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const link = await plugin.teamManagement.getTeamInviteLink(req);
+  const requestedBy = await plugin.authentication.getUser(req);
+
+  if (!requestedBy) {
+    res.status(401).end();
+    return;
+  }
+
+  const { id } = req.query;
+  const { permissions } = req.body;
+
+  if (typeof id !== 'string' || !Array.isArray(permissions)) {
+    res.status(400).end();
+    return;
+  }
+
+  const link = await plugin.teamManagement.getTeamInviteLink(id, permissions, requestedBy);
   res.status(200).json({ link });
 }, { permissions: [] });

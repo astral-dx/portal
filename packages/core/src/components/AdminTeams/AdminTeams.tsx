@@ -1,16 +1,14 @@
 import { IconButton, styled, Tooltip, Typography } from '@mui/material';
-import { AccountCircle, AddLink, ChevronRight, Add } from '@mui/icons-material';
+import { AccountCircle, AddLink, ChevronRight } from '@mui/icons-material';
 
-import { useAdminTeams } from '../../plugin';
-import { Card, CardHeader, CardTitle } from '../Card/Card';
-import { useState } from 'react';
-import { useCopyToClipboard } from 'react-use';
-import { Button } from '../Button/Button';
+import { Team } from '../../plugin';
+import { Card, CardBody, CardHeader, CardTitle } from '../Card/Card';
+import { SectionTitle } from '../SectionTitle/SectionTitle';
 
 const Container = styled('div')(({ theme }) => `
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing(3)};
+  gap: ${theme.spacing(2)};
 `);
 
 const Header = styled('div')(({ theme }) => `
@@ -18,14 +16,6 @@ const Header = styled('div')(({ theme }) => `
   align-items: center;
   justify-content: space-between;
   padding: ${theme.spacing(0, 0, 0, 2)};
-`);
-
-const Title = styled(Typography)(({ theme }) => `
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 1.28px;
-  font-weight: 800;
-  color: ${theme.palette.text.secondary};
 `);
 
 const TeamContainer = styled(CardHeader)(({ theme }) => `
@@ -47,33 +37,29 @@ const Stat = styled('div')(({ theme }) => `
   align-items: center;
   gap: ${theme.spacing(1)};
   font-weight: 800;
+  color: ${theme.palette.text.secondary};
 `);
 
-export const AdminTeams: React.FC = () => {
-  const { teams } = useAdminTeams();
-  const [ _, copyToClipboard ] = useCopyToClipboard();
-  const [ isLoading, setIsLoading ] = useState(false);
+interface AdminTeamsProps {
+  teams: Team[];
+  onGenerateInviteLink: (team: Team) => void;
+}
 
-  const generateInviteLink = async () => {
-    setIsLoading(true);
-
-    const response = await fetch('/api/team/invite-link', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const { link } = await response.json();
-    copyToClipboard(link);
-    
-    setIsLoading(false);
-  }
-
+export const AdminTeams: React.FC<AdminTeamsProps> = ({ teams, onGenerateInviteLink }) => {
   return (
     <Container>
       <Header>
-        <Title>Teams</Title>
-        <Button endIcon={ <Add /> } color="secondary">New Team</Button>
+        <SectionTitle>Teams</SectionTitle>
       </Header>
+      { teams.length === 0 && (
+        <Card>
+          <CardBody sx={{ textAlign: 'center' }}>
+            <Typography sx={(theme) => ({ color: theme.palette.text.secondary })}>
+              No teams yet, create one to get started!
+            </Typography>
+          </CardBody>
+        </Card>
+      ) }
       { teams.map((team) => (
         <Card key={ team.id }>
           <TeamContainer>
@@ -89,12 +75,12 @@ export const AdminTeams: React.FC = () => {
                 </Stat>
               </Tooltip>
               <Tooltip title="Generate Invite Link">
-                <IconButton onClick={ generateInviteLink }>
+                <IconButton onClick={ () => onGenerateInviteLink(team) }>
                   <AddLink />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Team Details">
-                <IconButton>
+                <IconButton href={ `/admin/team/${team.id}` }>
                   <ChevronRight />
                 </IconButton>
               </Tooltip>

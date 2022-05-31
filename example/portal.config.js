@@ -78,10 +78,6 @@ module.exports = {
     },
     credential: {
       packageName: 'local',
-      getUserCredentials: async () => [{
-        properties: [{ label: 'Token', value: 'abc123', secret: true }],
-        environment: 'production',
-      }],
       createCredential: async () => ({
         properties: [{ label: 'Token', value: 'abc123', secret: true }],
         environment: 'production',
@@ -90,7 +86,7 @@ module.exports = {
         properties: [{ label: 'Token', value: 'abc123', secret: true }],
         environment: 'production',
       }),
-      deleteCredential: async () => {},
+      deleteCredentials: async () => {},
     },
   },
 }

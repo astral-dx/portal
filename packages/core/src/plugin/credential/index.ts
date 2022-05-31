@@ -1,6 +1,6 @@
 import { IncomingMessage } from "http";
 import { Team } from "../teamManagement";
-import { PluginComponent } from "../index";
+import { PluginComponent, User } from "../index";
 
 export type Environment = 'Production' | 'Sandbox';
 
@@ -18,10 +18,10 @@ export interface Credential {
 }
 
 export interface CredentialPlugin extends PluginComponent {
-  getUserCredentials: (req: IncomingMessage) => Promise<Credential[]>;
-  createCredential: (team: Team, environment?: Environment) => Promise<Credential>;
-  rotateCredential?: (credential: Credential) => Promise<Credential>;
-  deleteCredential: (credential: Credential) => Promise<void>;
+  getTeamCredentials: (teamId: string, requestedBy: User) => Promise<Credential[]>;
+  createCredential: (team: Team, environment: Environment | null, requestedBy: User) => Promise<Credential>;
+  rotateCredential?: (credential: Credential, requestedBy: User) => Promise<Credential>;
+  deleteCredentials: (credentials: Credential[], requestedBy: User) => Promise<void>;
 }
 
 export * from './useCredentials';
