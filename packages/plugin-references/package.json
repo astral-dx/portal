@@ -7,5 +7,12 @@
     "build": "tsc"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  },
+  "peerDependencies": {
+    "@astral-dx/core": "0.0.1",
+    "@astral-dx/portal": "0.0.1"
+  }
 }
