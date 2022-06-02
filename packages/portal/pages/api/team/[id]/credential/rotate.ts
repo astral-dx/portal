@@ -3,7 +3,7 @@ import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
-  res: NextApiResponse<Credential>,
+  res: NextApiResponse<{ credential: Credential}>,
 ) => {
   if (req.method !== 'POST') {
     res.status(404).end();
@@ -32,6 +32,6 @@ export default withApiAuthRequired(async (
   }
 
   const credential = await plugin.credential.rotateCredential(oldCredential, requestedBy);
-  res.status(200).json(credential);
+  res.status(200).json({ credential });
   return;
 }, { permissions: [] });

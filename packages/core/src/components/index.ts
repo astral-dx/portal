@@ -12,5 +12,6 @@ export * from './Credentials/Credentials';
 export * from './Credentials/CredentialPicker';
 export * from './Profile/Profile';
 export * from './SectionTitle/SectionTitle';
+export * from './Snackbar/Snackbar';
 export * from './TeamHeader/TeamHeader';
 export * from './UserTable/UserTable';

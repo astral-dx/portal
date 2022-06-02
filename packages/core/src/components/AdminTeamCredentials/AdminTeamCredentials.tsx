@@ -49,7 +49,7 @@ export const AdminTeamCredentials: React.FC<AdminTeamCredentialsProps> = ({ cred
         </Card>
       ) }
       { credentials.map((credential) => (
-        <Card>
+        <Card key={ credential.environment + credential.name }>
           <CredentialContainer>
             <div>
               <CredentialEnvironment variant="body2">

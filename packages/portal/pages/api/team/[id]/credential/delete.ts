@@ -3,7 +3,7 @@ import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
-  res: NextApiResponse<Credential>,
+  res: NextApiResponse,
 ) => {
   if (req.method !== 'POST') {
     res.status(404).end();

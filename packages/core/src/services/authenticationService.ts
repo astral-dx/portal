@@ -2,21 +2,22 @@ import { User } from "../plugin";
 
 
 export const authenticationService = {
-  unadminUser: async (user: User): Promise<Credential | undefined> => {
+  unadminUser: async (oldUser: User): Promise<Credential | undefined> => {
     const shouldContinue = window.confirm('Are you sure you want remove this user as a portal admin?');
 
     if (!shouldContinue) {
       return;
     }
 
-    const response = await fetch(`/api/user/${user.email}`, {
+    const response = await fetch(`/api/user/${oldUser.email}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user: { ...user, permissions: user.permissions.filter(p => p !== 'portal-admin') }
+        user: { ...oldUser, permissions: oldUser.permissions.filter(p => p !== 'portal-admin') }
       }),
     });
 
-    return await response.json();
+    const { user } = await response.json();
+    return user;
   },
 };

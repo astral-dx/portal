@@ -54,12 +54,12 @@ module.exports = {
       addUserToTeam: async () => {},
       removeUserFromTeam: async () => {},
       createTeam: async (name) => ({
-        id: '38c70391-f12c-4484-96e7-3e0aecca52f3',
+        id: '0e4b56bd-1073-4314-b894-3e6a6b8ec017',
         name,
         members: [],
       }),
       updateTeam: async () => ({
-        id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
+        id: '0e4b56bd-1073-4314-b894-3e6a6b8ec017',
         name: 'Apollo 11',
         members: [{
           email: 'neil.armstrong@nasa.com',

@@ -3,7 +3,7 @@ import { getPlugin, withApiAuthRequired, Team } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
-  res: NextApiResponse<Team>,
+  res: NextApiResponse<{ team: Team }>,
 ) => {
   if (req.method !== 'POST') {
     res.status(404).end();
@@ -32,5 +32,5 @@ export default withApiAuthRequired(async (
   }
 
   const team = await plugin.teamManagement.createTeam(name, requestedBy);
-  res.status(200).json(team);
+  res.status(200).json({ team });
 }, { permissions: [] });

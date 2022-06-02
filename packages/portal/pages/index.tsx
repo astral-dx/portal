@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { withPageAuthRequired, References, Credentials, ConsumerTeamProvider, CredentialsProvider, getPlugin, ReferencesProvider, Team, User, Credential, Reference, UserTable, TeamHeader, Header, CredentialPicker, getEnvironments, TeamMember, teamManagementService, credentialService } from '@astral-dx/core';
+import { withPageAuthRequired, References, Credentials, ConsumerTeamProvider, CredentialsProvider, getPlugin, ReferencesProvider, Team, User, Credential, Reference, UserTable, TeamHeader, Header, CredentialPicker, getEnvironments, TeamMember, teamManagementService, credentialService, useSnackbar } from '@astral-dx/core';
 import { styled } from '@mui/material';
 import { GetServerSidePropsResult } from 'next';
 import { Box } from '@mui/system';
@@ -35,6 +35,7 @@ interface DashboardProps {
 
 const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: initialCredentials, references }) => {
   const [ _, copyToClipboard ] = useCopyToClipboard();
+  const { enqueueSnackbar } = useSnackbar();
   const [ credentials, setCredentials ] = useState(initialCredentials);
   const [ team, setTeam ] = useState(initialTeam);
 
@@ -53,19 +54,31 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
                   name={ team.name }
                   id={ team.id }
                   onGenerateInviteLink={ async () => {
-                    const link = await teamManagementService.generateInviteLink(team.id);
-                    copyToClipboard(link);
+                    try {
+                      const link = await teamManagementService.generateInviteLink(team.id, []);
+                      copyToClipboard(link);
+                      enqueueSnackbar('Your invite link has been copied to your clipboard!', { variant: 'success' });
+                    } catch (e) {
+                      console.error(e);
+                      enqueueSnackbar('Error generating invite link, please try again', { variant: 'error' });
+                    }
                   } }
                 />
                 <UserTable
                   members={ team.members }
                   onRemoveTeamMember={ async (member) => {
-                    await teamManagementService.removeTeamMember(team.id, member);
+                    try {
+                      await teamManagementService.removeTeamMember(team.id, member);
+                      setTeam({
+                        ...team,
+                        members: team.members.filter((m) => m.email !== member.email),
+                      });
 
-                    setTeam({
-                      ...team,
-                      members: team.members.filter((m) => m.email !== member.email),
-                    });
+                      enqueueSnackbar(`${member.email} has been removed from your team`);
+                    } catch (e) {
+                      console.error(e);
+                      enqueueSnackbar(`Error removing ${member.email} from your team, please try again`, { variant: 'error' });
+                    }
                   } }
                 />
               </Box>
@@ -73,12 +86,22 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
                 credentials={ credentials }
                 environments={ getEnvironments(credentials) }
                 onRotateCredential={ async (oldCredential) => {
-                  const newCredential = await credentialService.rotateCredential(oldCredential, team.id);
+                  const { name, environment } = oldCredential;
+                  const label = name ? `${name} (${environment})` : environment;
 
-                  if (newCredential) {
-                    setCredentials(credentials.map((credential) => {
-                      return isEqual(credential, oldCredential) ? newCredential : credential;
-                    }));
+                  try {
+                    const newCredential = await credentialService.rotateCredential(oldCredential, team.id);
+
+                    if (newCredential) {
+                      setCredentials(credentials.map((credential) => {
+                        return isEqual(credential, oldCredential) ? newCredential : credential;
+                      }));
+                    }
+
+                    enqueueSnackbar(`${label} credential has been rotated`, { variant: 'success' });
+                  } catch (e) {
+                    console.error(e);
+                    enqueueSnackbar(`Error rotating ${label} credential, please try again`, { variant: 'error' });
                   }
                 } }
               />

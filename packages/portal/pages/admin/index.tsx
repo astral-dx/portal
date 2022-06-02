@@ -1,5 +1,5 @@
 import type { GetServerSidePropsResult, NextPage } from 'next';
-import { getPlugin, Team, withPageAuthRequired, AdminTeams, AdminTeamsProvider, getPackages, AdminConfiguration, Package, BetaBanner, Header, Button, teamManagementService, Card, CardBody, UserTable, User, authenticationService } from '@astral-dx/core';
+import { getPlugin, Team, withPageAuthRequired, AdminTeams, AdminTeamsProvider, getPackages, AdminConfiguration, Package, BetaBanner, Header, Button, teamManagementService, Card, CardBody, UserTable, User, authenticationService, useSnackbar } from '@astral-dx/core';
 import { Box, Dialog, styled, TextField } from '@mui/material';
 import { Add, AddLink } from '@mui/icons-material';
 import { useCopyToClipboard } from 'react-use';
@@ -33,6 +33,7 @@ interface AdminDashboardProps {
 
 const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, adminUsers: initialAdminUsers, packages }) => {
   const [ _, copyToClipboard ] = useCopyToClipboard();
+  const { enqueueSnackbar } = useSnackbar();
   const [teams, setTeams] = useState(initialTeams);
   const [adminUsers, setAdminUsers] = useState(initialAdminUsers);
   const [open, setOpen] = useState(false);
@@ -40,12 +41,18 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
   const router = useRouter();
 
   const addTeam = async () => {
-    const team = await teamManagementService.addTeam(teamName);
-
-    setTeams([ ...teams, team ]);
+    try {
+      const team = await teamManagementService.addTeam(teamName);
+      enqueueSnackbar(`Added ${teamName}!`, { variant: 'success' });
+      setTeams([ ...teams, team ]);
+      router.push(`/admin/team/${team.id}`);
+    } catch (e) {
+      console.error(e);
+      enqueueSnackbar(`Error adding ${teamName}, please try again`, { variant: 'error' });
+    }
+  
     setOpen(false);
     setTeamName('');
-    router.push(`/admin/teams/${team.id}`);
   }
 
   return (
@@ -69,8 +76,14 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
               <AdminTeams
                 teams={ teams }
                 onGenerateInviteLink={ async (team) => {
-                  const link = await teamManagementService.generateInviteLink(team.id, []);
-                  copyToClipboard(link);
+                  try {
+                    const link = await teamManagementService.generateInviteLink(team.id, []);
+                    copyToClipboard(link);
+                    enqueueSnackbar(`${team.name} invite link has been copied to your clipboard!`, { variant: 'success' });
+                  } catch (e) {
+                    console.error(e);
+                    enqueueSnackbar(`Error generating ${team.name} invite link, please try again`, { variant: 'error' });
+                  }
                 } }
               />
             </Box>
@@ -82,8 +95,14 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                     color="secondary"
                     endIcon={ <AddLink /> }
                     onClick={ async () => {
-                      const link = await teamManagementService.generateInviteLink('admin', ['portal-admin']);
-                      copyToClipboard(link);
+                      try {
+                        const link = await teamManagementService.generateInviteLink('admin', ['portal-admin']);
+                        copyToClipboard(link);
+                        enqueueSnackbar('Your admin invite link has been copied to your clipboard!', { variant: 'success' });
+                      } catch (e) {
+                        console.error(e);
+                        enqueueSnackbar('Error generating admin invite link, please try again', { variant: 'error' });
+                      }
                     } }
                   >
                     Get Admin Invite Link
@@ -92,11 +111,17 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
               />
               <UserTable
                 onRemoveTeamMember={ async ({ email }) => {
-                  const user = adminUsers.find(u => u.email === email);
-
-                  if (user) {
-                    await authenticationService.unadminUser(user);
-                    setAdminUsers(adminUsers.filter(u => u.email !== email));
+                  try {
+                    const user = adminUsers.find(u => u.email === email);
+  
+                    if (user) {
+                      await authenticationService.unadminUser(user);
+                      setAdminUsers(adminUsers.filter(u => u.email !== email));
+                      enqueueSnackbar(`${email} has been removed as an admin`);
+                    }
+                  } catch (e) {
+                    console.error(e);
+                    enqueueSnackbar(`Error removing ${email} as an admin, please try again`, { variant: 'error' });
                   }
                 } }
                 members={ adminUsers.map(u => ({ email: u.email })) }
