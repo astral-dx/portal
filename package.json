@@ -6,9 +6,5 @@
   "workspaces": [
     "packages/*",
     "example"
-  ],
-  "dependencies": {
-    "@astral-dx/portal": "file:packages/portal",
-    "pkg-up": "^4.0.0"
-  }
+  ]
 }

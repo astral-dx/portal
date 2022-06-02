@@ -1,32 +1,10 @@
 const { initReferences } = require("@astral-dx/plugin-references");
-const { initAuth0Authentication } = require('@astral-dx/plugin-auth0');
+const { initAuth0Authentication, initAuth0TeamManagement } = require('@astral-dx/plugin-auth0');
 
 module.exports = {
   plugin: {
     authentication: initAuth0Authentication({}),
-    // authentication: {
-    //   packageName: 'local',
-    //   loginPath: '/login',
-    //   logoutPath: '',
-    //   getUser: async () => ({
-    //     id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
-    //     role: 'admin',
-    //     name: 'Neil Armstrong',
-    //     email: 'neil.armstrong@nasa.com',
-    //     permissions: [ 'portal-admin' ],
-    //     avatar: 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_24/1913661/ss-140719-apollo-11-01_0.jpg',
-    //   }),
-    //   // getUser: async () => undefined,
-    //   updateUser: async () => ({
-    //     id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
-    //     role: 'admin',
-    //     name: 'Neil Armstrong',
-    //     email: 'neil.armstrong@nasa.com',
-    //     permissions: [ 'portal-admin' ],
-    //     avatar: 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_24/1913661/ss-140719-apollo-11-01_0.jpg',
-    //   }),
-    //   deleteUser: async () => {},
-    // },
+    teamManagement: initAuth0TeamManagement({}),
     branding: {
       packageName: 'local',
       getBrand: async () => ({
