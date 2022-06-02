@@ -24,7 +24,7 @@ export const MemberActionsMenu: React.FC<{
         size="small"
         onClick={ (e) => setAnchorEl(e.currentTarget) }
       >
-        <MoreHoriz />
+        <MoreHoriz fontSize="small" />
       </IconButton>
       <Menu
         anchorEl={ anchorEl }

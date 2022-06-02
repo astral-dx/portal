@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http";
+import { Permission, User } from "../authentication";
 import { PluginComponent } from "../index";
 
 export interface TeamMember {
@@ -12,14 +13,14 @@ export interface Team {
 }
 
 export interface TeamManagementPlugin extends PluginComponent {
-  createTeam: (name: string) => Promise<Team>;
-  updateTeam: (id: string, team: Team) => Promise<Team>;
-  deleteTeam: (id: string) => Promise<void>;
-  addUserToTeam: (teamId: string, email: string) => Promise<void>;
-  removeUserFromTeam: (req: IncomingMessage) => Promise<void>;
-  getTeams: (req: IncomingMessage) => Promise<Team[]>;
+  createTeam: (name: string, requestedBy: User) => Promise<Team>;
+  updateTeam: (id: string, team: Team, requestedBy: User) => Promise<Team>;
+  deleteTeam: (id: string, requestedBy: User) => Promise<void>;
+  addUserToTeam: (teamId: string, email: string, requestedBy: User) => Promise<void>;
+  removeUserFromTeam: (teamId: string, email: string, requestedBy: User) => Promise<void>;
+  getTeams: (requestedBy: User) => Promise<Team[]>;
   getUserTeam: (req: IncomingMessage) => Promise<Team | undefined>;
-  getTeamInviteLink: (req: IncomingMessage) => Promise<string>;
+  getTeamInviteLink: (teamId: string, permissions: Permission[], requestedBy: User) => Promise<string>;
 }
 
 export * from './useAdminTeams';

@@ -16,7 +16,6 @@ export const withPageAuthRequired = ({ getServerSideProps, redirectTo, permissio
   const user = await plugin.authentication.getUser(ctx.req);
 
   if (!user) {
-    console.log('redirecting to login');
     res.setHeader('location', plugin.authentication.loginPath);
     res.statusCode = 302;
     res.end();
@@ -31,7 +30,6 @@ export const withPageAuthRequired = ({ getServerSideProps, redirectTo, permissio
     return { props: {} };
   }
 
-  console.log('redirecting to ' + redirectTo);
   res.setHeader('location', redirectTo);
   res.statusCode = 302;
   res.end();

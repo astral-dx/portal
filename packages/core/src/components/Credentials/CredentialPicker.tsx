@@ -39,7 +39,7 @@ export const CredentialPicker: React.FC<{
   return (
     <Container>
       <Button
-        color="secondary"
+        color="primary"
         onClick={ (e) => setAnchorEl(e.currentTarget) }
         endIcon={ <KeyboardArrowDown /> }
       >

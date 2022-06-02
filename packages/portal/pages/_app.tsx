@@ -12,6 +12,7 @@ import {
   UserProvider,
   Brand,
   BrandProvider,
+  SnackbarProvider,
 } from '@astral-dx/core';
 
 import { createEmotionCache } from '../theme/createEmotionCache';
@@ -53,15 +54,17 @@ export default function MyApp(props: MyAppProps & AppProps) {
       </Head>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
-      <ThemeProvider theme={ theme }>
-        <UserProvider user={ user }>
-          <BrandProvider brand={ brand }>
-            <Layout>
-              <Component { ...pageProps } />
-            </Layout>
-          </BrandProvider>
-        </UserProvider>
-      </ThemeProvider>
+      <SnackbarProvider>
+        <ThemeProvider theme={ theme }>
+          <UserProvider user={ user }>
+            <BrandProvider brand={ brand }>
+              <Layout>
+                <Component { ...pageProps } />
+              </Layout>
+            </BrandProvider>
+          </UserProvider>
+        </ThemeProvider>
+      </SnackbarProvider>
     </CacheProvider>
   );
 }
