@@ -3,3 +3,4 @@ dist
 .portal
 .env*
 .DS_Store
+.idea
