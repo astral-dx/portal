@@ -106,6 +106,54 @@ module.exports = {
         environment: oldCredential.environment,
       }),
       deleteCredentials: async () => {},
+      getTeamCredentials: async () => [{
+        properties: [
+          {
+            label: 'Client ID',
+            value: '91dd69ab-d280-429c-9600-14a55bc6bc98',
+            helperText: 'The identifier for the client your application, use to call our API.',
+          },
+          {
+            label: 'Client Secret',
+            value: '87c149cf74df527c9dbfd4045dd9ba1c3c04ba772095dc6ee8f1eecdea084236',
+            secret: true,
+            helperText: 'Your client secret is known only to your application and the authorization server. Protect your client secret and never include it in mobile or browser-based apps.',
+          },
+        ],
+        name: 'Shuttle Interface',
+        environment: 'Production',
+      }, {
+        properties: [
+          {
+            label: 'Client ID',
+            value: 'c0c89272-3585-4e39-86af-4801f39b522e',
+            helperText: 'The identifier for the client your application, use to call our API.',
+          },
+          {
+            label: 'Client Secret',
+            value: '26cc3032b7cf9f3fe0f072e4f7eda97bdd7bb527600a44d11b819c8fe65f054d',
+            secret: true,
+            helperText: 'Your client secret is known only to your application and the authorization server. Protect your client secret and never include it in mobile or browser-based apps.',
+          },
+        ],
+        name: 'Thruster System',
+        environment: 'Production',
+      }, {
+        properties: [
+          {
+            label: 'Client ID',
+            value: 'd3a04af0-8e92-4210-80fe-c6cc86a55987',
+            helperText: 'The identifier for the client your application, use to call our API.',
+          },
+          {
+            label: 'Client Secret',
+            value: 'bb612f82f358d719630628f66aa2906b26e889643e4c36ab48c566c644a30abc',
+            secret: true,
+            helperText: 'Your client secret is known only to your application and the authorization server. Protect your client secret and never include it in mobile or browser-based apps.',
+          },
+        ],
+        environment: 'Sandbox',
+      }],
     },
   },
 };
