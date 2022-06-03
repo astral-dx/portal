@@ -31,6 +31,7 @@ export const initAuth0Authentication = ({
     },
     deleteUser: async (id) => {
       const managementClient = createManagementClient();
+      
       await managementClient.deleteUser({
         id
       });
@@ -53,6 +54,22 @@ export const initAuth0Authentication = ({
         name: session.user.name,
         avatar: session.user.picture ?? ''
       };
+    },
+    getAdminUsers: async (requestedBy: User) => {
+      const managementClient = createManagementClient();
+
+      // TODO: Page users
+      const users = await managementClient.getUsers();
+      
+      return users
+        .filter(user => (user.app_metadata?.permissions ?? []).includes('portal-admin'))
+        .map((user) => ({
+          id: user.email ?? '',
+          email: user.email ?? '',
+          permissions: user.app_metadata?.permissions ?? [],
+          name: user.name,
+          avatar: user.picture ?? ''
+        }));
     },
     updateUser: async (id: string, user: User) => {
       const managementClient = createManagementClient();

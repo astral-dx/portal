@@ -22,44 +22,6 @@ module.exports = {
         { url: 'https://github.com/nasa', label: 'GitHub', description: 'Open source repositories from NASA including ReadOpen data initative.', icon: 'code' },
       ]
     }),
-    teamManagement: {
-      packageName: 'local',
-      addUserToTeam: async () => {},
-      removeUserFromTeam: async () => {},
-      createTeam: async () => ({
-        id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
-        name: 'Apollo 11',
-        permissions: [],
-        type: 'portal-consumer',
-      }),
-      updateTeam: async () => ({
-        id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
-        name: 'Apollo 11',
-        permissions: [],
-        type: 'portal-consumer',
-      }),
-      deleteTeam: async () => {},
-      getUserTeam: async () => ({
-        id: '38c70391-f12c-4484-96e7-3e0aecca52f2',
-        name: 'Apollo 11',
-        permissions: [],
-        type: 'portal-consumer',
-      }),
-      getUserTeamMembers: async () => [{
-        id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
-        role: 'admin',
-        name: 'Neil Armstrong',
-        email: 'neil.armstrong@nasa.com',
-        permissions: ['commander'],
-      }, {
-        id: '',
-        role: 'admin',
-        name: 'Buzz Aldrin',
-        email: 'buzz.aldrin@nasa.com',
-        permissions: [],
-      }],
-      getTeamInviteLink: async () => 'https://google.com',
-    },
     credential: {
       packageName: 'local',
       createCredential: async () => ({
