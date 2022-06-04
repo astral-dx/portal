@@ -77,7 +77,7 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                 teams={ teams }
                 onGenerateInviteLink={ async (team) => {
                   try {
-                    const link = await teamManagementService.generateInviteLink(team.id, []);
+                    const link = await teamManagementService.generateInviteLink(team.id, { admin: true });
                     copyToClipboard(link);
                     enqueueSnackbar(`${team.name} invite link has been copied to your clipboard!`, { variant: 'success' });
                   } catch (e) {
@@ -96,7 +96,7 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                     endIcon={ <AddLink /> }
                     onClick={ async () => {
                       try {
-                        const link = await teamManagementService.generateInviteLink('admin', ['portal-admin']);
+                        const link = await teamManagementService.generateAdminInviteLink();
                         copyToClipboard(link);
                         enqueueSnackbar('Your admin invite link has been copied to your clipboard!', { variant: 'success' });
                       } catch (e) {
@@ -169,8 +169,8 @@ export const getServerSideProps = withPageAuthRequired({
     const user = await plugin.authentication.getUser(req);
 
     const [ teams, adminUsers ] = await Promise.all([
-      user ? plugin.teamManagement.getTeams(user) : Promise.resolve([]),
-      user ? plugin.authentication.getAdminUsers(user) : Promise.resolve([]),
+      user ? plugin.teamManagement.getTeams() : Promise.resolve([]),
+      user ? plugin.authentication.getAdminUsers() : Promise.resolve([]),
     ]);
 
     const packages = getPackages();

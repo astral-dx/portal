@@ -9,7 +9,7 @@ export const authenticationService = {
       return;
     }
 
-    const response = await fetch(`/api/user/${oldUser.email}`, {
+    const response = await fetch(`/api/admin/user/${oldUser.email}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

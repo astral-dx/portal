@@ -12,13 +12,6 @@ export default withApiAuthRequired(async (
       res.status(501).end();
       return;
     }
-
-    const requestedBy = await plugin.authentication.getUser(req);
-  
-    if (!requestedBy) {
-      res.status(401).end();
-      return;
-    }
   
     const { id } = req.query;
   
@@ -27,7 +20,7 @@ export default withApiAuthRequired(async (
       return;
     }
 
-    const teams = await plugin.teamManagement.getTeams(requestedBy);
+    const teams = await plugin.teamManagement.getTeams();
     const team = teams.find((t) => t.id === id);
 
     if (!team) {
@@ -36,19 +29,16 @@ export default withApiAuthRequired(async (
     }
 
     await Promise.all([
-      plugin.credential.deleteCredentials(
-        await plugin.credential.getTeamCredentials(id, requestedBy),
-        requestedBy,
-      ),
+      plugin.credential.deleteCredentials(await plugin.credential.getTeamCredentials(id)),
       ...team.members.map(
-        ({ email }) => plugin.teamManagement.removeUserFromTeam(id, email, requestedBy)
+        ({ email }) => plugin.teamManagement.removeUserFromTeam(id, email)
       ),
     ]);
 
-    await plugin.teamManagement.deleteTeam(id, requestedBy);
+    await plugin.teamManagement.deleteTeam(id);
     res.status(204).end();
     return;
   }
 
   res.status(404).end();
-}, { permissions: [] });
+}, { permissions: [ 'portal-admin' ] });

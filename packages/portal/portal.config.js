@@ -99,6 +99,7 @@ module.exports = {
         members: []
       }]),
       getTeamInviteLink: async (teamId, requestedBy) => 'https://google.com',
+      getAdminInviteLink: async (teamId, requestedBy) => 'https://google.com',
     },
     credential: {
       packageName: 'local',

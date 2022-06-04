@@ -3,7 +3,7 @@ import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse<{ credential: Credential}>,
 ) => {
   if (req.method !== 'POST') {
     res.status(404).end();
@@ -12,26 +12,19 @@ export default withApiAuthRequired(async (
 
   const plugin = getPlugin();
 
-  if (!plugin.credential.deleteCredentials) {
+  if (!plugin.credential.rotateCredential) {
     res.status(501).end();
     return;
   }
 
-  const requestedBy = await plugin.authentication.getUser(req);
+  const { credential: oldCredential } = req.body;
 
-  if (!requestedBy) {
-    res.status(401).end();
-    return;
-  }
-
-  const { credentials } = req.body;
-
-  if (!Array.isArray(credentials)) {
+  if (typeof oldCredential !== 'object') {
     res.status(400).end();
     return;
   }
 
-  await plugin.credential.deleteCredentials(credentials, requestedBy);
-  res.status(204).end();
+  const credential = await plugin.credential.rotateCredential(oldCredential);
+  res.status(200).json({ credential });
   return;
-}, { permissions: [] });
+}, { permissions: [ 'portal-admin' ] });

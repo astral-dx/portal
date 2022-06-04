@@ -17,13 +17,6 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const requestedBy = await plugin.authentication.getUser(req);
-
-  if (!requestedBy) {
-    res.status(401).end();
-    return;
-  }
-
   const { name } = req.body;
 
   if (typeof name !== 'string') {
@@ -31,6 +24,6 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const team = await plugin.teamManagement.createTeam(name, requestedBy);
+  const team = await plugin.teamManagement.createTeam(name);
   res.status(200).json({ team });
-}, { permissions: [] });
+}, { permissions: [ 'portal-admin' ] });

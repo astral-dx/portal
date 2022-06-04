@@ -2,14 +2,18 @@ import { Credential } from "../plugin";
 
 
 export const credentialService = {
-  rotateCredential: async (oldCredential: Credential, teamId: string): Promise<Credential | undefined> => {
+  rotateCredential: async (
+    oldCredential: Credential,
+    teamId: string,
+    opts?: { admin?: boolean },
+  ): Promise<Credential | undefined> => {
     const shouldContinue = window.confirm('Are you sure you want to generate a new credential? This action may invalidate your current credential.');
 
     if (!shouldContinue) {
       return;
     }
 
-    const response = await fetch(`/api/team/${teamId}/credential/rotate`, {
+    const response = await fetch(`/api${ opts?.admin ? '/admin' : '' }/team/${teamId}/credential/rotate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credential: oldCredential }),
@@ -26,7 +30,7 @@ export const credentialService = {
       return;
     }
 
-    await fetch(`/api/team/${teamId}/credential/delete`, {
+    await fetch(`/api/admin/team/${teamId}/credential/delete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credentials }),

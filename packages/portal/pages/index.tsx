@@ -55,7 +55,7 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
                   id={ team.id }
                   onGenerateInviteLink={ async () => {
                     try {
-                      const link = await teamManagementService.generateInviteLink(team.id, []);
+                      const link = await teamManagementService.generateInviteLink(team.id);
                       copyToClipboard(link);
                       enqueueSnackbar('Your invite link has been copied to your clipboard!', { variant: 'success' });
                     } catch (e) {
@@ -130,7 +130,7 @@ export const getServerSideProps = withPageAuthRequired({
     ]);
 
     const [ credentials, references ] = await Promise.all([
-      user && team ? plugin.credential.getTeamCredentials(team.id, user) : Promise.resolve([]),
+      user && team ? plugin.credential.getTeamCredentials(team.id) : Promise.resolve([]),
       plugin.references.getReferences(),
     ]);
   

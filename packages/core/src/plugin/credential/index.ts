@@ -18,10 +18,10 @@ export interface Credential {
 }
 
 export interface CredentialPlugin extends PluginComponent {
-  getTeamCredentials: (teamId: string, requestedBy: User) => Promise<Credential[]>;
-  createCredential: (team: Team, environment: Environment | null, requestedBy: User) => Promise<Credential>;
-  rotateCredential?: (credential: Credential, requestedBy: User) => Promise<Credential>;
-  deleteCredentials: (credentials: Credential[], requestedBy: User) => Promise<void>;
+  getTeamCredentials: (teamId: string) => Promise<Credential[]>;
+  createCredential: (team: Team, environment: Environment | null) => Promise<Credential>;
+  rotateCredential?: (credential: Credential) => Promise<Credential>;
+  deleteCredentials: (credentials: Credential[]) => Promise<void>;
 }
 
 export * from './useCredentials';

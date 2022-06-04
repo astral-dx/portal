@@ -15,9 +15,9 @@ export interface AuthenticationPlugin extends PluginComponent {
   loginPath: string;
   logoutPath: string;
   getUser: (req: IncomingMessage) => Promise<User | undefined>;
-  getAdminUsers: (requestedBy: User) => Promise<User[]>;
-  updateUser: (id: string, user: User, requestedBy: User) => Promise<User>;
-  deleteUser: (id: string, requestedBy: User) => Promise<void>;
+  getAdminUsers: () => Promise<User[]>;
+  updateUser: (id: string, user: User) => Promise<User>;
+  deleteUser: (id: string) => Promise<void>;
 }
 
 export * from './useUser';

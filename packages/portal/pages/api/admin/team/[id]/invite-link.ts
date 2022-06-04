@@ -17,14 +17,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const team = await plugin.teamManagement.getUserTeam(req);
-
   const { id } = req.query;
-
-  if (!team || team.id !== id) {
-    res.status(401).end();
-    return;
-  }
 
   if (typeof id !== 'string') {
     res.status(400).end();
@@ -33,4 +26,4 @@ export default withApiAuthRequired(async (
 
   const link = await plugin.teamManagement.getTeamInviteLink(id);
   res.status(200).json({ link });
-}, { permissions: [] });
+}, { permissions: [ 'portal-admin' ] });

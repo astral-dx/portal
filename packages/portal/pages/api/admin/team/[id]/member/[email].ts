@@ -14,13 +14,6 @@ export default withApiAuthRequired(async (
     }
   
     const { id, email } = req.query;
-
-    const team = await plugin.teamManagement.getUserTeam(req);
-    
-    if (!team || team.id !== id) {
-      res.status(401).end();
-      return;
-    }
   
     if (typeof id !== 'string' || typeof email !== 'string') {
       res.status(400).end();
@@ -33,4 +26,4 @@ export default withApiAuthRequired(async (
   }
 
   res.status(404).end();
-}, { permissions: [] });
+}, { permissions: [ 'portal-admin' ] });

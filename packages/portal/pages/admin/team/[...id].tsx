@@ -50,7 +50,7 @@ const AdminTeamDetail: NextPage<AdminTeamDetailProps> = ({ team: initialTeam, cr
           id={ team.id }
           onGenerateInviteLink={ async () => {
             try {
-              const link = await teamManagementService.generateInviteLink(team.id, []);
+              const link = await teamManagementService.generateInviteLink(team.id, { admin: true });
               copyToClipboard(link);
               enqueueSnackbar(`${team.name} invite link has been copied to your clipboard!`, { variant: 'success' });
             } catch (e) {
@@ -109,7 +109,7 @@ const AdminTeamDetail: NextPage<AdminTeamDetailProps> = ({ team: initialTeam, cr
             const label = name ? `${name} (${environment})` : environment;
 
             try {
-              const newCredential = await credentialService.rotateCredential(oldCredential, team.id);
+              const newCredential = await credentialService.rotateCredential(oldCredential, team.id, { admin: true });
               if (newCredential) {
                 setCredentials(credentials.map((credential) => {
                   return isEqual(credential, oldCredential) ? newCredential : credential;
@@ -165,11 +165,9 @@ export const getServerSideProps = withPageAuthRequired({
 
     const plugin = getPlugin();
   
-    const user = await plugin.authentication.getUser(req);
-
     const [ teams, credentials ] = await Promise.all([
-      user ? plugin.teamManagement.getTeams(user) : Promise.resolve([]),
-      user ? plugin.credential.getTeamCredentials(id, user) : Promise.resolve([]),
+      plugin.teamManagement.getTeams(),
+      plugin.credential.getTeamCredentials(id),
     ]);
 
     return {

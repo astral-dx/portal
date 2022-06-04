@@ -13,13 +13,14 @@ export interface Team {
 }
 
 export interface TeamManagementPlugin extends PluginComponent {
-  createTeam: (name: string, requestedBy: User) => Promise<Team>;
-  updateTeam: (id: string, team: Team, requestedBy: User) => Promise<Team>;
-  deleteTeam: (id: string, requestedBy: User) => Promise<void>;
-  removeUserFromTeam: (teamId: string, email: string, requestedBy: User) => Promise<void>;
-  getTeams: (requestedBy: User) => Promise<Team[]>;
+  createTeam: (name: string) => Promise<Team>;
+  updateTeam: (id: string, team: Team) => Promise<Team>;
+  deleteTeam: (id: string) => Promise<void>;
+  removeUserFromTeam: (teamId: string, email: string) => Promise<void>;
+  getTeams: () => Promise<Team[]>;
   getUserTeam: (req: IncomingMessage) => Promise<Team | undefined>;
-  getTeamInviteLink: (teamId: string, permissions: Permission[], requestedBy: User) => Promise<string>;
+  getTeamInviteLink: (teamId: string) => Promise<string>;
+  getAdminInviteLink: () => Promise<string>;
 }
 
 export * from './useAdminTeams';

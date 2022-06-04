@@ -17,21 +17,22 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const requestedBy = await plugin.authentication.getUser(req);
+  const team = await plugin.teamManagement.getUserTeam(req);
 
-  if (!requestedBy) {
+  const { id } = req.query;
+  const { credential: oldCredential } = req.body;
+  
+  if (!team || team.id !== id) {
     res.status(401).end();
     return;
   }
-
-  const { credential: oldCredential } = req.body;
 
   if (typeof oldCredential !== 'object') {
     res.status(400).end();
     return;
   }
 
-  const credential = await plugin.credential.rotateCredential(oldCredential, requestedBy);
+  const credential = await plugin.credential.rotateCredential(oldCredential);
   res.status(200).json({ credential });
   return;
 }, { permissions: [] });
