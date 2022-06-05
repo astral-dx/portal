@@ -43,6 +43,7 @@ export interface PluginComponent {
   folders?: {
     pages?: string;
     components?: string;
+    services?: string;
   },
 }
 

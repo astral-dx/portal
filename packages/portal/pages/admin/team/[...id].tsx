@@ -50,7 +50,8 @@ const AdminTeamDetail: NextPage<AdminTeamDetailProps> = ({ team: initialTeam, cr
           id={ team.id }
           onGenerateInviteLink={ async () => {
             try {
-              const link = await teamManagementService.generateInviteLink(team.id, { admin: true });
+              const path = await teamManagementService.generateInvitePath(team.id, { admin: true });
+              const link = `${window.location.origin}${path}`;
               copyToClipboard(link);
               enqueueSnackbar(`${team.name} invite link has been copied to your clipboard!`, { variant: 'success' });
             } catch (e) {

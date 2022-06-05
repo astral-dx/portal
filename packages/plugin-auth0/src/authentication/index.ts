@@ -3,8 +3,9 @@ import {
   User,
 } from '@astral-dx/core';
 import { getSession } from '@auth0/nextjs-auth0';
-import { decode, JwtPayload } from 'jsonwebtoken';
-import { createManagementClient } from '../utils';
+import { JwtPayload } from 'jsonwebtoken';
+import { createManagementClient } from './services/plugin-auth0';
+import { getAllUsers } from './services/plugin-auth0/auth0Wrapper';
 
 interface Auth0AuthenticationConfig {
   
@@ -19,15 +20,14 @@ export type IdToken = JwtPayload & {
   }
 }
 
-export const initAuth0Authentication = ({
-
-}: Auth0AuthenticationConfig): AuthenticationPlugin => {
+export const initAuth0Authentication = (opts?: Auth0AuthenticationConfig): AuthenticationPlugin => {
   return {
     packageName: '@astral-dx/plugin-auth0',
     loginPath: '/api/auth/login',
     logoutPath: '/api/auth/logout',
     folders: {
-      pages: './authentication/pages'
+      pages: './authentication/pages',
+      services: './authentication/services',
     },
     deleteUser: async (id) => {
       const managementClient = createManagementClient();
@@ -43,44 +43,44 @@ export const initAuth0Authentication = ({
         return undefined;
       }
 
-      // TODO: change to verify?
-      const idToken = await decode(session.idToken ?? '') as IdToken;
+      const managementClient = createManagementClient();
+      const allUsers = await getAllUsers(managementClient);
+      const foundUser = allUsers.find(u => u.user_id === session.user.sub);
 
-      // Grab permissions
+      if (!foundUser) {
+        return undefined;
+      }
+
       return {
-        id: session.user.email,
+        id: session.user.sub,
         email: session.user.email,
-        permissions: idToken['http://astral']?.user_metadata?.permissions ?? [],
-        name: session.user.name,
-        avatar: session.user.picture ?? ''
+        permissions: foundUser.app_metadata?.permissions ?? [],
+        name: foundUser.name,
+        avatar: foundUser.picture ?? '',
       };
     },
-    getAdminUsers: async (requestedBy: User) => {
+    getAdminUsers: async () => {
       const managementClient = createManagementClient();
-
-      // TODO: Page users
       const users = await managementClient.getUsers();
       
       return users
         .filter(user => (user.app_metadata?.permissions ?? []).includes('portal-admin'))
         .map((user) => ({
-          id: user.email ?? '',
+          id: user.user_id ?? '',
           email: user.email ?? '',
           permissions: user.app_metadata?.permissions ?? [],
           name: user.name,
-          avatar: user.picture ?? ''
+          avatar: user.picture ?? '',
         }));
     },
-    updateUser: async (id: string, user: User) => {
+    updateUser: async (id: string, update: Pick<User, 'permissions'>) => {
       const managementClient = createManagementClient();
-      const updatedUser = await managementClient.updateUser({
-        id
-      }, {
-        email: user.email,
-        name: user.name,
-        user_metadata: {
-          permissions: user.permissions
-        }
+      const allUsers = await getAllUsers(managementClient);
+      const foundUser = allUsers.find(u => u.user_id === id);
+
+      const updatedUser = await managementClient.updateAppMetadata({ id }, {
+        teamId: foundUser?.app_metadata?.teamId,
+        permissions: update.permissions,
       });
 
       return {

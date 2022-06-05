@@ -13,15 +13,15 @@ export default withApiAuthRequired(async (
       return;
     }
   
-    const { email } = req.query;
+    const { id } = req.query;
     const { user: update } = req.body;
   
-    if (typeof email !== 'string' || typeof update !== 'object') {
+    if (typeof id !== 'string' || typeof update !== 'object') {
       res.status(400).end();
       return;
     }
 
-    const user = await plugin.authentication.updateUser(email, update);
+    const user = await plugin.authentication.updateUser(id, update);
     res.status(200).json({ user });
     return;
   }

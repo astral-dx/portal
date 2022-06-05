@@ -3,8 +3,8 @@ const { initAuth0Authentication, initAuth0TeamManagement } = require('@astral-dx
 
 module.exports = {
   plugin: {
-    authentication: initAuth0Authentication({}),
-    teamManagement: initAuth0TeamManagement({}),
+    authentication: initAuth0Authentication(),
+    teamManagement: initAuth0TeamManagement(),
     branding: {
       packageName: 'local',
       getBrand: async () => ({

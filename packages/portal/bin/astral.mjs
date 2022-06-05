@@ -81,6 +81,14 @@ program.command('dev')
           { overwrite: true },
         );
       }
+      
+      if (folders?.services) {
+        fs.copySync(
+          path.join(packageDir, folders.services),
+          path.join(targetDirectory, 'services'),
+          { overwrite: true },
+        );
+      }
     }
 
     entries.forEach(

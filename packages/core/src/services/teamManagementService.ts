@@ -13,7 +13,7 @@ export const teamManagementService = {
     return team;
   },
 
-  generateInviteLink: async (
+  generateInvitePath: async (
     teamId: string,
     opts?: { admin?: boolean },
   ): Promise<string> => {
@@ -22,20 +22,20 @@ export const teamManagementService = {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const { link } = await response.json();
+    const { path } = await response.json();
 
-    return link;
+    return path;
   },
 
-  generateAdminInviteLink: async (): Promise<string> => {
+  generateAdminInvitePath: async (): Promise<string> => {
     const response = await fetch(`/api/admin/admin-invite-link`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const { link } = await response.json();
+    const { path } = await response.json();
 
-    return link;
+    return path;
   },
 
   removeTeamMember: async (

@@ -77,7 +77,8 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                 teams={ teams }
                 onGenerateInviteLink={ async (team) => {
                   try {
-                    const link = await teamManagementService.generateInviteLink(team.id, { admin: true });
+                    const path = await teamManagementService.generateInvitePath(team.id, { admin: true });
+                    const link = `${window.location.origin}${path}`;
                     copyToClipboard(link);
                     enqueueSnackbar(`${team.name} invite link has been copied to your clipboard!`, { variant: 'success' });
                   } catch (e) {
@@ -96,7 +97,8 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                     endIcon={ <AddLink /> }
                     onClick={ async () => {
                       try {
-                        const link = await teamManagementService.generateAdminInviteLink();
+                        const path = await teamManagementService.generateAdminInvitePath();
+                        const link = `${window.location.origin}${path}`;
                         copyToClipboard(link);
                         enqueueSnackbar('Your admin invite link has been copied to your clipboard!', { variant: 'success' });
                       } catch (e) {

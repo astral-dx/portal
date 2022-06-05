@@ -19,8 +19,8 @@ export interface TeamManagementPlugin extends PluginComponent {
   removeUserFromTeam: (teamId: string, email: string) => Promise<void>;
   getTeams: () => Promise<Team[]>;
   getUserTeam: (req: IncomingMessage) => Promise<Team | undefined>;
-  getTeamInviteLink: (teamId: string) => Promise<string>;
-  getAdminInviteLink: () => Promise<string>;
+  getTeamInvitePath: (teamId: string) => Promise<string>;
+  getAdminInvitePath: () => Promise<string>;
 }
 
 export * from './useAdminTeams';

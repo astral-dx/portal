@@ -1,20 +1,20 @@
-import { getPlugin, Team, TeamManagementPlugin } from "@astral-dx/core";
+import { Team, TeamManagementPlugin } from "@astral-dx/core";
 import { getSession } from "@auth0/nextjs-auth0";
-import { AppMetadata } from "auth0";
-import { decode } from "jsonwebtoken";
-import { IdToken } from "../authentication";
-import { createManagementClient, generateId, decodeId } from "../utils";
-import { getAllClients, getAllUsers } from "../utils/auth0Wrapper";
+import jwt from "jsonwebtoken";
+import { createManagementClient, generateId, decodeId } from "../authentication/services/plugin-auth0";
+import { getAllClients, getAllUsers } from "./services/plugin-auth0/auth0Wrapper";
 
 interface Auth0TeamManagementConfig {
   
 };
 
-export const initAuth0TeamManagement = ({
-
-}: Auth0TeamManagementConfig): TeamManagementPlugin => {
+export const initAuth0TeamManagement = (opts?: Auth0TeamManagementConfig): TeamManagementPlugin => {
   return {
     packageName: '@astral-dx/plugin-auth0',
+    folders: {
+      pages: './teamManagement/pages',
+      services: './authentication/services',
+    },
     createTeam: async (name: string) => {
       const managementClient = await createManagementClient();
 
@@ -110,10 +110,29 @@ export const initAuth0TeamManagement = ({
         members: teamMembers
       };
     },
-    getTeamInviteLink: async (req) => {
-      throw new Error('not implemented');
+    getTeamInvitePath: async (teamId) => {
+      const inviteSigningSecret = process.env.AUTH0_TEAM_INVITE_SIGNING_SECRET;
+
+      if (!inviteSigningSecret) {
+        throw new Error('Environment variable AUTH0_TEAM_INVITE_SIGNING_SECRET not found');
+      }
+
+      const token = jwt.sign({ teamId }, inviteSigningSecret, { expiresIn: '24h' });
+
+      return `/api/auth/login?teamToken=${token}`;
     },
-    getTeams: async (req) => {
+    getAdminInvitePath: async () => {
+      const inviteSigningSecret = process.env.AUTH0_ADMIN_INVITE_SIGNING_SECRET;
+
+      if (!inviteSigningSecret) {
+        throw new Error('Environment variable AUTH0_ADMIN_INVITE_SIGNING_SECRET not found');
+      }
+
+      const token = jwt.sign({}, inviteSigningSecret, { expiresIn: '1h' });
+
+      return `/api/auth/login?adminToken=${token}`;
+    },
+    getTeams: async () => {
       const managementClient = await createManagementClient();
       
       // TODO: Page through clients
@@ -128,6 +147,7 @@ export const initAuth0TeamManagement = ({
         const teamMembers = allUsers
           .filter(x => x.app_metadata?.teamId === teamId)
           .map((user) => ({
+            id: user.user_id,
             email: user.email ?? '',
           }));
         

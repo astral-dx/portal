@@ -9,11 +9,13 @@ export const authenticationService = {
       return;
     }
 
-    const response = await fetch(`/api/admin/user/${oldUser.email}`, {
+    console.log(oldUser)
+
+    const response = await fetch(`/api/admin/user/${oldUser.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user: { ...oldUser, permissions: oldUser.permissions.filter(p => p !== 'portal-admin') }
+        user: { permissions: oldUser.permissions.filter(p => p !== 'portal-admin') }
       }),
     });
 

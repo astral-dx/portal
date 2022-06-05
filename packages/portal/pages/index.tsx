@@ -55,7 +55,8 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
                   id={ team.id }
                   onGenerateInviteLink={ async () => {
                     try {
-                      const link = await teamManagementService.generateInviteLink(team.id);
+                      const path = await teamManagementService.generateInvitePath(team.id);
+                      const link = `${window.location.origin}${path}`;
                       copyToClipboard(link);
                       enqueueSnackbar('Your invite link has been copied to your clipboard!', { variant: 'success' });
                     } catch (e) {
@@ -120,7 +121,7 @@ export const getServerSideProps = withPageAuthRequired({
   redirectTo: '/unauthorized',
   permissions: [],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<DashboardProps>> => {
-    const { req } = context;
+    const { req, res } = context;
     
     const plugin = getPlugin();
 
@@ -128,6 +129,16 @@ export const getServerSideProps = withPageAuthRequired({
       plugin.authentication.getUser(req),
       plugin.teamManagement.getUserTeam(req),
     ]);
+
+    if (user && user.permissions.includes('portal-admin')) {
+      return {
+        props: {} as any,
+        redirect: {
+          permanent: false,
+          destination: '/admin',
+        }
+      }
+    }
 
     const [ credentials, references ] = await Promise.all([
       user && team ? plugin.credential.getTeamCredentials(team.id) : Promise.resolve([]),
