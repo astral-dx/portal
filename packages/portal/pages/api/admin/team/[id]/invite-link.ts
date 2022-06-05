@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
+import { getPlugin, withApiAuthRequired } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
-  res: NextApiResponse<{ link: string }>,
+  res: NextApiResponse<{ path: string }>,
 ) => {
   if (req.method !== 'POST') {
     res.status(404).end();
@@ -12,7 +12,7 @@ export default withApiAuthRequired(async (
 
   const plugin = getPlugin();
 
-  if (!plugin.teamManagement.getTeamInviteLink) {
+  if (!plugin.teamManagement.getTeamInvitePath) {
     res.status(501).end();
     return;
   }
@@ -24,6 +24,6 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const link = await plugin.teamManagement.getTeamInviteLink(id);
-  res.status(200).json({ link });
+  const path = await plugin.teamManagement.getTeamInvitePath(id);
+  res.status(200).json({ path });
 }, { permissions: [ 'portal-admin' ] });

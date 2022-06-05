@@ -36,6 +36,10 @@ export const CredentialPicker: React.FC<{
     setCredentialOptions(credentials.filter((c) => !isEqual(c.properties, selectedCredential.properties)))
   }, [ credentials, selectedCredential ]);
 
+  if (credentials.length < 2) {
+    return null;
+  }
+
   return (
     <Container>
       <Button

@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCredentials, Environment, Credential } from "../../plugin";
 import { Button } from "../Button/Button";
 import { Card, CardActions, CardBody, CardHeader, CardTitle } from "../Card/Card";
@@ -28,6 +28,10 @@ interface CredentialsProps {
 export const Credentials: React.FC<CredentialsProps> = ({ credentials, environments, onRotateCredential }) => {
   const [ selectedEnvironment ] = useState(getDefaultEnvironment(environments));
   const [ selectedCredential, setSelectedCredential ] = useState(credentials.filter(c => c.environment === selectedEnvironment)[0]);
+
+  useEffect(() => {
+    setSelectedCredential(credentials.filter(c => c.environment === selectedEnvironment)[0]);
+  }, [credentials]);
 
   return (
     <Box display={ 'flex' } flexDirection={ 'column' } gap={ 3 }>
