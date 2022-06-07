@@ -1,17 +1,10 @@
+import getConfig from 'next/config';
+
 import { AuthenticationPlugin } from "./authentication";
 import { BrandingPlugin } from "./branding";
 import { CredentialPlugin } from "./credential";
 import { ReferencesPlugin } from "./references";
 import { TeamManagementPlugin } from "./teamManagement";
-
-declare var __portalConfig: {
-  plugin: Plugin;
-};
-
-declare var __packageJson: {
-  name: string;
-  dependencies: Record<string, string>;
-}
 
 export interface Plugin {
   authentication: AuthenticationPlugin;
@@ -47,28 +40,33 @@ export interface PluginComponent {
   },
 }
 
-export const getPlugin = (): Plugin => __portalConfig.plugin;
+export const getPlugin = (): Plugin => {
+  const { serverRuntimeConfig } = getConfig();
+  return serverRuntimeConfig.portalConfig.plugin;
+};
 
 export const getPackages = (): Package[] => {
   const config = getPlugin();
-  const isPortalDevelopment = __packageJson.name === '@astral-dx/portal';
+  const { serverRuntimeConfig } = getConfig();
+  const { packageJson } = serverRuntimeConfig;
+  const isPortalDevelopment = packageJson.name === '@astral-dx/portal';
   const packages: Package[] = [];
 
   packages.push({
     name: '@astral-dx/portal',
-    version: isPortalDevelopment ? 'dev' : __packageJson.dependencies['@astral-dx/portal']
+    version: isPortalDevelopment ? 'dev' : packageJson.dependencies['@astral-dx/portal']
   });
 
   packages.push({
     name: '@astral-dx/core',
-    version: isPortalDevelopment ? 'dev' : __packageJson.dependencies['@astral-dx/core']
+    version: isPortalDevelopment ? 'dev' : packageJson.dependencies['@astral-dx/core']
   });
 
   return packages.concat(
     ['authentication', 'branding', 'references', 'teamManagement', 'credential']
       .map((component) => ({
         name: config[component as keyof Plugin].packageName,
-        version: __packageJson.dependencies[config[component as keyof Plugin].packageName] ?? null,
+        version: packageJson.dependencies[config[component as keyof Plugin].packageName] ?? null,
         component,
       }))
   );

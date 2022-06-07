@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "astral dev"
+    "dev": "astral dev",
+    "build": "astral build",
+    "start": "astral start"
   },
   "dependencies": {
-    "@astral-dx/portal": "0.0.1",
-    "@astral-dx/core": "0.0.1",
-    "@astral-dx/plugin-auth0": "0.0.1",
-    "@astral-dx/plugin-references": "0.0.1",
-    "@auth0/nextjs-auth0": "1.8.0"
+    "@astral-dx/portal": "0.0.2-beta.7",
+    "@astral-dx/core": "0.0.2-beta.7",
+    "@astral-dx/plugin-auth0": "0.0.2-beta.7",
+    "@astral-dx/plugin-references": "0.0.2-beta.7"
   },
   "author": "",
   "license": "ISC"

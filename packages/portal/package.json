@@ -1,6 +1,6 @@
 {
   "name": "@astral-dx/portal",
-  "version": "0.0.1",
+  "version": "0.0.2-beta.7",
   "bin": {
     "astral": "./bin/astral.mjs"
   },
@@ -37,14 +37,15 @@
     "react-dom": "18.0.0",
     "react-use": "^17.4.0",
     "resolve-cwd": "^3.0.0",
-    "typescript": "4.6.3"
+    "typescript": "4.6.3",
+    "import-meta-resolve": "^1.1.1",
+    "@types/lodash": "^4.14.182"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
-    "@types/fs-extra": "^9.0.13",
-    "import-meta-resolve": "^1.1.1"
+    "@types/fs-extra": "^9.0.13"
   },
   "peerDependencies": {
-    "@astral-dx/core": "0.0.1"
+    "@astral-dx/core": "0.0.2-beta.7"
   }
 }

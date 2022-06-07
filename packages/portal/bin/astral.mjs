@@ -39,79 +39,96 @@ const getPortalConfig = async () => {
   return {};
 }
 
-program.command('dev')
-  .action(async () => {
-    const nextExecutablePath = await getPackageExecutablPath('next');
-    const portalPackageDirectory = await getPackageDirectory('@astral-dx/portal');
-    const targetDirectory = path.join(process.cwd(), '.portal');
-    const commandParts = ['dev',  targetDirectory];
-    const { plugin } = await getPortalConfig();
+const movePortalFiles = async () => {
+  const portalPackageDirectory = await getPackageDirectory('@astral-dx/portal');
+  const targetDirectory = path.join(process.cwd(), '.portal');
+  const { plugin } = await getPortalConfig();
 
-    const entries = [
-      'pages',
-      'public',
-      '.eslintrc.json',
-      'next-env.d.ts',
-      'next.config.mjs',
-      'tsconfig.json',
-      'theme',
-    ];
+  const entries = [
+    'pages',
+    'public',
+    '.eslintrc.json',
+    'next-env.d.ts',
+    'next.config.mjs',
+    'tsconfig.json',
+    'theme',
+  ];
 
-    for (const p of Object.values(plugin)) {
-      const { packageName, folders } = p;
+  for (const p of Object.values(plugin)) {
+    const { packageName, folders } = p;
 
-      if (packageName === 'local') {
-        continue;
-      }
-
-      const packageDir = path.dirname(await resolve(packageName, import.meta.url)).replace('file:', '');
-
-      if (folders?.pages) {
-        fs.copySync(
-          path.join(packageDir, folders.pages),
-          path.join(targetDirectory, 'pages'),
-          { overwrite: true },
-        );
-      }
-      
-      if (folders?.components) {
-        fs.copySync(
-          path.join(packageDir, folders.components),
-          path.join(targetDirectory, 'components'),
-          { overwrite: true },
-        );
-      }
-      
-      if (folders?.services) {
-        fs.copySync(
-          path.join(packageDir, folders.services),
-          path.join(targetDirectory, 'services'),
-          { overwrite: true },
-        );
-      }
+    if (packageName === 'local') {
+      continue;
     }
 
-    entries.forEach(
-      (f) => fs.copySync(
-        path.join(portalPackageDirectory, f),
-        path.join(targetDirectory, f),
+    const packageDir = path.dirname(await resolve(packageName, import.meta.url)).replace('file:', '');
+
+    if (folders?.pages) {
+      fs.copySync(
+        path.join(packageDir, folders.pages),
+        path.join(targetDirectory, 'pages'),
         { overwrite: true },
-      )
-    );
+      );
+    }
+    
+    if (folders?.components) {
+      fs.copySync(
+        path.join(packageDir, folders.components),
+        path.join(targetDirectory, 'components'),
+        { overwrite: true },
+      );
+    }
+    
+    if (folders?.services) {
+      fs.copySync(
+        path.join(packageDir, folders.services),
+        path.join(targetDirectory, 'services'),
+        { overwrite: true },
+      );
+    }
+  }
 
-    fs.copySync(
-      path.join(process.cwd(), 'portal.config.js'),
-      path.join(targetDirectory, 'portal.config.js'),
+  entries.forEach(
+    (f) => fs.copySync(
+      path.join(portalPackageDirectory, f),
+      path.join(targetDirectory, f),
       { overwrite: true },
-    );
+    )
+  );
 
-    return new Promise((res, rej) => {
-      spawn(nextExecutablePath, commandParts, { env: process.env, stdio: "inherit" })
-        .on("exit", (code) => {
-          return code === 0 ? res() : process.exit(code ?? undefined);
-        })
-        .on("error", rej);
-    });
+  fs.copySync(
+    path.join(process.cwd(), 'portal.config.js'),
+    path.join(targetDirectory, 'portal.config.js'),
+    { overwrite: true },
+  );
+}
+
+const runNextCommand = (command) => new Promise(async (res, rej) => {
+  const nextExecutablePath = await getPackageExecutablPath('next');
+  const targetDirectory = path.join(process.cwd(), '.portal');
+  
+  spawn(nextExecutablePath, [command, targetDirectory], { env: process.env, stdio: "inherit" })
+    .on("exit", (code) => {
+      return code === 0 ? res() : process.exit(code ?? undefined);
+    })
+    .on("error", rej);
+});
+
+program.command('dev')
+  .action(async () => {
+    await movePortalFiles();
+    return runNextCommand('dev');
+  });
+
+program.command('build')
+  .action(async () => {
+    await movePortalFiles();
+    return runNextCommand('build');
+  });
+
+program.command('start')
+  .action(async () => {
+    return runNextCommand('start');
   });
 
   program.parse();
