@@ -2,7 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { 
   Brand,
-  getPlugin,
   User,
   withApiAuthRequired
 } from '@astral-dx/core';
@@ -16,7 +15,7 @@ export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) => {
-  const plugin = getPlugin();
+  const plugin = $config.plugin;
 
   const data = {
     user: await plugin.authentication.getUser(req),
@@ -25,4 +24,4 @@ export default withApiAuthRequired(async (
 
   res.status(200).json(data);
 
-}, { permissions: [] });
+}, { plugin: $config.plugin, permissions: [] });

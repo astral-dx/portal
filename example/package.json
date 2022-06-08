@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "astral dev",
     "build": "astral build",
-    "start": "astral start"
+    "start": "next start"
   },
   "dependencies": {
-    "@astral-dx/portal": "0.0.2-beta.7",
-    "@astral-dx/core": "0.0.2-beta.7",
-    "@astral-dx/plugin-auth0": "0.0.2-beta.7",
-    "@astral-dx/plugin-references": "0.0.2-beta.7"
+    "@astral-dx/portal": "0.0.2-beta.10",
+    "@astral-dx/core": "0.0.2-beta.10",
+    "@astral-dx/plugin-auth0": "0.0.2-beta.10",
+    "@astral-dx/plugin-references": "0.0.2-beta.10"
   },
   "author": "",
   "license": "ISC"

@@ -1,18 +1,18 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { getPlugin, Permission } from '../index';
+import { Permission, Plugin } from '../index';
 
 interface AuthGuardProps {
+  plugin: Plugin,
   getServerSideProps?: GetServerSideProps;
   redirectTo: string;
   permissions: Permission[];
 }
 
-export const withPageAuthRequired = ({ getServerSideProps, redirectTo, permissions = [] }: AuthGuardProps) => async (
+export const withPageAuthRequired = ({ plugin, getServerSideProps, redirectTo, permissions = [] }: AuthGuardProps) => async (
   ctx: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<any> | void> => {
   const { res } = ctx;
 
-  const plugin = getPlugin();
   const user = await plugin.authentication.getUser(ctx.req);
 
   if (!user) {

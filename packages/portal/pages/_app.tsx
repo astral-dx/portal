@@ -7,7 +7,6 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import {
   getTheme,
   Layout,
-  getPlugin,
   User,
   UserProvider,
   Brand,
@@ -87,7 +86,7 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     }
   }
 
-  const plugin = getPlugin();
+  const plugin = $config.plugin;
   const [ user, brand ] = await Promise.all([
     plugin.authentication.getUser(req),
     plugin.branding.getBrand(),

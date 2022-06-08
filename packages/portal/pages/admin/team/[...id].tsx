@@ -1,5 +1,5 @@
 import type { GetServerSidePropsResult, NextPage } from 'next';
-import { getPlugin, Team, Credential, withPageAuthRequired, UserTable, AdminTeamDangerZone, AdminTeamCredentials, TeamHeader, teamManagementService, credentialService, useSnackbar } from '@astral-dx/core';
+import { Team, Credential, withPageAuthRequired, UserTable, AdminTeamDangerZone, AdminTeamCredentials, TeamHeader, teamManagementService, credentialService, useSnackbar } from '@astral-dx/core';
 import { styled } from '@mui/material';
 import DefaultErrorPage from 'next/error';
 import { useCopyToClipboard } from 'react-use';
@@ -144,6 +144,7 @@ const AdminTeamDetail: NextPage<AdminTeamDetailProps> = ({ team: initialTeam, cr
 }
 
 export const getServerSideProps = withPageAuthRequired({
+  plugin: $config.plugin,
   redirectTo: '/',
   permissions: [ 'portal-admin' ],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<AdminTeamDetailProps>> => {
@@ -164,7 +165,7 @@ export const getServerSideProps = withPageAuthRequired({
       }
     }
 
-    const plugin = getPlugin();
+    const plugin = $config.plugin;
   
     const [ teams, credentials ] = await Promise.all([
       plugin.teamManagement.getTeams(),

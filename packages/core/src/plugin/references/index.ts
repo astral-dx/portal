@@ -9,6 +9,6 @@ export interface Reference {
 
 export interface ReferencesPlugin extends PluginComponent {
   getReferences: () => Promise<Reference[]>;
-}
+};
 
 export * from './useReferences';

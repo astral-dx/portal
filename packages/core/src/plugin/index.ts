@@ -1,10 +1,17 @@
-import getConfig from 'next/config';
-
 import { AuthenticationPlugin } from "./authentication";
 import { BrandingPlugin } from "./branding";
 import { CredentialPlugin } from "./credential";
 import { ReferencesPlugin } from "./references";
 import { TeamManagementPlugin } from "./teamManagement";
+
+declare global {
+  var $config: PortalConfig;
+  var $packageJson: Package;
+}
+
+export interface PortalConfig {
+  plugin: Plugin;
+}
 
 export interface Plugin {
   authentication: AuthenticationPlugin;
@@ -40,15 +47,7 @@ export interface PluginComponent {
   },
 }
 
-export const getPlugin = (): Plugin => {
-  const { serverRuntimeConfig } = getConfig();
-  return serverRuntimeConfig.portalConfig.plugin;
-};
-
-export const getPackages = (): Package[] => {
-  const config = getPlugin();
-  const { serverRuntimeConfig } = getConfig();
-  const { packageJson } = serverRuntimeConfig;
+export const getPackages = (plugin: Plugin, packageJson: any): Package[] => {
   const isPortalDevelopment = packageJson.name === '@astral-dx/portal';
   const packages: Package[] = [];
 
@@ -65,8 +64,8 @@ export const getPackages = (): Package[] => {
   return packages.concat(
     ['authentication', 'branding', 'references', 'teamManagement', 'credential']
       .map((component) => ({
-        name: config[component as keyof Plugin].packageName,
-        version: packageJson.dependencies[config[component as keyof Plugin].packageName] ?? null,
+        name: plugin[component as keyof Plugin].packageName,
+        version: packageJson.dependencies[plugin[component as keyof Plugin].packageName] ?? null,
         component,
       }))
   );

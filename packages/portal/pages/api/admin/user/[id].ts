@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getPlugin, withApiAuthRequired, User } from '@astral-dx/core';
+import { withApiAuthRequired, User } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<{ user: User }>,
 ) => {
   if (req.method === 'PUT') {
-    const plugin = getPlugin();
+    const plugin = $config.plugin;
 
     if (!plugin.teamManagement.deleteTeam) {
       res.status(501).end();
@@ -27,4 +27,4 @@ export default withApiAuthRequired(async (
   }
 
   res.status(404).end();
-}, { permissions: [ 'portal-admin' ] });
+}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });

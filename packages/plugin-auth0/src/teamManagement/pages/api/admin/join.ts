@@ -1,7 +1,7 @@
 
 import { NextApiRequest, NextApiResponse} from 'next';
 import jwt from 'jsonwebtoken';
-import { getPlugin, withApiAuthRequired } from "@astral-dx/core";
+import { withApiAuthRequired } from "@astral-dx/core";
 import { createManagementClient } from '../../../services/plugin-auth0';
 
 export type TeamInviteTokenPayload = jwt.JwtPayload & {
@@ -34,7 +34,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
       return;
     }
     
-    const plugin = getPlugin();
+    const plugin = $config.plugin;
     const user = await plugin.authentication.getUser(req);
 
     if (!user) {
@@ -60,4 +60,4 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   
   res.status(404).end();
   return;
-}, { permissions: [] });
+}, { plugin: $config.plugin, permissions: [] });

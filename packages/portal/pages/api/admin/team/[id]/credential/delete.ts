@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getPlugin, Credential, withApiAuthRequired } from '@astral-dx/core';
+import { withApiAuthRequired } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const plugin = getPlugin();
+  const plugin = $config.plugin;
 
   if (!plugin.credential.deleteCredentials) {
     res.status(501).end();
@@ -27,4 +27,4 @@ export default withApiAuthRequired(async (
   await plugin.credential.deleteCredentials(credentials);
   res.status(204).end();
   return;
-}, { permissions: [ 'portal-admin' ] });
+}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });

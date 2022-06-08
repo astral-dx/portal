@@ -1,5 +1,5 @@
 import type { GetServerSidePropsResult, NextPage } from 'next';
-import { getPlugin, Team, withPageAuthRequired, AdminTeams, AdminTeamsProvider, getPackages, AdminConfiguration, Package, BetaBanner, Header, Button, teamManagementService, Card, CardBody, UserTable, User, authenticationService, useSnackbar } from '@astral-dx/core';
+import { Team, withPageAuthRequired, AdminTeams, AdminTeamsProvider, getPackages, AdminConfiguration, Package, BetaBanner, Header, Button, teamManagementService, Card, CardBody, UserTable, User, authenticationService, useSnackbar } from '@astral-dx/core';
 import { Box, Dialog, styled, TextField } from '@mui/material';
 import { Add, AddLink } from '@mui/icons-material';
 import { useCopyToClipboard } from 'react-use';
@@ -62,7 +62,7 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
           <Main>
             <Box display={ 'flex' } flexDirection={ 'column' } gap={ 3 }>
               <Header
-                title={ 'Admin Dashbaord' }
+                title={ 'Admin Dashboard' }
                 Action={ () => (
                   <Button
                     color="secondary"
@@ -161,12 +161,13 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
 }
 
 export const getServerSideProps = withPageAuthRequired({
+  plugin: $config.plugin,
   redirectTo: '/',
   permissions: [ 'portal-admin' ],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<AdminDashboardProps>> => {
     const { req } = context;
     
-    const plugin = getPlugin();
+    const plugin = $config.plugin;
 
     const user = await plugin.authentication.getUser(req);
 
@@ -175,7 +176,7 @@ export const getServerSideProps = withPageAuthRequired({
       user ? plugin.authentication.getAdminUsers() : Promise.resolve([]),
     ]);
 
-    const packages = getPackages();
+    const packages = getPackages($config.plugin, $packageJson);
   
     return { 
       props: {

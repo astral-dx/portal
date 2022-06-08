@@ -1,13 +1,13 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getPlugin, Permission } from '../index';
+import { Plugin, Permission } from '../index';
 
 interface withApiAuthRequiredOptions {
+  plugin: Plugin,
   permissions: Permission[];
 }
 
-export const withApiAuthRequired = (handler: NextApiHandler, { permissions = [] }: withApiAuthRequiredOptions) => (
+export const withApiAuthRequired = (handler: NextApiHandler, { plugin, permissions = [] }: withApiAuthRequiredOptions) => (
   async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const plugin = getPlugin();
     const user = await plugin.authentication.getUser(req);
 
     if (!user) {

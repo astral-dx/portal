@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getPlugin, withApiAuthRequired, Team } from '@astral-dx/core';
+import { withApiAuthRequired, Team } from '@astral-dx/core';
 
 export default withApiAuthRequired(async (
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const plugin = getPlugin();
+  const plugin = $config.plugin;
 
   if (!plugin.teamManagement.createTeam) {
     res.status(501).end();
@@ -26,4 +26,4 @@ export default withApiAuthRequired(async (
 
   const team = await plugin.teamManagement.createTeam(name);
   res.status(200).json({ team });
-}, { permissions: [ 'portal-admin' ] });
+}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });

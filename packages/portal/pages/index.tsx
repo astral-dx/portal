@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { withPageAuthRequired, References, Credentials, ConsumerTeamProvider, CredentialsProvider, getPlugin, ReferencesProvider, Team, User, Credential, Reference, UserTable, TeamHeader, Header, CredentialPicker, getEnvironments, TeamMember, teamManagementService, credentialService, useSnackbar } from '@astral-dx/core';
+import { withPageAuthRequired, References, Credentials, ConsumerTeamProvider, CredentialsProvider, ReferencesProvider, Team, User, Credential, Reference, UserTable, TeamHeader, Header, CredentialPicker, getEnvironments, TeamMember, teamManagementService, credentialService, useSnackbar } from '@astral-dx/core';
 import { styled } from '@mui/material';
 import { GetServerSidePropsResult } from 'next';
 import { Box } from '@mui/system';
@@ -121,12 +121,13 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
 }
 
 export const getServerSideProps = withPageAuthRequired({
+  plugin: $config.plugin,
   redirectTo: '/unauthorized',
   permissions: [],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<DashboardProps>> => {
     const { req, res } = context;
     
-    const plugin = getPlugin();
+    const plugin = $config.plugin;
 
     const [ user, team ] = await Promise.all([
       plugin.authentication.getUser(req),

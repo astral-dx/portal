@@ -1,4 +1,3 @@
-import { getPlugin } from "@astral-dx/core";
 import { handleAuth, handleCallback, handleLogin, handleLogout } from "@auth0/nextjs-auth0";
 
 export default handleAuth({
@@ -23,7 +22,7 @@ export default handleAuth({
       });
     }
 
-    const plugin = getPlugin();
+    const plugin = $config.plugin;
     const user = await plugin.authentication.getUser(req);
 
     if (user) {

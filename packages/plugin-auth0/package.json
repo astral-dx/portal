@@ -1,6 +1,6 @@
 {
   "name": "@astral-dx/plugin-auth0",
-  "version": "0.0.2-beta.7",
+  "version": "0.0.2-beta.13",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
-    "@astral-dx/core": "0.0.2-beta.7",
-    "@astral-dx/portal": "0.0.2-beta.7"
+    "@astral-dx/core": "0.0.2-beta.13",
+    "@astral-dx/portal": "0.0.2-beta.13"
   }
 }
