@@ -160,20 +160,21 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
   )
 }
 
+const config = $config;
+
 export const getServerSideProps = withPageAuthRequired({
-  plugin: $config.plugin,
+  config,
   redirectTo: '/',
   permissions: [ 'portal-admin' ],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<AdminDashboardProps>> => {
-    const { req } = context;
+    const { req, res } = context;
     
-    const plugin = $config.plugin;
-
-    const user = await plugin.authentication.getUser(req);
+    const ctx = { req, res, config };
+    const user = await config.plugin.authentication.getUser({ ctx });
 
     const [ teams, adminUsers ] = await Promise.all([
-      user ? plugin.teamManagement.getTeams() : Promise.resolve([]),
-      user ? plugin.authentication.getAdminUsers() : Promise.resolve([]),
+      user ? config.plugin.teamManagement.getTeams({ ctx }) : Promise.resolve([]),
+      user ? config.plugin.authentication.getAdminUsers({ ctx }) : Promise.resolve([]),
     ]);
 
     const packages = getPackages($config.plugin, $packageJson);

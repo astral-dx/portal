@@ -120,18 +120,18 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
   )
 }
 
+const config = $config;
+
 export const getServerSideProps = withPageAuthRequired({
-  plugin: $config.plugin,
+  config,
   redirectTo: '/unauthorized',
   permissions: [],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<DashboardProps>> => {
     const { req, res } = context;
     
-    const plugin = $config.plugin;
-
     const [ user, team ] = await Promise.all([
-      plugin.authentication.getUser(req),
-      plugin.teamManagement.getUserTeam(req),
+      config.plugin.authentication.getUser({ ctx: { req, res, config } }),
+      config.plugin.teamManagement.getUserTeam({ ctx: { req, res, config } }),
     ]);
 
     if (user && user.permissions.includes('portal-admin')) {
@@ -145,8 +145,8 @@ export const getServerSideProps = withPageAuthRequired({
     }
 
     const [ credentials, references ] = await Promise.all([
-      user && team ? plugin.credential.getTeamCredentials(team.id) : Promise.resolve([]),
-      plugin.references.getReferences(),
+      user && team ? config.plugin.credential.getTeamCredentials({ ctx: { req, res, config }, teamId: team.id }) : Promise.resolve([]),
+      config.plugin.references.getReferences({ ctx: { req, res, config } }),
     ]);
   
     return { 

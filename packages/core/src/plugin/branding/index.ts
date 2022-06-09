@@ -1,4 +1,4 @@
-import { PluginComponent } from "../index";
+import { PluginComponent, PortalRequestContext } from "../index";
 
 export interface Brand {
   logoSrc: string;
@@ -10,7 +10,7 @@ export interface Brand {
 }
 
 export interface BrandingPlugin extends PluginComponent {
-  getBrand: () => Promise<Brand>;
+  getBrand: (opts: { ctx: PortalRequestContext }) => Promise<Brand>;
 }
 
 export * from './theme';

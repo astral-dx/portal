@@ -8,6 +8,8 @@ export type TeamInviteTokenPayload = jwt.JwtPayload & {
   teamId: string;
 }
 
+const config = $config;
+
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const inviteSigningSecret = process.env.AUTH0_TEAM_INVITE_SIGNING_SECRET;
@@ -34,8 +36,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
       return;
     }
     
-    const plugin = $config.plugin;
-    const user = await plugin.authentication.getUser(req);
+    const user = await config.plugin.authentication.getUser({ ctx: { req, res, config } });
 
     if (!user) {
       res.status(401).end();
@@ -60,4 +61,4 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   
   res.status(404).end();
   return;
-}, { plugin: $config.plugin, permissions: [] });
+}, { config, permissions: [] });

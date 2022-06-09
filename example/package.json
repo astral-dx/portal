@@ -9,10 +9,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@astral-dx/portal": "0.0.2-beta.10",
-    "@astral-dx/core": "0.0.2-beta.10",
-    "@astral-dx/plugin-auth0": "0.0.2-beta.10",
-    "@astral-dx/plugin-references": "0.0.2-beta.10"
+    "@astral-dx/portal": "0.1.0-beta.1",
+    "@astral-dx/core": "0.1.0-beta.1",
+    "@astral-dx/plugin-auth0": "0.1.0-beta.1",
+    "@astral-dx/plugin-references": "0.1.0-beta.1",
+    "@astral-dx/plugin-branding": "0.1.0-beta.1"
   },
   "author": "",
   "license": "ISC"

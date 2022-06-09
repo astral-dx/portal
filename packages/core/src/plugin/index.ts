@@ -1,3 +1,5 @@
+import { IncomingMessage, ServerResponse } from 'http';
+
 import { AuthenticationPlugin } from "./authentication";
 import { BrandingPlugin } from "./branding";
 import { CredentialPlugin } from "./credential";
@@ -11,6 +13,12 @@ declare global {
 
 export interface PortalConfig {
   plugin: Plugin;
+}
+
+export interface PortalRequestContext {
+  req: IncomingMessage;
+  res: ServerResponse;
+  config: PortalConfig;
 }
 
 export interface Plugin {

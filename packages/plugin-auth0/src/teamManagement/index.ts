@@ -15,7 +15,7 @@ export const initAuth0TeamManagement = (opts?: Auth0TeamManagementConfig): TeamM
       pages: './teamManagement/pages',
       services: './authentication/services',
     },
-    createTeam: async (name: string) => {
+    createTeam: async ({ name }) => {
       const managementClient = await createManagementClient();
 
       // TODO: Make sure team with name/id doesn't exist
@@ -37,10 +37,10 @@ export const initAuth0TeamManagement = (opts?: Auth0TeamManagementConfig): TeamM
         members: []
       }
     },
-    updateTeam: async (id: string, team: Team) => {
+    updateTeam: async ({ id, team }) => {
       throw new Error('not implemented');
     },
-    deleteTeam: async (id: string) => {
+    deleteTeam: async ({ id }) => {
       const managementClient = await createManagementClient();
 
       // Delete all clients
@@ -66,7 +66,7 @@ export const initAuth0TeamManagement = (opts?: Auth0TeamManagementConfig): TeamM
         })
       }));
     },
-    removeUserFromTeam: async (teamId: string, email: string) => {
+    removeUserFromTeam: async ({ teamId, email }) => {
       const managementClient = await createManagementClient();
       const allUsers = await getAllUsers(managementClient);
       const user = allUsers.find(x => x.email === email);
@@ -81,8 +81,8 @@ export const initAuth0TeamManagement = (opts?: Auth0TeamManagementConfig): TeamM
         }
       });
     },
-    getUserTeam: async (req) => {
-      const session = await getSession(req, {} as any);
+    getUserTeam: async ({ ctx }) => {
+      const session = await getSession(ctx.req, ctx.res);
       
       if (!session?.user) {
         return undefined;
@@ -110,7 +110,7 @@ export const initAuth0TeamManagement = (opts?: Auth0TeamManagementConfig): TeamM
         members: teamMembers
       };
     },
-    getTeamInvitePath: async (teamId) => {
+    getTeamInvitePath: async ({ teamId }) => {
       const inviteSigningSecret = process.env.AUTH0_TEAM_INVITE_SIGNING_SECRET;
 
       if (!inviteSigningSecret) {

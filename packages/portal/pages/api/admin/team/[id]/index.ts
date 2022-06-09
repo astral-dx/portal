@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@astral-dx/core';
 
+const config = $config;
+
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<{ link: string }>,
 ) => {
   if (req.method === 'DELETE') {
-    const plugin = $config.plugin;
-
-    if (!plugin.teamManagement.deleteTeam) {
+    if (!config.plugin.teamManagement.deleteTeam) {
       res.status(501).end();
       return;
     }
@@ -20,7 +20,8 @@ export default withApiAuthRequired(async (
       return;
     }
 
-    const teams = await plugin.teamManagement.getTeams();
+    const ctx = { req, res, config };
+    const teams = await config.plugin.teamManagement.getTeams({ ctx });
     const team = teams.find((t) => t.id === id);
 
     if (!team) {
@@ -28,17 +29,19 @@ export default withApiAuthRequired(async (
       return;
     }
 
+    const credentials = await config.plugin.credential.getTeamCredentials({ ctx, teamId: id });
+
     await Promise.all([
-      plugin.credential.deleteCredentials(await plugin.credential.getTeamCredentials(id)),
+      config.plugin.credential.deleteCredentials({ ctx, credentials }),
       ...team.members.map(
-        ({ email }) => plugin.teamManagement.removeUserFromTeam(id, email)
+        ({ email }) => config.plugin.teamManagement.removeUserFromTeam({ ctx, teamId: id , email })
       ),
     ]);
 
-    await plugin.teamManagement.deleteTeam(id);
+    await config.plugin.teamManagement.deleteTeam({ ctx, id });
     res.status(204).end();
     return;
   }
 
   res.status(404).end();
-}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });
+}, { config, permissions: [ 'portal-admin' ] });

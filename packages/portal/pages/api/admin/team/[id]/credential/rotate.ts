@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Credential, withApiAuthRequired } from '@astral-dx/core';
 
+const config = $config;
+
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<{ credential: Credential}>,
@@ -10,9 +12,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const plugin = $config.plugin;
-
-  if (!plugin.credential.rotateCredential) {
+  if (!config.plugin.credential.rotateCredential) {
     res.status(501).end();
     return;
   }
@@ -24,7 +24,10 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const credential = await plugin.credential.rotateCredential(oldCredential);
+  const credential = await config.plugin.credential.rotateCredential({ 
+    ctx: { req, res, config },
+    credential: oldCredential,
+  });
   res.status(200).json({ credential });
   return;
-}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });
+}, { config, permissions: [ 'portal-admin' ] });

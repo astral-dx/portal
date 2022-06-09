@@ -7,9 +7,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { createManagementClient } from './services/plugin-auth0';
 import { getAllUsers } from './services/plugin-auth0/auth0Wrapper';
 
-interface Auth0AuthenticationConfig {
-  
-};
+interface Auth0AuthenticationConfig {};
 
 export type IdToken = JwtPayload & { 
   'http://astral'?: {
@@ -23,21 +21,21 @@ export type IdToken = JwtPayload & {
 export const initAuth0Authentication = (opts?: Auth0AuthenticationConfig): AuthenticationPlugin => {
   return {
     packageName: '@astral-dx/plugin-auth0',
-    loginPath: '/api/auth/login',
-    logoutPath: '/api/auth/logout',
+    loginPath: async () => '/api/auth/login',
+    logoutPath: async () =>  '/api/auth/logout',
     folders: {
       pages: './authentication/pages',
       services: './authentication/services',
     },
-    deleteUser: async (id) => {
+    deleteUser: async ({ id }) => {
       const managementClient = createManagementClient();
       
       await managementClient.deleteUser({
         id
       });
     },
-    getUser: async (req) => {
-      const session = await getSession(req, {} as any);
+    getUser: async ({ ctx }) => {
+      const session = await getSession(ctx.req, ctx.res);
 
       if (!session?.user) {
         return undefined;
@@ -73,7 +71,7 @@ export const initAuth0Authentication = (opts?: Auth0AuthenticationConfig): Authe
           avatar: user.picture ?? '',
         }));
     },
-    updateUser: async (id: string, update: Pick<User, 'permissions'>) => {
+    updateUser: async ({ id, update }) => {
       const managementClient = createManagementClient();
       const allUsers = await getAllUsers(managementClient);
       const foundUser = allUsers.find(u => u.user_id === id);

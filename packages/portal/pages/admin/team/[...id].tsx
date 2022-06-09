@@ -143,12 +143,14 @@ const AdminTeamDetail: NextPage<AdminTeamDetailProps> = ({ team: initialTeam, cr
   )
 }
 
+const config = $config;
+
 export const getServerSideProps = withPageAuthRequired({
-  plugin: $config.plugin,
+  config,
   redirectTo: '/',
   permissions: [ 'portal-admin' ],
   getServerSideProps: async (context): Promise<GetServerSidePropsResult<AdminTeamDetailProps>> => {
-    const { req, params } = context;
+    const { req, res, params } = context;
 
     let id: string | undefined;
 
@@ -165,11 +167,10 @@ export const getServerSideProps = withPageAuthRequired({
       }
     }
 
-    const plugin = $config.plugin;
-  
+    const ctx = { req, res, config };
     const [ teams, credentials ] = await Promise.all([
-      plugin.teamManagement.getTeams(),
-      plugin.credential.getTeamCredentials(id),
+      config.plugin.teamManagement.getTeams({ ctx }),
+      config.plugin.credential.getTeamCredentials({ ctx, teamId: id }),
     ]);
 
     return {

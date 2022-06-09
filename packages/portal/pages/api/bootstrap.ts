@@ -11,17 +11,20 @@ type Data = {
   brand: Brand,
 };
 
+const config = $config;
+
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) => {
   const plugin = $config.plugin;
 
+  const ctx = { req, res, config };
   const data = {
-    user: await plugin.authentication.getUser(req),
-    brand: await plugin.branding.getBrand(),
+    user: await plugin.authentication.getUser({ ctx }),
+    brand: await plugin.branding.getBrand({ ctx }),
   };
 
   res.status(200).json(data);
 
-}, { plugin: $config.plugin, permissions: [] });
+}, { config, permissions: [] });

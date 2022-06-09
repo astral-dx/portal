@@ -1,22 +1,25 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { Permission, Plugin } from '../index';
+import { Permission, PortalConfig } from '../index';
 
 interface AuthGuardProps {
-  plugin: Plugin,
+  config: PortalConfig,
   getServerSideProps?: GetServerSideProps;
   redirectTo: string;
   permissions: Permission[];
 }
 
-export const withPageAuthRequired = ({ plugin, getServerSideProps, redirectTo, permissions = [] }: AuthGuardProps) => async (
+export const withPageAuthRequired = ({ config, getServerSideProps, redirectTo, permissions = [] }: AuthGuardProps) => async (
   ctx: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<any> | void> => {
-  const { res } = ctx;
+  const { req, res } = ctx;
 
-  const user = await plugin.authentication.getUser(ctx.req);
+  const [ loginPath, user ] = await Promise.all([
+    config.plugin.authentication.loginPath({ ctx: { req, res, config } }),
+    config.plugin.authentication.getUser({ ctx: { req, res, config } }),
+  ]);
 
   if (!user) {
-    res.setHeader('location', plugin.authentication.loginPath);
+    res.setHeader('location', loginPath);
     res.statusCode = 302;
     res.end();
     return { props: {} };

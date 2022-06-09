@@ -1,4 +1,4 @@
-import { PluginComponent } from "../index";
+import { PluginComponent, PortalRequestContext } from "../index";
 
 export interface Reference {
   url: string;
@@ -8,7 +8,7 @@ export interface Reference {
 }
 
 export interface ReferencesPlugin extends PluginComponent {
-  getReferences: () => Promise<Reference[]>;
+  getReferences: (opts: { ctx: PortalRequestContext }) => Promise<Reference[]>;
 };
 
 export * from './useReferences';

@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired, User } from '@astral-dx/core';
 
+const config = $config;
+
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<{ user: User }>,
 ) => {
   if (req.method === 'PUT') {
-    const plugin = $config.plugin;
-
-    if (!plugin.teamManagement.deleteTeam) {
+    if (!config.plugin.teamManagement.deleteTeam) {
       res.status(501).end();
       return;
     }
@@ -21,10 +21,11 @@ export default withApiAuthRequired(async (
       return;
     }
 
-    const user = await plugin.authentication.updateUser(id, update);
+    const user = await config.plugin.authentication
+      .updateUser({ ctx: { req, res, config }, id, update });
     res.status(200).json({ user });
     return;
   }
 
   res.status(404).end();
-}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });
+}, { config, permissions: [ 'portal-admin' ] });

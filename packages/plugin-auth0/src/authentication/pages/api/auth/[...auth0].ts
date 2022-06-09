@@ -1,5 +1,7 @@
 import { handleAuth, handleCallback, handleLogin, handleLogout } from "@auth0/nextjs-auth0";
 
+const config = $config;
+
 export default handleAuth({
   login: async (req, res) => {
     const { teamToken, adminToken } = req.query;
@@ -22,8 +24,7 @@ export default handleAuth({
       });
     }
 
-    const plugin = $config.plugin;
-    const user = await plugin.authentication.getUser(req);
+    const user = await config.plugin.authentication.getUser({ ctx: { req, res, config } });
 
     if (user) {
       res.redirect('/').end();

@@ -1,4 +1,4 @@
-import { Permission, Team, TeamMember } from "../plugin";
+import { Team, TeamMember } from "../plugin";
 
 export const teamManagementService = {
   addTeam: async (name: string): Promise<Team> => {

@@ -13,7 +13,7 @@ export const initAuth0Credential = (opts: Auth0CredentialConfig): CredentialPlug
     folders: {
       services: './credential/services',
     },
-    createCredential: async (team, environment) => {
+    createCredential: async ({ team, environment }) => {
       const managementClient = createManagementClient();
       const credential = await managementClient.createClient({
         name: team.name,
@@ -41,7 +41,7 @@ export const initAuth0Credential = (opts: Auth0CredentialConfig): CredentialPlug
         }],
       };
     },
-    deleteCredentials: async (credentials) => {
+    deleteCredentials: async ({ credentials }) => {
       const managementClient = createManagementClient();
       const errors = await Promise.all(credentials.map(async (credential) => {
         const property = credential.properties.find((p) => p.label === 'Client ID');
@@ -57,7 +57,7 @@ export const initAuth0Credential = (opts: Auth0CredentialConfig): CredentialPlug
         throw new Error(`Error deleting credentials`);
       }
     },
-    rotateCredential: async (credential) => {
+    rotateCredential: async ({ credential }) => {
       const managementClient = createManagementClient();
       const token = await managementClient.getAccessToken();
 
@@ -90,7 +90,7 @@ export const initAuth0Credential = (opts: Auth0CredentialConfig): CredentialPlug
         }],
       };
     },
-    getTeamCredentials: async (teamId) => {
+    getTeamCredentials: async ({ teamId }) => {
       const managementClient = createManagementClient();
       const allClients = await managementClient.getClients();
       return allClients

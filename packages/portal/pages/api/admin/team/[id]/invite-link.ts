@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@astral-dx/core';
 
+const config = $config;
+
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<{ path: string }>,
@@ -10,9 +12,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const plugin = $config.plugin;
-
-  if (!plugin.teamManagement.getTeamInvitePath) {
+  if (!config.plugin.teamManagement.getTeamInvitePath) {
     res.status(501).end();
     return;
   }
@@ -24,6 +24,7 @@ export default withApiAuthRequired(async (
     return;
   }
 
-  const path = await plugin.teamManagement.getTeamInvitePath(id);
+  const path = await config.plugin.teamManagement
+    .getTeamInvitePath({ ctx: { req, res, config }, teamId: id });
   res.status(200).json({ path });
-}, { plugin: $config.plugin, permissions: [ 'portal-admin' ] });
+}, { config, permissions: [ 'portal-admin' ] });

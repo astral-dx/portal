@@ -70,11 +70,7 @@ export default function MyApp(props: MyAppProps & AppProps) {
 
 MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppInitialProps> => {
   const appProps = await App.getInitialProps(context);
-  const { req } = context.ctx;
-
-  if (!req) {
-    throw new Error('Unable to initialize app, no request in context');
-  }
+  const { req, res } = context.ctx;
 
   if (typeof window !== "undefined") {
     const { user, brand } = await (await fetch('/api/bootstrap')).json(); 
@@ -86,10 +82,14 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
     }
   }
 
-  const plugin = $config.plugin;
+  if (!req || !res) {
+    throw new Error('Unable to initialize app, no request in context');
+  }
+
+  const config = $config;
   const [ user, brand ] = await Promise.all([
-    plugin.authentication.getUser(req),
-    plugin.branding.getBrand(),
+    config.plugin.authentication.getUser({ ctx: { req, res, config } }),
+    config.plugin.branding.getBrand({ ctx: { req, res, config } }),
   ]);
 
   return {

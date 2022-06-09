@@ -1,6 +1,6 @@
 import { IncomingMessage } from "http";
 import { Permission, User } from "../authentication";
-import { PluginComponent } from "../index";
+import { PluginComponent, PortalRequestContext } from "../index";
 
 export interface TeamMember {
   email: string;
@@ -13,14 +13,14 @@ export interface Team {
 }
 
 export interface TeamManagementPlugin extends PluginComponent {
-  createTeam: (name: string) => Promise<Team>;
-  updateTeam: (id: string, team: Team) => Promise<Team>;
-  deleteTeam: (id: string) => Promise<void>;
-  removeUserFromTeam: (teamId: string, email: string) => Promise<void>;
-  getTeams: () => Promise<Team[]>;
-  getUserTeam: (req: IncomingMessage) => Promise<Team | undefined>;
-  getTeamInvitePath: (teamId: string) => Promise<string>;
-  getAdminInvitePath: () => Promise<string>;
+  createTeam: (opts: { ctx: PortalRequestContext, name: string }) => Promise<Team>;
+  updateTeam: (opts: { ctx: PortalRequestContext, id: string, team: Team }) => Promise<Team>;
+  deleteTeam: (opts: { ctx: PortalRequestContext, id: string }) => Promise<void>;
+  removeUserFromTeam: (opts: { ctx: PortalRequestContext, teamId: string, email: string }) => Promise<void>;
+  getTeams: (opts: { ctx: PortalRequestContext }) => Promise<Team[]>;
+  getUserTeam: (opts: { ctx: PortalRequestContext }) => Promise<Team | undefined>;
+  getTeamInvitePath: (opts: { ctx: PortalRequestContext, teamId: string }) => Promise<string>;
+  getAdminInvitePath: (opts: { ctx: PortalRequestContext }) => Promise<string>;
 }
 
 export * from './useAdminTeams';

@@ -53,9 +53,9 @@ module.exports = {
       packageName: 'local',
       addUserToTeam: async () => {},
       removeUserFromTeam: async () => {},
-      createTeam: async (name) => ({
+      createTeam: async () => ({
         id: '0e4b56bd-1073-4314-b894-3e6a6b8ec017',
-        name,
+        name: 'New Team',
         members: [],
       }),
       updateTeam: async () => ({
@@ -98,8 +98,8 @@ module.exports = {
         name: 'New Shepard',
         members: []
       }]),
-      getTeamInviteLink: async (teamId, requestedBy) => 'https://google.com',
-      getAdminInviteLink: async (teamId, requestedBy) => 'https://google.com',
+      getTeamInviteLink: async () => 'https://google.com',
+      getAdminInviteLink: async () => 'https://google.com',
     },
     credential: {
       packageName: 'local',

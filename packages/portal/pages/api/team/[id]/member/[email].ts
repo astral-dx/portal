@@ -1,21 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@astral-dx/core';
 
+const config = $config;
+
 export default withApiAuthRequired(async (
   req: NextApiRequest,
   res: NextApiResponse<{ link: string }>,
 ) => {
   if (req.method === 'DELETE') {
-    const plugin = $config.plugin;
-
-    if (!plugin.teamManagement.removeUserFromTeam) {
+    if (!config.plugin.teamManagement.removeUserFromTeam) {
       res.status(501).end();
       return;
     }
   
     const { id, email } = req.query;
 
-    const team = await plugin.teamManagement.getUserTeam(req);
+    const ctx = { req, res, config }
+    const team = await config.plugin.teamManagement.getUserTeam({ ctx });
     
     if (!team || team.id !== id) {
       res.status(401).end();
@@ -27,10 +28,10 @@ export default withApiAuthRequired(async (
       return;
     }
 
-    await plugin.teamManagement.removeUserFromTeam(id, email);
+    await config.plugin.teamManagement.removeUserFromTeam({ ctx, teamId: id, email });
     res.status(204).end();
     return;
   }
 
   res.status(404).end();
-}, { plugin: $config.plugin, permissions: [] });
+}, { config, permissions: [] });
