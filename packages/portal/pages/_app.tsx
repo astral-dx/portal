@@ -21,12 +21,13 @@ const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps {
   emotionCache?: EmotionCache;
+  logoutPath: string;
   user?: User;
   brand: Brand;
 }
 
 export default function MyApp(props: MyAppProps & AppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps, user, brand } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps, user, brand, logoutPath } = props;
   const theme = getTheme(brand);
 
   return (
@@ -57,7 +58,7 @@ export default function MyApp(props: MyAppProps & AppProps) {
         <ThemeProvider theme={ theme }>
           <UserProvider user={ user }>
             <BrandProvider brand={ brand }>
-              <Layout>
+              <Layout logoutPath={ logoutPath }>
                 <Component { ...pageProps } />
               </Layout>
             </BrandProvider>
@@ -73,10 +74,11 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   const { req, res } = context.ctx;
 
   if (typeof window !== "undefined") {
-    const { user, brand } = await (await fetch('/api/bootstrap')).json(); 
+    const { user, brand, logoutPath } = await (await fetch('/api/bootstrap')).json(); 
 
     return {
       ...appProps,
+      logoutPath,
       user,
       brand,
     }
@@ -87,13 +89,17 @@ MyApp.getInitialProps = async (context: AppContext): Promise<MyAppProps & AppIni
   }
 
   const config = $config;
-  const [ user, brand ] = await Promise.all([
-    config.plugin.authentication.getUser({ ctx: { req, res, config } }),
-    config.plugin.branding.getBrand({ ctx: { req, res, config } }),
+
+  const ctx = { req, res, config };
+  const [ logoutPath, user, brand ] = await Promise.all([
+    config.plugin.authentication.logoutPath({ ctx }),
+    config.plugin.authentication.getUser({ ctx }),
+    config.plugin.branding.getBrand({ ctx }),
   ]);
 
   return {
     ...appProps,
+    logoutPath,
     user,
     brand,
   }

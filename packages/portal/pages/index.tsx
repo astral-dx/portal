@@ -93,11 +93,8 @@ const Dashboard: NextPage<DashboardProps> = ({ team: initialTeam, credentials: i
                   try {
                     const newCredential = await credentialService.rotateCredential(oldCredential, team.id);
 
-                    console.log({ newCredential });
-
                     if (newCredential) {
                       setCredentials(credentials.map((credential) => {
-                        console.log({ equal: isEqual(credential, oldCredential) });
                         return isEqual(credential, oldCredential) ? newCredential : credential;
                       }));
                     }

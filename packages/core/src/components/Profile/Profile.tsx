@@ -1,5 +1,6 @@
-import { styled, Typography } from "@mui/material";
+import { Box, IconButton, styled, Tooltip, Typography } from "@mui/material";
 import { mdiCrownCircle } from '@mdi/js';
+import { Logout } from '@mui/icons-material';
 import Icon from "@mdi/react";
 
 import { useConsumerTeam, useUser } from "../../plugin";
@@ -54,21 +55,12 @@ const ProfileName = styled(Typography)(({ theme }) => `
   text-overflow: ellipsis;
 `);
 
-export const Profile = () => {
+export const Profile: React.FC<{ logoutPath: string }> = ({ logoutPath }) => {
   const { user, isPortalAdmin } = useUser();
   const { team } = useConsumerTeam();
 
   return (
     <Container>
-      {/* <Box display={'flex'} gap={ 1 } paddingLeft={ 1 }>
-        { user && (
-          <Tooltip title="Logout" placement="bottom">
-            <IconButton href="/api/auth/logout" color="secondary" aria-label="upload picture" component="a">
-              <KeyboardArrowDown />
-            </IconButton>
-          </Tooltip>
-        ) }
-      </Box> */}
       { user && (
         <ProfileIDWrapper>
           <ProfileName>{ user.name || user.email }</ProfileName>
@@ -82,7 +74,15 @@ export const Profile = () => {
           { isPortalAdmin && <AdminIcon path={ mdiCrownCircle } size={1} /> }
         </AvatarContainer>
       ) }
-      
+      <Box display={'flex'} gap={ 1 } paddingLeft={ 1 }>
+        { user && (
+          <Tooltip title="Logout" placement="bottom">
+            <IconButton href={ logoutPath } color="secondary" aria-label="upload picture" component="a">
+              <Logout />
+            </IconButton>
+          </Tooltip>
+        ) }
+      </Box>
     </Container>
   )
 }

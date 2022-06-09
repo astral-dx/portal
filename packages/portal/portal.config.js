@@ -2,8 +2,8 @@ module.exports = {
   plugin: {
     authentication: {
       packageName: 'local',
-      loginPath: '/login',
-      logoutPath: '',
+      loginPath: () => '/login',
+      logoutPath: () => '/logout',
       getUser: async () => ({
         id: 'afa55b51-dec3-46ec-9dff-48b85444cd21',
         role: 'admin',

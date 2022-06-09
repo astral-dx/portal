@@ -9,8 +9,6 @@ export const authenticationService = {
       return;
     }
 
-    console.log(oldUser)
-
     const response = await fetch(`/api/admin/user/${oldUser.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

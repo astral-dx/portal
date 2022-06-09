@@ -19,7 +19,7 @@ const Logo = styled('img')(({ theme }) => `
   height: 30px;
 `);
 
-export const Header: React.FC = () => {
+export const Header: React.FC<{ logoutPath: string }> = ({ logoutPath }) => {
   const { brand } = useBrand();
 
   return (
@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
       <Container maxWidth="lg">
         <Content>
           <Logo src={ brand.logoSrc } />
-          <Profile />
+          <Profile logoutPath={ logoutPath } />
         </Content>
       </Container>
     </Border>

@@ -9,6 +9,7 @@ import {
 type Data = {
   user?: User,
   brand: Brand,
+  logoutPath: string;
 };
 
 const config = $config;
@@ -21,6 +22,7 @@ export default withApiAuthRequired(async (
 
   const ctx = { req, res, config };
   const data = {
+    logoutPath: await plugin.authentication.logoutPath({ ctx }),
     user: await plugin.authentication.getUser({ ctx }),
     brand: await plugin.branding.getBrand({ ctx }),
   };
