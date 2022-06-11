@@ -8,6 +8,10 @@ export const teamManagementService = {
       body: JSON.stringify({ name }),
     });
 
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
     const { team } = await response.json();
 
     return team;
@@ -22,6 +26,10 @@ export const teamManagementService = {
       headers: { 'Content-Type': 'application/json' },
     });
 
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
     const { path } = await response.json();
 
     return path;
@@ -33,6 +41,10 @@ export const teamManagementService = {
       headers: { 'Content-Type': 'application/json' },
     });
 
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
     const { path } = await response.json();
 
     return path;
@@ -43,15 +55,19 @@ export const teamManagementService = {
     member: TeamMember,
     opts?: { admin?: boolean },
   ): Promise<void> => {
-    const shouldContinue = window.confirm(`Are you sure you want to remove ${member.email} as a member of your team?`);
+    const shouldContinue = window.confirm(`Are you sure you want to remove ${ member.email } as a member of your team?`);
 
     if (!shouldContinue) {
       return;
     }
 
-    await fetch(`/api${ opts?.admin ? '/admin' : '' }/team/${teamId}/member/${member.email}`, {
+    const response = await fetch(`/api${ opts?.admin ? '/admin' : '' }/team/${ teamId }/member/${ member.email }`, {
       method: 'DELETE',
     });
+
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
   },
 
   deleteTeam: async (teamId: string): Promise<void> => {
@@ -61,8 +77,12 @@ export const teamManagementService = {
       return;
     }
 
-    await fetch(`/api/admin/team/${teamId}`, {
+    const response = await fetch(`/api/admin/team/${ teamId }`, {
       method: 'DELETE',
     });
+
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
   },
 };

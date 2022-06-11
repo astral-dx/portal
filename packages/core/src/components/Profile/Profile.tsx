@@ -77,7 +77,7 @@ export const Profile: React.FC<{ logoutPath: string }> = ({ logoutPath }) => {
       <Box display={'flex'} gap={ 1 } paddingLeft={ 1 }>
         { user && (
           <Tooltip title="Logout" placement="bottom">
-            <IconButton href={ logoutPath } color="secondary" aria-label="upload picture" component="a">
+            <IconButton href={ logoutPath } color="secondary">
               <Logout />
             </IconButton>
           </Tooltip>

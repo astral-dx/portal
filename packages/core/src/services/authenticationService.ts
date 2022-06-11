@@ -17,6 +17,10 @@ export const authenticationService = {
       }),
     });
 
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
     const { user } = await response.json();
     return user;
   },

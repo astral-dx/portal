@@ -45,14 +45,15 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
       const team = await teamManagementService.addTeam(teamName);
       enqueueSnackbar(`Added ${teamName}!`, { variant: 'success' });
       setTeams([ ...teams, team ]);
+
+      setOpen(false);
+      setTeamName('');
+
       router.push(`/admin/team/${team.id}`);
     } catch (e) {
       console.error(e);
       enqueueSnackbar(`Error adding ${teamName}, please try again`, { variant: 'error' });
     }
-  
-    setOpen(false);
-    setTeamName('');
   }
 
   return (
@@ -65,7 +66,7 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                 title={ 'Admin Dashboard' }
                 Action={ () => (
                   <Button
-                    color="secondary"
+                    color="primary"
                     endIcon={ <Add /> }
                     onClick={ () => setOpen(true) }
                   >
@@ -93,7 +94,7 @@ const AdminDashboard: NextPage<AdminDashboardProps> = ({ teams: initialTeams, ad
                 title={ 'Portal Admins' }
                 Action={ () => (
                   <Button
-                    color="secondary"
+                    color="primary"
                     endIcon={ <AddLink /> }
                     onClick={ async () => {
                       try {

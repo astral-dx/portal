@@ -12,16 +12,16 @@ const config = $config;
 
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const inviteSigningSecret = process.env.AUTH0_ADMIN_INVITE_SIGNING_SECRET;
+    const inviteSigningSecret = process.env.AUTH0_TEAM_INVITE_SIGNING_SECRET;
 
     if (!inviteSigningSecret) {
       res.status(500).end();
       return;
     }
 
-    const { adminToken } = req.query;
+    const { teamToken } = req.query;
 
-    if (!adminToken || typeof adminToken !== 'string') {
+    if (!teamToken || typeof teamToken !== 'string') {
       res.status(404).end();
       return;
     }
@@ -29,10 +29,10 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     let payload: TeamInviteTokenPayload;
 
     try {
-      payload = jwt.verify(adminToken, inviteSigningSecret) as TeamInviteTokenPayload;
+      payload = jwt.verify(teamToken, inviteSigningSecret) as TeamInviteTokenPayload;
     } catch (e) {
       console.error(e);
-      res.status(302).redirect('/admin/invite-expired').end();
+      res.status(302).redirect('/team/invite-expired').end();
       return;
     }
     
@@ -44,17 +44,17 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     }
 
     try {
-      const managementClient = createManagementClient();
+      const managementClient = createManagementClient('Production');
 
       await managementClient.updateAppMetadata({ id: user.id }, {
-        permissions: [ ...new Set([ ...user.permissions, 'portal-admin' ]) ],
+        teamId: payload.teamId,
       });
       
-      res.status(302).redirect('/admin').end();
+      res.status(302).redirect('/').end();
       return;
     } catch (e) {
       console.error(e);
-      res.status(302).redirect('/admin/error-joining').end();
+      res.status(302).redirect('/team/error-joining').end();
       return;
     }
   }

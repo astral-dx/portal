@@ -1,4 +1,4 @@
-import { Credential } from "../plugin";
+import { Credential, Environment } from "../plugin";
 
 
 export const credentialService = {
@@ -19,6 +19,10 @@ export const credentialService = {
       body: JSON.stringify({ credential: oldCredential }),
     });
 
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
     const { credential } = await response.json();
     return credential;
   },
@@ -30,10 +34,34 @@ export const credentialService = {
       return;
     }
 
-    await fetch(`/api/admin/team/${teamId}/credential/delete`, {
+    const response = await fetch(`/api/admin/team/${teamId}/credential/delete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credentials }),
     });
+
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+  },
+
+  createCredential: async (
+    teamId: string,
+    name: string,
+    environment: Environment,
+  ): Promise<Credential> => {
+    const response = await fetch(`/api/admin//team/${teamId}/credential`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, environment }),
+    });
+
+    if (response.status >= 400) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+
+    const { credential } = await response.json();
+
+    return credential;
   },
 };

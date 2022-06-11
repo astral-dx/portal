@@ -36,7 +36,7 @@ module.exports = {
         logoSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NASA_Worm_logo.svg/2560px-NASA_Worm_logo.svg.png',
         faviconHref: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/2449px-NASA_logo.svg.png',
         primaryColor: '#0b3d91',
-        secondaryColor: '#0b3d91',
+        secondaryColor: '#000000',
         title: 'NASA Developer Portal',
         subtitle: 'Welcome to the NASA API portal',
       }),

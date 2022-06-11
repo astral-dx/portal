@@ -1,7 +1,8 @@
-import { Delete, RotateRight } from "@mui/icons-material";
+import { Delete, Key, RotateRight } from "@mui/icons-material";
 import { Box, IconButton, styled, Tooltip, Typography } from "@mui/material";
 
 import { Credential } from "../../plugin"
+import { Button } from "../Button/Button";
 import { Card, CardBody, CardHeader } from "../Card/Card";
 import { SectionTitle } from "../SectionTitle/SectionTitle";
 
@@ -33,9 +34,10 @@ interface AdminTeamCredentialsProps {
   credentials: Credential[];
   onRotateCredential: (credential: Credential) => void;
   onDeleteCredential: (credential: Credential) => void;
+  onNewCredentialClicked: () => void;
 }
 
-export const AdminTeamCredentials: React.FC<AdminTeamCredentialsProps> = ({ credentials, onRotateCredential, onDeleteCredential }) => {
+export const AdminTeamCredentials: React.FC<AdminTeamCredentialsProps> = ({ credentials, onRotateCredential, onDeleteCredential, onNewCredentialClicked }) => {
   return (
     <Container>
       <Title>Credentials</Title>
@@ -74,6 +76,13 @@ export const AdminTeamCredentials: React.FC<AdminTeamCredentialsProps> = ({ cred
           </CredentialContainer>
         </Card>
       )) }
+      <Button
+        color="primary"
+        endIcon={<Key />}
+        onClick={ () => onNewCredentialClicked() }
+      >
+        New Credential
+      </Button>
     </Container>
   )
 }

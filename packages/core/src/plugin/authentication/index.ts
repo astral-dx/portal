@@ -1,4 +1,3 @@
-import { IncomingMessage } from "http";
 import { PluginComponent, PortalRequestContext } from "../index";
 
 export type Permission = 'portal-admin' | string;

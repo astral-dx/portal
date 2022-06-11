@@ -1,4 +1,4 @@
-import { Groups, Password } from "@mui/icons-material";
+import { Groups, KeyOff } from "@mui/icons-material";
 import { styled, Typography } from "@mui/material";
 import { Button } from "../Button/Button";
 import { Card, CardBody } from "../Card/Card";
@@ -44,7 +44,7 @@ export const AdminTeamDangerZone: React.FC<AdminTeamDangerZoneProps> = ({ onRevo
       <Card>
         <CardBody sx={(theme) => ({ gap: theme.spacing(4) })}>
           <ActionContainer>
-            <Button onClick={ onRevokeCredentials } color="error" endIcon={ <Password /> }>
+            <Button onClick={ onRevokeCredentials } color="error" endIcon={ <KeyOff /> }>
               Revoke Credentials
             </Button>
             <ActionDescription variant="caption">

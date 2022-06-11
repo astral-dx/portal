@@ -19,7 +19,7 @@ export interface Credential {
 
 export interface CredentialPlugin extends PluginComponent {
   getTeamCredentials: (opts: { ctx: PortalRequestContext, teamId: string }) => Promise<Credential[]>;
-  createCredential: (opts: { ctx: PortalRequestContext, team: Team, environment: Environment | null }) => Promise<Credential>;
+  createCredential: (opts: { ctx: PortalRequestContext, teamId: string, environment: Environment, name: string }) => Promise<Credential>;
   rotateCredential?: (opts: { ctx: PortalRequestContext, credential: Credential }) => Promise<Credential>;
   deleteCredentials: (opts: { ctx: PortalRequestContext, credentials: Credential[] }) => Promise<void>;
 }

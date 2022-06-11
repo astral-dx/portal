@@ -15,7 +15,7 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({ name, id, onGenerateInvi
       title={ name }
       subtitle={ id }
       Action={ () => (
-        <Button onClick={ onGenerateInviteLink } color="secondary" endIcon={ <AddLink /> }>
+        <Button onClick={ onGenerateInviteLink } color="primary" endIcon={ <AddLink /> }>
           Get Invite Link
         </Button>
       ) }
