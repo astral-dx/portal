@@ -9,7 +9,7 @@ export interface Auth0CredentialConfig {
 
 export const getTeamCredentials: CredentialPlugin['getTeamCredentials'] = async ({ teamId }) => {
   const productionManagementClient = createManagementClient('Production');
-  const sandboxManagementClient = createManagementClient('Production');
+  const sandboxManagementClient = createManagementClient('Sandbox');
   const [ productionCredentials, sandboxCredentials ] = await Promise.all([
     productionManagementClient.getClients(),
     sandboxManagementClient.getClients(),
@@ -18,8 +18,9 @@ export const getTeamCredentials: CredentialPlugin['getTeamCredentials'] = async 
   const teamCredentials: Credential[] = [];
   
   productionCredentials.filter(({ client_metadata }) => client_metadata && client_metadata.teamId === teamId)
-    .forEach(({ client_id, client_secret }) => (teamCredentials.push({
+    .forEach(({ client_id, client_secret, name }) => (teamCredentials.push({
       environment: 'Production',
+      name,
       properties: [
         { label: 'Client ID', value: client_id ?? '' },
         { label: 'Client Secret', value: client_secret ?? '', secret: true },
@@ -27,8 +28,9 @@ export const getTeamCredentials: CredentialPlugin['getTeamCredentials'] = async 
     })));
 
   sandboxCredentials.filter(({ client_metadata }) => client_metadata && client_metadata.teamId === teamId)
-    .forEach(({ client_id, client_secret }) => (teamCredentials.push({
+    .forEach(({ client_id, client_secret, name }) => (teamCredentials.push({
       environment: 'Sandbox',
+      name,
       properties: [
         { label: 'Client ID', value: client_id ?? '' },
         { label: 'Client Secret', value: client_secret ?? '', secret: true },
@@ -59,6 +61,7 @@ export const createCredential = async (
 
   return {
     environment: opts.environment,
+    name: credential.name,
     properties: [{
       label: 'Client ID',
       value: credential.client_id ?? '',
@@ -109,7 +112,7 @@ export const deleteCredentials: CredentialPlugin['deleteCredentials'] = async ({
   let productionManagementClient: AstralAuth0ManagementClient;
   let sandboxManagementClient: AstralAuth0ManagementClient;
 
-  const errors = await Promise.all(credentials.map(async (credential) => {
+  const errors = (await Promise.all(credentials.map(async (credential) => {
     if (credential.environment === 'Production' && !productionManagementClient) {
       productionManagementClient = createManagementClient('Production');
     } else if (!sandboxManagementClient) {
@@ -124,7 +127,7 @@ export const deleteCredentials: CredentialPlugin['deleteCredentials'] = async ({
     } catch (e) {
       return e;
     }
-  }));
+  }))).filter(r => !!r);
 
   if (errors.length) {
     console.error(errors.filter(e => !!e));
