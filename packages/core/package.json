@@ -1,6 +1,6 @@
 {
   "name": "@astral-dx/core",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "main": "dist/src/index.js",
   "type": "commonjs",
@@ -27,6 +27,6 @@
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
-    "@astral-dx/portal": "0.1.4"
+    "@astral-dx/portal": "0.1.5"
   }
 }
