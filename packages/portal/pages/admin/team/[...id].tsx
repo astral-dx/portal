@@ -83,7 +83,7 @@ const AdminTeamDetail: NextPage<AdminTeamDetailProps> = ({ team: initialTeam, cr
           <UserTable
             onRemoveTeamMember={ async (member) => {
               try {
-                await teamManagementService.removeTeamMember(team.id, member);
+                await teamManagementService.removeTeamMember(team.id, member, { admin: true });
                 setTeam({
                   ...team,
                   members: team.members.filter((m) => m.email !== member.email),
