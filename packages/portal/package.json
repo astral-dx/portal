@@ -1,6 +1,6 @@
 {
   "name": "@astral-dx/portal",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "bin": {
     "astral": "./bin/astral.mjs"
   },
@@ -46,6 +46,6 @@
     "@types/fs-extra": "^9.0.13"
   },
   "peerDependencies": {
-    "@astral-dx/core": "0.1.2"
+    "@astral-dx/core": "0.1.3"
   }
 }
