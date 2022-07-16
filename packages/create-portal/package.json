@@ -1,0 +1,11 @@
+{
+  "name": "@astral-dx/create-portal",
+  "version": "0.1.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC"
+}

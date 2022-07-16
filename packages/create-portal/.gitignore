@@ -1,0 +1,10 @@
+node_modules
+.next
+pages
+public
+services
+theme
+.eslintrc.json
+next-env.d.ts
+next.config.mjs
+tsconfig.json
