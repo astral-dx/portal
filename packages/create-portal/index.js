@@ -1,16 +1,43 @@
-const http = require('http');
+#!/usr/bin/env node
+
+const https = require('https');
 const fs = require('fs');
+const path = require('path');
 const extract = require('extract-zip');
 
-const file = fs.createWriteStream("portal.zip");
-const request = http.get("http://localhost:3000/api/portal-template?id=41a696f2-eb69-4fa2-9e09-80ca0c67dae6", function(response) {
-   response.pipe(file);
+const completionMessage = `
+You've Astral API Portal configuration is downloaded! 💫
 
-   // after download completed close filestream
-   file.on("finish", async () => {
-       file.close();
+When you're ready to test locally run the
+following commands one at a time:
 
-       await extract('./portal.zip', { dir: process.cwd() });
-       fs.unlinkSync('portal.zip');
-   });
+cd portal
+npm install
+npm run dev
+`;
+
+const companyId = process.argv[process.argv.length - 1];
+
+https.get(`https://app.astral.sh/api/portal-template?id=${companyId}`, function(response) {
+  if (response.statusCode !== 200) {
+    console.log('Unable to find a portal configuration for your company.');
+    return;
+  }
+
+  const file = fs.createWriteStream("portal.zip");
+  response.pipe(file);
+
+  // after download completed close filestream
+  file.on("finish", async () => {
+    file.close();
+
+    if (!fs.existsSync('portal')) {
+      fs.mkdirSync('portal');
+    }
+
+    await extract('./portal.zip', { dir: path.join(process.cwd(), 'portal') });
+    fs.unlinkSync('portal.zip');
+
+    console.log(completionMessage);
+  });
 });

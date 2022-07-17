@@ -1,6 +1,6 @@
 {
   "name": "@astral-dx/portal",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "bin": {
     "astral": "./bin/astral.mjs"
   },
@@ -30,7 +30,7 @@
     "eslint": "8.12.0",
     "fs-extra": "^10.0.1",
     "lodash": "^4.17.21",
-    "next": "12.1.7-canary.35",
+    "next": "^12.2.2",
     "pkg-dir": "^6.0.1",
     "pkg-up": "^4.0.0",
     "react": "18.0.0",
@@ -46,6 +46,6 @@
     "@types/fs-extra": "^9.0.13"
   },
   "peerDependencies": {
-    "@astral-dx/core": "0.1.5"
+    "@astral-dx/core": "0.1.6"
   }
 }

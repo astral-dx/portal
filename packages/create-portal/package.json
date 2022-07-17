@@ -1,11 +1,16 @@
 {
   "name": "@astral-dx/create-portal",
-  "version": "0.1.5",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.6",
+  "bin": {
+    "create-portal": "index.js"
+  },
+  "description": "Astral API Portal Generator",
   "scripts": {
     "build": "tsc"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "extract-zip": "^2.0.1"
+  }
 }

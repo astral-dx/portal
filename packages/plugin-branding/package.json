@@ -1,6 +1,6 @@
 {
   "name": "@astral-dx/plugin-branding",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
-    "@astral-dx/core": "0.1.5",
-    "@astral-dx/portal": "0.1.5"
+    "@astral-dx/core": "0.1.6",
+    "@astral-dx/portal": "0.1.6"
   }
 }
