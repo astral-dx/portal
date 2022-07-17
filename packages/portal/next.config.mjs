@@ -6,6 +6,7 @@ import { createRequire } from 'module';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  optimizeFonts: false,
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (isServer) {
       const __dirname = dirname(fileURLToPath(import.meta.url));
